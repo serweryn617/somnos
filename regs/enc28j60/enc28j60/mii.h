@@ -41,7 +41,8 @@ struct cmd
   union
   {
     uint8_t value;
-    
+    BitFieldModel<1, 1> miiscan;
+    BitFieldModel<0, 1> miird;
   };
 };
 
@@ -52,7 +53,7 @@ struct regadr
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -107,7 +108,9 @@ struct stat
   union
   {
     uint8_t value;
-    
+    BitFieldModel<2, 1> nvalid;
+    BitFieldModel<1, 1> scan;
+    BitFieldModel<0, 1> busy;
   };
 };
 

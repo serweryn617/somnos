@@ -41,7 +41,10 @@ struct con1
   union
   {
     uint8_t value;
-    
+    BitFieldModel<3, 1> txpaus;
+    BitFieldModel<2, 1> rxpaus;
+    BitFieldModel<1, 1> passall;
+    BitFieldModel<0, 1> marxen;
   };
 };
 
@@ -52,7 +55,12 @@ struct con3
   union
   {
     uint8_t value;
-    
+    BitFieldModel<5, 3> padcfg;
+    BitFieldModel<4, 1> txcrcen;
+    BitFieldModel<3, 1> phdren;
+    BitFieldModel<2, 1> hfrmen;
+    BitFieldModel<1, 1> frmlnen;
+    BitFieldModel<0, 1> fuldpx;
   };
 };
 
@@ -63,7 +71,9 @@ struct con4
   union
   {
     uint8_t value;
-    
+    BitFieldModel<6, 1> defer;
+    BitFieldModel<5, 1> bpen;
+    BitFieldModel<4, 1> nobkoff;
   };
 };
 
@@ -74,7 +84,7 @@ struct bbipg
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 7> bbipg;
   };
 };
 
@@ -85,7 +95,7 @@ struct ipgl
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 7> data;
   };
 };
 
@@ -96,7 +106,7 @@ struct ipgh
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 7> data;
   };
 };
 
@@ -107,7 +117,7 @@ struct clcon1
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 4> data;
   };
 };
 
@@ -118,7 +128,7 @@ struct clcon2
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 6> data;
   };
 };
 

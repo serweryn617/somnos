@@ -37,11 +37,17 @@ namespace dral::enc28j60 {
 struct ie
 {
   constexpr static uint8_t Address = 0x1B;
-  constexpr static uint8_t RegBank = 0x00; // TODO: Remove from common regs
+  constexpr static uint8_t RegBank = 0x00;
   union
   {
     uint8_t value;
-    
+    BitFieldModel<7, 1> intie;
+    BitFieldModel<6, 1> pktie;
+    BitFieldModel<5, 1> dmaie;
+    BitFieldModel<4, 1> linkie;
+    BitFieldModel<3, 1> txie;
+    BitFieldModel<1, 1> txerie;
+    BitFieldModel<0, 1> rxerie;
   };
 };
 
@@ -52,7 +58,12 @@ struct ir
   union
   {
     uint8_t value;
-    
+    BitFieldModel<6, 1> pktif;
+    BitFieldModel<5, 1> dmaif;
+    BitFieldModel<4, 1> linkif;
+    BitFieldModel<3, 1> txif;
+    BitFieldModel<1, 1> txerif;
+    BitFieldModel<0, 1> rxerif;
   };
 };
 
@@ -63,7 +74,12 @@ struct stat
   union
   {
     uint8_t value;
-    
+    BitFieldModel<7, 1> int;
+    BitFieldModel<6, 1> bufer;
+    BitFieldModel<4, 1> latecol;
+    BitFieldModel<2, 1> rxbusy;
+    BitFieldModel<1, 1> txabrt;
+    BitFieldModel<0, 1> clkrdy;
   };
 };
 
@@ -74,7 +90,10 @@ struct con2
   union
   {
     uint8_t value;
-    
+    BitFieldModel<7, 1> autoinc;
+    BitFieldModel<6, 1> pktdec;
+    BitFieldModel<5, 1> pwrsv;
+    BitFieldModel<3, 1> vrps;
   };
 };
 
@@ -85,7 +104,13 @@ struct con1
   union
   {
     uint8_t value;
-    
+    BitFieldModel<7, 1> txrst;
+    BitFieldModel<6, 1> rxrst;
+    BitFieldModel<5, 1> dmast;
+    BitFieldModel<4, 1> csumen;
+    BitFieldModel<3, 1> txrts;
+    BitFieldModel<2, 1> rxen;
+    BitFieldModel<0, 2> bsel;
   };
 };
 

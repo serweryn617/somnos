@@ -52,7 +52,7 @@ struct rdpth
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;  // TODO: How to group such fields?
   };
 };
 
@@ -74,7 +74,7 @@ struct wrpth
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -96,7 +96,7 @@ struct txsth
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -118,7 +118,7 @@ struct txndh
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -140,7 +140,7 @@ struct rxsth
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -162,7 +162,7 @@ struct rxndh
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -184,7 +184,7 @@ struct rxrdpth
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -206,7 +206,7 @@ struct rxwrpth
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -228,7 +228,7 @@ struct dmasth
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -250,7 +250,7 @@ struct dmandh
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -272,7 +272,7 @@ struct dmadsth
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -514,7 +514,7 @@ struct pmoh
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -525,7 +525,14 @@ struct rxfcon
   union
   {
     uint8_t value;
-    
+    BitFieldModel<7, 1> ucen;
+    BitFieldModel<6, 1> andor;
+    BitFieldModel<5, 1> crcen;
+    BitFieldModel<4, 1> pmen;
+    BitFieldModel<3, 1> mpen;
+    BitFieldModel<2, 1> hten;
+    BitFieldModel<1, 1> mcen;
+    BitFieldModel<0, 1> bcen;
   };
 };
 
@@ -558,7 +565,11 @@ struct bstcon
   union
   {
     uint8_t value;
-    
+    BitFieldModel<5, 3> psv;
+    BitFieldModel<4, 1> psel;
+    BitFieldModel<2, 2> tmsel;
+    BitFieldModel<1, 1> tme;
+    BitFieldModel<0, 1> bistst;
   };
 };
 
@@ -591,7 +602,7 @@ struct revid
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 5> data;
   };
 };
 
@@ -602,7 +613,7 @@ struct cocon
   union
   {
     uint8_t value;
-    
+    BitFieldModel<0, 3> cocon;
   };
 };
 
@@ -613,7 +624,8 @@ struct flocon
   union
   {
     uint8_t value;
-    
+    BitFieldModel<2, 1> fuldpxs;
+    BitFieldModel<0, 2> fcen;
   };
 };
 
