@@ -762,44 +762,67 @@ device:
     description: Media Independent Interface Registers
     registers:
     - name: CMD
-      description:
+      description: MII Command Register
       offset: 0x12
       reset_value: 0x00
       reg_bank: 2
-      fields: []
+      fields:
+      - name: MIISCAN
+        description: MII Scan Enable
+        position: 1
+        width: 1
+      - name: MIIRD
+        description: MII Read Enable
+        position: 0
+        width: 1
     - name: REGADR
-      description:
+      description: MII Register Address
       offset: 0x14
       reset_value: 0x00
       reg_bank: 2
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: WRL
-      description:
+      description: MII Write Data Low Byte
       offset: 0x16
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: WRH
-      description:
+      description: MII Write Data High Byte
       offset: 0x17
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: RDL
-      description:
+      description: MII Read Data Low Byte
       offset: 0x18
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: RDH
-      description:
+      description: MII Read Data High Byte
       offset: 0x19
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: STAT
-      description:
+      description: MII Status
       offset: 0x0A
       reset_value: 0x00
       reg_bank: 3
-      fields: []
+      fields:
+      - name: NVALID
+        description: MII Management Read Data Not Valid
+        position: 2
+        width: 1
+      - name: SCAN
+        description: MII Management Scan Operation
+        position: 1
+        width: 1
+      - name: BUSY
+        description: MII Management Busy
+        position: 0
+        width: 1
