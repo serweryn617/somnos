@@ -6,35 +6,155 @@ device:
     description: Common Ethernet Registers
     registers:
     - name: IE
-      description: 
+      description: Ethernet Interrupt Enable
       offset: 0x1B
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: INTIE
+        description: Global INT Interrupt Enable
+        position: 7
+        width: 1
+      - name: PKTIE
+        description: Receive Packet Pending Interrupt Enable
+        position: 6
+        width: 1
+      - name: DMAIE
+        description: DMA Interrupt Enable
+        position: 5
+        width: 1
+      - name: LINKIE
+        description: Link Status Change Interrupt Enable
+        position: 4
+        width: 1
+      - name: TXIE
+        description: Transmit Enable
+        position: 3
+        width: 1
+      - name: TXERIE
+        description: Transmit Error Interrupt Enable
+        position: 1
+        width: 1
+      - name: RXERIE
+        description: Receive Error Interrupt Enable
+        position: 0
+        width: 1
     - name: IR
-      description: 
+      description: Ethernet Interrupt Request (Flag)
       offset: 0x1C
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: PKTIF 
+        description: Receive Packet Pending Interrupt Flag
+        position: 6
+        width: 1
+      - name: DMAIF 
+        description: DMA Interrupt Flag
+        position: 5
+        width: 1
+      - name: LINKIF 
+        description: Link Change Interrupt Flag
+        position: 4
+        width: 1
+      - name: TXIF 
+        description: Transmit Interrupt Flag
+        position: 3
+        width: 1
+      - name: TXERIF 
+        description: Transmit Error Interrupt Flag
+        position: 1
+        width: 1
+      - name: RXERIF
+        description: Receive Error Interrupt Flag
+        position: 0
+        width: 1
     - name: STAT
-      description: 
+      description: Ethernet Status
       offset: 0x1D
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: INT
+        description: INT Interrupt Flag
+        position: 7
+        width: 1
+      - name: BUFER
+        description: Ethernet Buffer Error Status
+        position: 6
+        width: 1
+      - name: LATECOL
+        description: Late Collision Error
+        position: 4
+        width: 1
+      - name: RXBUSY
+        description: Receive Busy
+        position: 2
+        width: 1
+      - name: TXABRT
+        description: Transmit Abort Error
+        position: 1
+        width: 1
+      - name: CLKRDY
+        description: Clock Ready
+        position: 0
+        width: 1
     - name: CON2
-      description: 
+      description: Ethernet Control Register 2
       offset: 0x1E
-      reset_value: 0x00
+      reset_value: 0x80
       reg_bank: 0
-      fields: []
+      fields:
+      - name: AUTOINC 
+        description: Automatic Buffer Pointer Increment Enable
+        position: 7
+        width: 1
+      - name: PKTDEC 
+        description: Packet Decrement
+        position: 6
+        width: 1
+      - name: PWRSV 
+        description: Power Save Enable
+        position: 5
+        width: 1
+      - name: VRPS
+        description: Voltage Regulator Power Save Enable
+        position: 3
+        width: 1
     - name: CON1
-      description: 
+      description: Ethernet Control Register 1
       offset: 0x1F
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: TXRST 
+        description: Transmit Logic Reset
+        position: 7
+        width: 1
+      - name: RXRST 
+        description: Receive Logic Reset
+        position: 6
+        width: 1
+      - name: DMAST 
+        description: DMA Start and Busy Status
+        position: 5
+        width: 1
+      - name: CSUMEN 
+        description: DMA Checksum Enable
+        position: 4
+        width: 1
+      - name: TXRTS 
+        description: Transmit Request to Send
+        position: 3
+        width: 1
+      - name: RXEN 
+        description: Receive Enable
+        position: 2
+        width: 1
+      - name: BSEL
+        description: Bank Select
+        position: 0
+        width: 2
   - name: ETH
     description: Ethernet Control Registers
     registers:
