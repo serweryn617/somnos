@@ -2,6 +2,7 @@
 
 #include "lwip/inet.h"
 #include "lwip/tcp.h"
+#include "lwip/udp.h"
 #include "lwip/netif.h"
 #include "lwip/init.h"
 #include "lwip/stats.h"
@@ -32,6 +33,100 @@
 
 
 uint8_t mac[6] = {0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92};
+
+
+
+struct udp_pcb* upcb;
+
+void udp_receive_callback(void *arg, struct udp_pcb *upcb, struct pbuf *p, const ip_addr_t *addr, u16_t port){
+
+	//struct pbuf *p;
+	uint8_t data[100]={0};
+      sprintf((char*)data, "sending udp client message" );
+      /* allocate pbuf from pool*/
+      p = pbuf_alloc(PBUF_TRANSPORT,strlen((char*)data), PBUF_POOL);
+      if (p != NULL)
+      {
+        /* copy data to pbuf */
+        pbuf_take(p, (char*)data, strlen((char*)data));
+
+        /* send udp data */
+        udp_send(upcb, p);
+
+        /* free pbuf */
+        pbuf_free(p);
+      }
+}
+
+err_t create_udp_socket(){
+    err_t err = ERR_OK;
+    ip4_addr_t destIPAddr;
+    upcb = udp_new();
+
+    if (upcb == NULL){
+        return ERR_MEM;
+    }
+    // Load the static IP of the destination address
+    //169.254.157.160:
+
+    // Tx_buf[30] = 192; // destination IP
+//    Tx_buf[31] = 168;
+//    Tx_buf[32] = 1;
+//    Tx_buf[33] = 49;
+
+
+    IP4_ADDR(&destIPAddr,192,168,1,49);
+    upcb->local_port = 5001;
+    //upcb->local_port = 4004; // Set our local port to 4004
+    // Should bind to the local ip and port
+    err = udp_bind(upcb,IP4_ADDR_ANY,5004);
+    if (err != ERR_OK){
+        return err;
+    }
+    // Connect to the other port
+    err = udp_connect(upcb,&destIPAddr,5001);
+    if (err != ERR_OK){
+        return err;
+    }
+    // Set the receive function
+    udp_recv(upcb,udp_receive_callback,NULL);
+    return err;
+}
+
+err_t send_msg_to_dest(){
+    struct pbuf *p;
+    uint8_t data[100]={0};
+
+    data[0] = 'T';
+    data[1] = 'C';
+    data[2] = '=';
+    data[3] = '0';
+    data[4] = 0xD;
+
+
+    //sprintf((char*)data, "sending udp client message");
+
+    /* allocate pbuf from pool*/
+    //p = pbuf_alloc(PBUF_TRANSPORT,strlen((char*)data), PBUF_POOL);
+    p = pbuf_alloc(PBUF_TRANSPORT,5, PBUF_POOL);
+
+
+    if (p != NULL)
+    {
+        /* copy data to pbuf */
+        pbuf_take(p, (char*)data, strlen((char*)data));
+
+        /* send udp data */
+        udp_send(upcb, p);
+
+        /* free pbuf */
+        pbuf_free(p);
+        return ERR_OK;
+    }
+    return ERR_MEM;
+}
+
+
 
 
 
@@ -140,6 +235,8 @@ int main() {
 
     netif_set_link_up(&netif);
 
+    create_udp_socket();
+
     I2CDevice<uint8_t, uint16_t> ina219(0x40, i2c_default);
 
     dral::ina219::cal ina_calibration;
@@ -155,14 +252,14 @@ int main() {
         float sh = (float)shunt_voltage / 100;
         printf("Shunt voltage: %.2f mV\n", sh);
 
-        dral::ina219::bus bus_voltage;
-        bus_voltage.value = ina219.read(dral::ina219::bus::Address);
-        float volt = (float)bus_voltage.data / 250;
-        printf("Bus voltage: %.2f V\n", volt);
+        // dral::ina219::bus bus_voltage;
+        // bus_voltage.value = ina219.read(dral::ina219::bus::Address);
+        // float volt = (float)bus_voltage.data / 250;
+        // printf("Bus voltage: %.2f V\n", volt);
 
-        int16_t current = ina219.read(dral::ina219::curr::Address);
-        float curr = (float)current * 0.0305;
-        printf("current %.2f mA\n\n", curr);
+        // int16_t current = ina219.read(dral::ina219::curr::Address);
+        // float curr = (float)current * 0.0305;
+        // printf("current %.2f mA\n\n", curr);
 
 
         uint16_t packet_len = enc28j60PacketReceive(ETHERNET_MTU, (uint8_t *)eth_pkt);
@@ -188,6 +285,9 @@ int main() {
                 pbuf_free(p);
             }
         }
+
+        send_msg_to_dest();
+        // enc28j60PacketSend();
 
         /* Cyclic lwIP timers check */
         sys_check_timeouts();
