@@ -9,7 +9,7 @@ include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 include($ENV{PICO_SDK_PATH}/tools/CMakeLists.txt)
 
 # Set name of project (as PROJECT_NAME) and C/C++ standards
-project(ina C CXX ASM)
+project(somnos C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 
@@ -19,8 +19,9 @@ add_executable(${PROJECT_NAME}
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    inc/
-    regs/
+    inc
+    regs/enc28j60
+    regs/ina219
 )
 
 # add_subdirectory(dral)

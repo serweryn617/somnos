@@ -26,7 +26,7 @@ def build(ctx, clean):
         mkdir -p build;
         cd build;
         cmake ..;
-        cmake --build .;"
+        cmake --build . -j;"
     '''.split()
 
     subprocess.run(' '.join(command), shell=True)

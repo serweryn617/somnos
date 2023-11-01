@@ -36,16 +36,16 @@ int main() {
         gpio_put(mosfet_pin, sw);
         sleep_ms(1000);
 
-        int16_t shunt_voltage = ina219.read(dral::ina219::svr::Address);
+        int16_t shunt_voltage = ina219.read(dral::ina219::shunt::Address);
         float sh = (float)shunt_voltage / 100;
         printf("Shunt voltage: %.2f mV\n", sh);
 
-        dral::ina219::bvr bus_voltage;
-        bus_voltage.value = ina219.read(dral::ina219::bvr::Address);
-        float volt = (float)bus_voltage.bd / 250;
+        dral::ina219::bus bus_voltage;
+        bus_voltage.value = ina219.read(dral::ina219::bus::Address);
+        float volt = (float)bus_voltage.data / 250;
         printf("Bus voltage: %.2f V\n", volt);
 
-        int16_t current = ina219.read(dral::ina219::crt::Address);
+        int16_t current = ina219.read(dral::ina219::curr::Address);
         float curr = (float)current * 0.0305;
         printf("current %.2f mA\n\n", curr);
 
