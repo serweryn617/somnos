@@ -159,333 +159,436 @@ device:
     description: Ethernet Control Registers
     registers:
     - name: RDPTL
-      description:
+      description: Read Pointer Low Byte
       offset: 0x00
-      reset_value: 0x00
+      reset_value: 0xFA
       reg_bank: 0
       fields: []
     - name: RDPTH
-      description:
+      description: Read Pointer High Byte
       offset: 0x01
-      reset_value: 0x00
+      reset_value: 0x05
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: WRPTL
-      description:
+      description: Write Pointer Low Byte
       offset: 0x02
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: WRPTH
-      description:
+      description: Write Pointer High Byte
       offset: 0x03
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: TXSTL
-      description:
+      description: TX Start Low Byte
       offset: 0x04
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: TXSTH
-      description:
+      description: TX Start High Byte
       offset: 0x05
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: TXNDL
-      description:
+      description: TX End Low Byte
       offset: 0x06
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: TXNDH
-      description:
+      description: TX End High Byte
       offset: 0x07
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: RXSTL
-      description:
+      description: RX Start Low Byte
       offset: 0x08
-      reset_value: 0x00
+      reset_value: 0xFA
       reg_bank: 0
       fields: []
     - name: RXSTH
-      description:
+      description: RX Start High Byte
       offset: 0x09
-      reset_value: 0x00
+      reset_value: 0x05
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: RXNDL
-      description:
+      description: RX End Low Byte
       offset: 0x0A
-      reset_value: 0x00
+      reset_value: 0xFF
       reg_bank: 0
       fields: []
     - name: RXNDH
-      description:
+      description: RX End High Byte
       offset: 0x0B
-      reset_value: 0x00
+      reset_value: 0x1F
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: RXRDPTL
-      description:
+      description: RX RD Pointer Low Byte
       offset: 0x0C
-      reset_value: 0x00
+      reset_value: 0xFA
       reg_bank: 0
       fields: []
     - name: RXRDPTH
-      description:
+      description: RX RD Pointer High Byte
       offset: 0x0D
-      reset_value: 0x00
+      reset_value: 0x05
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: RXWRPTL
-      description:
+      description: RX WR Pointer Low Byte
       offset: 0x0E
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: RXWRPTH
-      description:
+      description: RX WR Pointer High Byte
       offset: 0x0F
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: DMASTL
-      description:
+      description: DMA Start Low Byte
       offset: 0x10
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: DMASTH
-      description:
+      description: DMA Start High Byte
       offset: 0x11
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: DMANDL
-      description:
+      description: DMA End Low Byte
       offset: 0x12
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: DMANDH
-      description:
+      description: DMA End High Byte
       offset: 0x13
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: DMADSTL
-      description:
+      description: DMA Destination Low Byte
       offset: 0x14
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: DMADSTH
-      description:
+      description: DMA Destination High Byte
       offset: 0x15
       reset_value: 0x00
       reg_bank: 0
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: DMACSL
-      description:
+      description: DMA Checksum Low Byte
       offset: 0x16
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: DMACSH
-      description:
+      description: DMA Checksum High Byte
       offset: 0x17
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: HT0
-      description:
+      description: Hash Table Byte 0
       offset: 0x00
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT1
-      description:
+      description: Hash Table Byte 1
       offset: 0x01
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT2
-      description:
+      description: Hash Table Byte 2
       offset: 0x02
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT3
-      description:
+      description: Hash Table Byte 3
       offset: 0x03
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT4
-      description:
+      description: Hash Table Byte 4
       offset: 0x04
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT5
-      description:
+      description: Hash Table Byte 5
       offset: 0x05
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT6
-      description:
+      description: Hash Table Byte 6
       offset: 0x06
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT7
-      description:
+      description: Hash Table Byte 7
       offset: 0x07
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM0
-      description:
+      description: Pattern Match Mask Byte 0
       offset: 0x08
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM1
-      description:
+      description: Pattern Match Mask Byte 1
       offset: 0x09
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM2
-      description:
+      description: Pattern Match Mask Byte 2
       offset: 0x0A
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM3
-      description:
+      description: Pattern Match Mask Byte 3
       offset: 0x0B
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM4
-      description:
+      description: Pattern Match Mask Byte 4
       offset: 0x0C
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM5
-      description:
+      description: Pattern Match Mask Byte 5
       offset: 0x0D
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM6
-      description:
+      description: Pattern Match Mask Byte 6
       offset: 0x0E
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM7
-      description:
+      description: Pattern Match Mask Byte 7
       offset: 0x0F
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMCSL
-      description:
+      description: Pattern Match Checksum Low Byte
       offset: 0x10
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMCSH
-      description:
+      description: Pattern Match Checksum High Byte
       offset: 0x11
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMOL
-      description:
+      description: Pattern Match Offset Low Byte
       offset: 0x14
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMOH
-      description:
+      description: Pattern Match Offset High Byte
       offset: 0x15
       reset_value: 0x00
       reg_bank: 1
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: RXFCON
-      description:
+      description: Ethernet Receive Filter Control
       offset: 0x18
-      reset_value: 0x00
+      reset_value: 0xA1
       reg_bank: 1
-      fields: []
+      fields:
+      - name: UCEN 
+        description: Unicast Filter Enable
+        position: 7
+        width: 1
+      - name: ANDOR 
+        description: AND/OR Filter Select
+        position: 6
+        width: 1
+      - name: CRCEN 
+        description: Post-Filter CRC Check Enable
+        position: 5
+        width: 1
+      - name: PMEN 
+        description: Pattern Match Filter Enable
+        position: 4
+        width: 1
+      - name: MPEN 
+        description: Magic Packet™ Filter Enable
+        position: 3
+        width: 1
+      - name: HTEN 
+        description: Hash Table Filter Enable
+        position: 2
+        width: 1
+      - name: MCEN 
+        description: Multicast Filter Enable
+        position: 1
+        width: 1
+      - name: BCEN
+        description: Broadcast Filter Enable
+        position: 0
+        width: 1
     - name: PKTCNT
-      description:
+      description: Ethernet Packet Count
       offset: 0x19
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: BSTSD
-      description:
+      description: Built-in Self-Test Fill Seed
       offset: 0x06
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: BSTCON
-      description:
+      description: Ethernet Self-Test Control
       offset: 0x07
       reset_value: 0x00
       reg_bank: 3
-      fields: []
+      fields:
+      - name: PSV
+        description: Pattern Shift Value
+        position: 5
+        width: 3
+      - name: PSEL 
+        description: Port Select
+        position: 4
+        width: 1
+      - name: TMSEL
+        description: Test Mode Select
+        position: 2
+        width: 2
+      - name: TME 
+        description: Test Mode Enable
+        position: 1
+        width: 1
+      - name: BISTST
+        description: Built-in Self-Test Start/Busy
+        position: 0
+        width: 1
     - name: BSTCSL
-      description:
+      description: Built-in Self-Test Checksum Low Byte
       offset: 0x08
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: BSTCSH
-      description:
+      description: Built-in Self-Test Checksum High Byte
       offset: 0x09
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: REVID
-      description:
+      description: Ethernet Revision ID
       offset: 0x12
       reset_value: 0x00
       reg_bank: 3
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 5
     - name: COCON
-      description:
+      description: Clock Output Control
       offset: 0x15
-      reset_value: 0x00
+      reset_value: 0x04
       reg_bank: 3
-      fields: []
+      fields:
+      - name: COCON
+        description: Clock Output Configuration
+        position: 0
+        width: 3
     - name: FLOCON
-      description:
+      description: Ethernet Flow Control
       offset: 0x17
       reset_value: 0x00
       reg_bank: 3
-      fields: []
+      fields:
+      - name: FULDPXS
+        description: Read-Only MAC Full-Duplex Shadow
+        position: 2
+        width: 1
+      - name: FCEN
+        description: Flow Control Enable
+        position: 0
+        width: 2
     - name: PAUSL
-      description:
+      description: Pause Timer Value Low Byte
       offset: 0x18
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: PAUSH
-      description:
+      description: Pause Timer Value High Byte
       offset: 0x19
-      reset_value: 0x00
+      reset_value: 0x10
       reg_bank: 3
       fields: []
   - name: MAC
