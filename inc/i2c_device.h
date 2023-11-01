@@ -6,7 +6,7 @@
 
 template<typename _I2CAddr, typename _RegVal, typename _RegAddr = _I2CAddr>
     requires std::integral<_I2CAddr> && std::integral<_RegVal> && std::integral<_RegAddr>
-class I2CDevice
+class I2CDevice  // TODO: Is generic I2C device class needed?
 {
 private:
     _I2CAddr mI2CAddress;
@@ -28,7 +28,7 @@ public:
         return (data[0] << 8) | (data[1]);
     }
 
-    void write(_RegAddr regAddress, _RegVal value, uint8_t num_bytes = 3)
+    void write(_RegAddr regAddress, _RegVal value, uint8_t num_bytes = 3)  // TODO: Fix num_bytes
     {
         uint8_t data[3];
         data[0] = regAddress;
