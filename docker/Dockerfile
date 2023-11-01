@@ -12,7 +12,7 @@ RUN apk add --no-cache \
 ARG SDK_PATH=/opt/pico_sdk
 RUN git clone --depth 1 --branch 1.5.1 https://github.com/raspberrypi/pico-sdk $SDK_PATH && \
     cd $SDK_PATH && \
-    git submodule update --init lib/tinyusb lib/lwip
+    git submodule update --init lib/lwip
 
 ENV PICO_SDK_PATH=$SDK_PATH
 
