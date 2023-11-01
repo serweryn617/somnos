@@ -16,12 +16,14 @@ set(CMAKE_CXX_STANDARD 20)
 # Tell CMake where to find the executable source file
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/enc28j60.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     inc
     regs/enc28j60
     regs/ina219
+    lwip
 )
 
 # add_subdirectory(dral)
@@ -31,10 +33,17 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 target_link_libraries(${PROJECT_NAME}
     pico_stdlib
     hardware_i2c
+    hardware_spi
+    pico_lwip
+    pico_lwip_nosys
 )
 
 # Creates a pico-sdk subdirectory in our project for the libraries
 pico_sdk_init()
+
+# target_include_directories(pico_lwip INTERFACE
+#     ${CMAKE_CURRENT_LIST_DIR}/lwip
+# )
 
 # Enable usb output
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
