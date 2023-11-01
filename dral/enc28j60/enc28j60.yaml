@@ -595,97 +595,165 @@ device:
     description: Medium Access Controller Registers
     registers:
     - name: CON1
-      description:
+      description: MAC Control Register 1
       offset: 0x00
       reset_value: 0x00
       reg_bank: 2
-      fields: []
+      fields:
+      - name: TXPAUS 
+        description: Pause Control Frame Transmission Enable
+        position: 3
+        width: 1
+      - name: RXPAUS 
+        description: Pause Control Frame Reception Enable
+        position: 2
+        width: 1
+      - name: PASSALL 
+        description: Pass All Received Frames Enable
+        position: 1
+        width: 1
+      - name: MARXEN
+        description: MAC Receive Enable
+        position: 0
+        width: 1
     - name: CON3
-      description:
+      description: MAC Control Register 3
       offset: 0x02
       reset_value: 0x00
       reg_bank: 2
-      fields: []
+      fields:
+      - name: PADCFG
+        description: 
+        position: 5
+        width: 3
+      - name: TXCRCEN 
+        description: Transmit CRC Enable
+        position: 4
+        width: 1
+      - name: PHDREN 
+        description: Proprietary Header Enable
+        position: 3
+        width: 1
+      - name: HFRMEN 
+        description: Huge Frame Enable
+        position: 2
+        width: 1
+      - name: FRMLNEN 
+        description: Frame Length Checking Enable
+        position: 1
+        width: 1
+      - name: FULDPX
+        description: MAC Full-Duplex Enable
+        position: 0
+        width: 1
     - name: CON4
-      description:
+      description: MAC Control Register 4
       offset: 0x03
       reset_value: 0x00
       reg_bank: 2
-      fields: []
+      fields:
+      - name: DEFER 
+        description: Defer Transmission Enable
+        position: 6
+        width: 1
+      - name: BPEN 
+        description: No Backoff During Backpressure Enable
+        position: 5
+        width: 1
+      - name: NOBKOFF
+        description: No Backoff Enable
+        position: 4
+        width: 1
     - name: BBIPG
-      description:
+      description: Back-to-Back Inter-Packet Gap
       offset: 0x04
       reset_value: 0x00
       reg_bank: 2
-      fields: []
+      fields:
+      - name: BBIPG
+        description: Back-to-Back Inter-Packet Gap Delay Time
+        position: 0
+        width: 7
     - name: IPGL
-      description:
+      description: Non-Back-to-Back Inter-Packet Gap Low Byte
       offset: 0x06
       reset_value: 0x00
       reg_bank: 2
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 7
     - name: IPGH
-      description:
+      description: Non-Back-to-Back Inter-Packet Gap High Byte
       offset: 0x07
       reset_value: 0x00
       reg_bank: 2
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 7
     - name: CLCON1
-      description:
+      description: Retransmission Maximum
       offset: 0x08
-      reset_value: 0x00
+      reset_value: 0x0F
       reg_bank: 2
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 4
     - name: CLCON2
-      description:
+      description: Collision Window
       offset: 0x09
-      reset_value: 0x00
+      reset_value: 0x37
       reg_bank: 2
-      fields: []
+      fields:
+      - name: DATA
+        position: 0
+        width: 6
     - name: MXFLL
-      description:
+      description: Maximum Frame Length Low Byte
       offset: 0x0A
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: MXFLH
-      description:
+      description: Maximum Frame Length High Byte
       offset: 0x0B
-      reset_value: 0x00
+      reset_value: 0x06
       reg_bank: 2
       fields: []
     - name: ADR5
-      description:
+      description: MAC Address Byte 5
       offset: 0x00
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR6
-      description:
+      description:  MAC Address Byte 6
       offset: 0x01
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR3
-      description:
+      description:  MAC Address Byte 3
       offset: 0x02
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR4
-      description:
+      description: MAC Address Byte 4
       offset: 0x03
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR1
-      description:
+      description: MAC Address Byte 1
       offset: 0x04
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR2
-      description:
+      description: MAC Address Byte 1
       offset: 0x05
       reset_value: 0x00
       reg_bank: 3
