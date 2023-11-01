@@ -1,0 +1,86 @@
+device:
+  description: 'Zerø-Drift, Bidirectional Current/Power Monitor With I2C Interface'
+  name: INA219
+  registers:
+  - access: read-write
+    name: CFG
+    description: Configuration
+    offset: 0
+    reset_value: 0x399F
+    size: 16
+    fields:
+    - description: Operating Mode
+      name: MODE
+      position: 0
+      width: 3
+    - description: SADC Shunt ADC Resolution/Averaging
+      name: SADC
+      position: 3
+      width: 4
+    - description: BADC Bus ADC Resolution/Averaging
+      name: BADC
+      position: 7
+      width: 4
+    - description: PGA (Shunt Voltage Only)
+      name: PG
+      position: 11
+      width: 2
+    - description: Bus Voltage Range
+      name: BRNG
+      position: 13
+      width: 1
+    - description: Reset Bit
+      name: RST
+      position: 15
+      width: 1
+  - access: read
+    name: SHUNT
+    description: Shunt Voltage
+    offset: 1
+    reset_value: 0
+    size: 16
+    fields:
+    - description: PGA
+      name: PGA
+      position: 0
+      width: 16
+  - access: read
+    name: BUS
+    description: Bus Voltage
+    offset: 2
+    reset_value: 0
+    size: 16
+    fields:
+    - description: Math Overflow Flag
+      name: OVF
+      position: 0
+      width: 1
+    - description: Conversion Ready
+      name: CNVR
+      position: 1
+      width: 1
+    - description: Bus Voltage Data
+      name: DATA
+      position: 3
+      width: 13
+  - access: read
+    name: PWR
+    description: Power
+    offset: 3
+    reset_value: 0
+    size: 16
+    fields: []
+  - access: read
+    name: CURR
+    description: Current
+    offset: 4
+    reset_value: 0
+    size: 16
+    fields: []
+  - access: read-write
+    name: CAL
+    description: Calibration
+    offset: 5
+    reset_value: 0
+    size: 16
+    fields: []
