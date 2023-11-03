@@ -22,11 +22,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#define SPI_PORT spi0
-#define PIN_MISO 16
-#define PIN_CS 17
-#define PIN_SCK 18
-#define PIN_MOSI 19
+#define SPI_PORT spi1
+#define PIN_SCK 10
+#define PIN_MOSI 11
+#define PIN_MISO 12
+#define PIN_CS 13
 
 // based on example from: https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
 #define ETHERNET_MTU 1500
@@ -185,13 +185,13 @@ int main() {
     stdio_init_all();
 
     // This example will use I2C0 on the default SDA and SCL pins (GP4, GP5 on a Pico)
-    i2c_init(i2c_default, 100 * 1000);
+    i2c_init(i2c0, 100 * 1000);
     spi_init(SPI_PORT, 1 * 1000 * 1000);
 
-    gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
-    gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
-    gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
-    gpio_pull_up(PICO_DEFAULT_I2C_SCL_PIN);
+    gpio_set_function(16, GPIO_FUNC_I2C);
+    gpio_set_function(17, GPIO_FUNC_I2C);
+    gpio_pull_up(16);
+    gpio_pull_up(17);
 
     gpio_set_function(PIN_MISO, GPIO_FUNC_SPI);
     gpio_set_function(PIN_CS, GPIO_FUNC_SIO);
@@ -202,9 +202,9 @@ int main() {
     gpio_put(PIN_CS, 1);
 
     // Make the I2C pins available to picotool
-    bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
+    // bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
 
-    const uint mosfet_pin = 15;
+    const uint mosfet_pin = 18;
     gpio_init(mosfet_pin);
     gpio_set_dir(mosfet_pin, GPIO_OUT);
     bool sw = false;
@@ -237,7 +237,7 @@ int main() {
 
     create_udp_socket();
 
-    I2CDevice<uint8_t, uint16_t> ina219(0x40, i2c_default);
+    I2CDevice<uint8_t, uint16_t> ina219(0x40, i2c0);
 
     dral::ina219::cal ina_calibration;
     ina_calibration.value = 13422;
@@ -245,8 +245,9 @@ int main() {
 
     while (true) {
         sw = !sw;
+        sleep_ms(500);
         gpio_put(mosfet_pin, sw);
-        sleep_ms(50);
+        sleep_ms(500);
 
         int16_t shunt_voltage = ina219.read(dral::ina219::shunt::Address);
         float sh = (float)shunt_voltage / 100;
@@ -287,7 +288,6 @@ int main() {
         }
 
         send_msg_to_dest();
-        // enc28j60PacketSend();
 
         /* Cyclic lwIP timers check */
         sys_check_timeouts();

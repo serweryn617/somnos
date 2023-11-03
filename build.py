@@ -7,6 +7,7 @@ import pathlib
 
 
 FILE_PATH = pathlib.Path(__file__).parent.resolve()
+COMPILE_COMMANDS_PATH = FILE_PATH/'build'/'compile_commands.json'
 
 
 @click.group(invoke_without_command=True)
@@ -30,12 +31,24 @@ def build(ctx, clean):
     '''.split()
 
     subprocess.run(' '.join(command), shell=True)
+    commands()
 
 
 @build.command(help='Setup Docker')
 def setup():
     command = f'docker build {FILE_PATH}/docker -t pico_builder'
     subprocess.run(command, shell=True)
+
+
+@build.command(help='Update compile commands')
+def commands():
+    with open(COMPILE_COMMANDS_PATH, "r") as cc:
+        content=cc.read()
+    
+    content = content.replace('/workspace', str(FILE_PATH))
+
+    with open(COMPILE_COMMANDS_PATH, "w") as cc:
+        cc.write(content)
 
 
 if __name__ == '__main__':

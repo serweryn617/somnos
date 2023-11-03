@@ -42,25 +42,24 @@
 static uint8_t Enc28j60Bank;
 static uint16_t NextPacketPtr;
 
-#ifdef PICO_DEFAULT_SPI_CSN_PIN
+#define PIN_CS 13
 static inline void cs_select()
 {
 	asm volatile("nop \n nop \n nop");
-	gpio_put(PICO_DEFAULT_SPI_CSN_PIN, 0); // Active low
+	gpio_put(PIN_CS, 0); // Active low
 	asm volatile("nop \n nop \n nop");
 }
 
 static inline void cs_deselect()
 {
 	asm volatile("nop \n nop \n nop");
-	gpio_put(PICO_DEFAULT_SPI_CSN_PIN, 1);
+	gpio_put(PIN_CS, 1);
 	asm volatile("nop \n nop \n nop");
 }
-#endif
 
 void spi_write_single(uint8_t data)
 {
-	spi_write_blocking(spi_default, &data, 1);
+	spi_write_blocking(spi1, &data, 1);
 }
 
 uint8_t enc28j60ReadOp(uint8_t op, uint8_t address)
@@ -72,12 +71,12 @@ uint8_t enc28j60ReadOp(uint8_t op, uint8_t address)
 
 	// read data
 	uint8_t dst[1];
-	spi_read_blocking(spi_default, 0, dst, 1);
+	spi_read_blocking(spi1, 0, dst, 1);
 
 	// do dummy read if needed (for mac and mii, see datasheet page 29)
 	if (address & 0x80)
 	{
-		spi_read_blocking(spi_default, 0, dst, 1);
+		spi_read_blocking(spi1, 0, dst, 1);
 	}
 
 	cs_deselect();
@@ -104,7 +103,7 @@ void enc28j60ReadBuffer(uint16_t len, uint8_t *data)
 	// issue read command
 	spi_write_single(ENC28J60_READ_BUF_MEM);
 
-	spi_read_blocking(spi_default, 0, data, len);
+	spi_read_blocking(spi1, 0, data, len);
 
 	cs_deselect();
 }
@@ -125,12 +124,12 @@ void enc28j60WriteBuffer(uint16_t len, uint8_t *data)
 
 	// for (int i = 0; i < len; i++) {
 	// 	// printf("byte %d = %02x\n", i, data[i]);
-	// 	if (spi_is_writable(spi_default) == 0) {
+	// 	if (spi_is_writable(spi1) == 0) {
 	// 		printf("SPI: NO SPACE AVAILABLE FOR WRITE\n");
 	// 	}
-	// 	spi_write_blocking(spi_default, &data[i], 1);
+	// 	spi_write_blocking(spi1, &data[i], 1);
 	// }
-	spi_write_blocking(spi_default, data, len);
+	spi_write_blocking(spi1, data, len);
 
 	cs_deselect();
 }
