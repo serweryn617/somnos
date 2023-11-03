@@ -68,6 +68,7 @@ def format():
         "cd workspace;
         find src inc lwip -regex '.*\.\(cpp\|hpp\|c\|h\)' -exec clang-format -style=file -i {'{}'} \;"
     '''.split()
+    # clang-format -style=mozilla -dump-config > .clang-format;
 
     subprocess.run(' '.join(command), shell=True)
 
