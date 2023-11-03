@@ -2,11 +2,12 @@ FROM alpine:3.18.4
 
 # Toolchain
 RUN apk add --no-cache \
-        git \
-        python3 \
-        cmake \
-        g++-arm-none-eabi \
-        build-base
+    git \
+    python3 \
+    cmake \
+    g++-arm-none-eabi \
+    build-base \
+    clang-extra-tools
 
 # Raspberry Pi Pico C/C++ SDK 
 ARG SDK_PATH=/opt/pico_sdk

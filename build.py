@@ -51,5 +51,26 @@ def commands():
         cc.write(content)
 
 
+@build.command(help='Run interactive')
+def run():
+    command = f'docker run --rm -it -v {FILE_PATH}:/workspace pico_builder /bin/sh'
+    subprocess.run(command, shell=True)
+
+
+
+@build.command(help='Run interactive')
+def format():
+    command = f'''
+        docker run --rm -it -u {os.getuid()}:{os.getgid()}
+        -v {FILE_PATH}:/workspace
+        pico_builder
+        /bin/sh -c
+        "cd workspace;
+        find src inc lwip -regex '.*\.\(cpp\|hpp\|c\|h\)' -exec clang-format -style=file -i {'{}'} \;"
+    '''.split()
+
+    subprocess.run(' '.join(command), shell=True)
+
+
 if __name__ == '__main__':
     build()
