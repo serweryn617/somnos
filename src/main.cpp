@@ -75,7 +75,7 @@ err_t create_udp_socket(){
 //    Tx_buf[33] = 49;
 
 
-    IP4_ADDR(&destIPAddr,192,168,1,49);
+    IP4_ADDR(&destIPAddr,192,168,1,26);
     upcb->local_port = 5001;
     //upcb->local_port = 4004; // Set our local port to 4004
     // Should bind to the local ip and port
@@ -108,7 +108,7 @@ err_t send_msg_to_dest(){
 
     /* allocate pbuf from pool*/
     //p = pbuf_alloc(PBUF_TRANSPORT,strlen((char*)data), PBUF_POOL);
-    p = pbuf_alloc(PBUF_TRANSPORT,5, PBUF_POOL);
+    p = pbuf_alloc(PBUF_TRANSPORT, 5, PBUF_POOL);
 
 
     if (p != NULL)
@@ -245,7 +245,7 @@ int main() {
 
     while (true) {
         sw = !sw;
-        sleep_ms(500);
+        // sleep_ms(500);
         gpio_put(mosfet_pin, sw);
         sleep_ms(500);
 
