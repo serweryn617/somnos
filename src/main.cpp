@@ -292,7 +292,7 @@ int main() {
             }
         }
 
-        // send_msg_to_dest();
+        send_msg_to_dest();
 
         /* Cyclic lwIP timers check */
         sys_check_timeouts();

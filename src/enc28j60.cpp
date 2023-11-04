@@ -292,12 +292,12 @@ void Enc28j60::init(uint8_t *macaddr)
     // do bank 3 stuff
     // write MAC address
     // NOTE: MAC address in ENC28J60 is byte-backward
-    write(mac::adr6::Address, mac::adr6::RegBank, macaddr[0]);
-    write(mac::adr5::Address, mac::adr5::RegBank, macaddr[1]);
-    write(mac::adr4::Address, mac::adr4::RegBank, macaddr[2]);
-    write(mac::adr3::Address, mac::adr3::RegBank, macaddr[3]);
-    write(mac::adr2::Address, mac::adr2::RegBank, macaddr[4]);
-    write(mac::adr1::Address, mac::adr1::RegBank, macaddr[5]);
+    write(mac::adr6::Address, mac::adr6::RegBank, macaddr[5]);
+    write(mac::adr5::Address, mac::adr5::RegBank, macaddr[4]);
+    write(mac::adr4::Address, mac::adr4::RegBank, macaddr[3]);
+    write(mac::adr3::Address, mac::adr3::RegBank, macaddr[2]);
+    write(mac::adr2::Address, mac::adr2::RegBank, macaddr[1]);
+    write(mac::adr1::Address, mac::adr1::RegBank, macaddr[0]);
     // no loopback of transmitted frames
     phy_write(PHCON2, PHCON2_HDLDIS);
     
