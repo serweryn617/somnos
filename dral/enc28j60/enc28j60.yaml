@@ -826,3 +826,141 @@ device:
         description: MII Management Busy
         position: 0
         width: 1
+  - name: PHY
+    description: Common Ethernet Registers
+    registers:
+    - name: PHCON1
+      description: 
+      offset: 0x00
+      reset_value: 0x0000
+      fields:
+      - name: PRST
+        position: 15
+        width: 1
+      - name: PLOOPBK
+        position: 14
+        width: 1
+      - name: PPWRSV
+        position: 11
+        width: 1
+      - name: PDPXMD
+        position: 8
+        width: 1
+    - name: PHSTAT1
+      description: 
+      offset: 0x01
+      reset_value: 0x1800
+      fields:
+      - name: PFDPX
+        position: 12
+        width: 1
+      - name: PHDPX
+        position: 11
+        width: 1
+      - name: LLSTAT
+        position: 2
+        width: 1
+      - name: JBSTAT
+        position: 1
+        width: 1
+    - name: PHID1
+      description: 
+      offset: 0x02
+      reset_value: 0x0083
+      fields:
+      - name: OUI
+        position: 0
+        width: 16
+    - name: PHID2
+      description: 
+      offset: 0x03
+      reset_value: 0x1400
+      fields:
+      - name: OUI
+        position: 10
+        width: 6
+      - name: PPN
+        position: 4
+        width: 6
+      - name: PREV
+        position: 0
+        width: 4
+    - name: PHCON2
+      description: 
+      offset: 0x10
+      reset_value: 
+      fields:
+      - name: FRCLNK
+        position: 14
+        width: 1
+      - name: TXDIS
+        position: 13
+        width: 1
+      - name: JABBER
+        position: 10
+        width: 1
+      - name: HDLDIS
+        position: 8
+        width: 1
+    - name: PHSTAT2
+      description: 
+      offset: 0x11
+      reset_value: 0x0000
+      fields:
+      - name: TXSTAT
+        position: 13
+        width: 1
+      - name: RXSTAT
+        position: 12
+        width: 1
+      - name: COLSTAT
+        position: 11
+        width: 1
+      - name: LSTAT
+        position: 10
+        width: 1
+      - name: DPXSTAT
+        position: 9
+        width: 1
+      - name: PLRITY
+        position: 5
+        width: 1
+    - name: PHIE
+      description: 
+      offset: 0x12
+      reset_value: 0x0000
+      fields:
+      - name: PLNKIE
+        position: 4
+        width: 1
+      - name: PGEIE
+        position: 1
+        width: 1
+    - name: PHIR
+      description: 
+      offset: 0x13
+      reset_value: 0x00
+      fields:
+      - name: PLNKIF
+        position: 4
+        width: 1
+      - name: PGIF
+        position: 2
+        width: 1
+    - name: PHLCON
+      description: 
+      offset: 0x14
+      reset_value: 0x3422
+      fields:
+      - name: LACFG
+        position: 8
+        width: 4
+      - name: LBCFG
+        position: 4
+        width: 4
+      - name: LFRQ
+        position: 2
+        width: 2
+      - name: STRCH
+        position: 1
+        width: 1
