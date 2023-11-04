@@ -73,5 +73,8 @@ def format():
     subprocess.run(' '.join(command), shell=True)
 
 
+# git submodule update --init --depth 1 picotool pico-sdk
+
+
 if __name__ == '__main__':
     build()
