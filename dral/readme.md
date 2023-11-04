@@ -4,7 +4,7 @@ Setup:
 
 ```bash
 cd dral
-git clone git@github.com:serweryn617/d-ral-serial.git
+git submodule update --init --depth 1 d-ral-serial
 python3 -m venv venv
 source venv/bin/activate
 pip install -e d-ral-serial

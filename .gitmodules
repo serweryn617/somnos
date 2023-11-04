@@ -4,3 +4,6 @@
 [submodule "picotool"]
 	path = picotool
 	url = https://github.com/raspberrypi/picotool.git
+[submodule "dral/d-ral-serial"]
+	path = dral/d-ral-serial
+	url = https://github.com/serweryn617/d-ral-serial.git
