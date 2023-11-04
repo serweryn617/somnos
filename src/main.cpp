@@ -35,7 +35,7 @@
 
 uint8_t mac[6] = {0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92};
 
-Enc28j60 enc28j60(SPI_PORT);
+Enc28j60 enc28j60(SPI_PORT, PIN_CS);
 
 struct udp_pcb* upcb;
 

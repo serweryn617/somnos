@@ -296,8 +296,11 @@ void Enc28j60::init(uint8_t *macaddr)
     Enc28j60::write(mac::adr1::Address, mac::adr1::RegBank, macaddr[5]);
     // no loopback of transmitted frames
     Enc28j60::phy_write(PHCON2, PHCON2_HDLDIS);
+    
     // switch to bank 0
-    // TODO: Is this required?: Enc28j60::set_bank(ECON1);
+    // TODO: Is this required?:
+    Enc28j60::set_bank(0);
+    
     // enable interrutps
     common::ie ie;
     ie.intie = 1;

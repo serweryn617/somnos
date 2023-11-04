@@ -17,7 +17,7 @@ private:
     spi_inst_t *mSpiInst;
     uint8_t mCsPin;
 
-    uint8_t bank;
+    uint8_t bank = 0;
     uint16_t NextPacketPtr;
 
     void cs_enable();
@@ -26,8 +26,9 @@ private:
     void spi_write_single(uint8_t data);
 
 public:
-    Enc28j60(spi_inst_t *spiInst)
+    Enc28j60(spi_inst_t *spiInst, uint8_t cs_pin)
         : mSpiInst(spiInst)
+        , mCsPin(cs_pin)
     {}
 
     uint8_t read_op(uint8_t op, uint8_t address);
