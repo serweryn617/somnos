@@ -73,7 +73,17 @@ def format():
     subprocess.run(' '.join(command), shell=True)
 
 
-# git submodule update --init --depth 1 picotool pico-sdk
+@build.command(help='Setup Docker')
+def submodules():
+    command = f'''
+        git submodule update --init --depth 1 picotool pico-sdk;
+        git submodule status;
+        cd pico-sdk;
+        git submodule update --init --depth 1 lib/tinyusb lib/lwip;
+        git submodule status;
+    '''.split()
+
+    subprocess.run(' '.join(command), shell=True)
 
 
 if __name__ == '__main__':
