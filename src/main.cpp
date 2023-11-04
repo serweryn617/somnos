@@ -249,14 +249,14 @@ int main() {
     ina219.write(ina_calibration.Address, ina_calibration.value);
 
     while (true) {
-        sw = !sw;
+        // sw = !sw;
         // sleep_ms(500);
-        gpio_put(mosfet_pin, sw);
-        sleep_ms(500);
+        // gpio_put(mosfet_pin, sw);
+        // sleep_ms(500);
 
-        int16_t shunt_voltage = ina219.read(dral::ina219::shunt::Address);
-        float sh = (float)shunt_voltage / 100;
-        printf("Shunt voltage: %.2f mV\n", sh);
+        // int16_t shunt_voltage = ina219.read(dral::ina219::shunt::Address);
+        // float sh = (float)shunt_voltage / 100;
+        // printf("Shunt voltage: %.2f mV\n", sh);
 
         // dral::ina219::bus bus_voltage;
         // bus_voltage.value = ina219.read(dral::ina219::bus::Address);
@@ -292,12 +292,12 @@ int main() {
             }
         }
 
-        send_msg_to_dest();
+        // send_msg_to_dest();
 
         /* Cyclic lwIP timers check */
         sys_check_timeouts();
 
-        sleep_ms(50);
+        sleep_ms(500);
     }
 
     return 0;

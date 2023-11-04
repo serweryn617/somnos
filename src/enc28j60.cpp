@@ -57,12 +57,16 @@ using namespace dral::enc28j60;
 
 void Enc28j60::cs_enable()
 {
+    asm volatile("nop \n nop \n nop");
     gpio_put(mCsPin, 0);
+    asm volatile("nop \n nop \n nop");
 }
 
 void Enc28j60::cs_disable()
 {
+    asm volatile("nop \n nop \n nop");
     gpio_put(mCsPin, 1);
+    asm volatile("nop \n nop \n nop");
 }
 
 void Enc28j60::spi_write_single(uint8_t data)
@@ -79,12 +83,12 @@ uint8_t Enc28j60::read_op(uint8_t op, uint8_t address)
 
     // read data
     uint8_t dst[1];
-    spi_read_blocking(spi1, 0, dst, 1);
+    spi_read_blocking(mSpiInst, 0, dst, 1);
 
     // do dummy read if needed (for mac and mii, see datasheet page 29)
     if (address & 0x80)
     {
-        spi_read_blocking(spi1, 0, dst, 1);
+        spi_read_blocking(mSpiInst, 0, dst, 1);
     }
 
     cs_disable();
@@ -111,7 +115,7 @@ void Enc28j60::read_buffer(uint16_t len, uint8_t *data)
     // issue read command
     spi_write_single(read_buffer_memory);
 
-    spi_read_blocking(spi1, 0, data, len);
+    spi_read_blocking(mSpiInst, 0, data, len);
 
     cs_disable();
 }
@@ -132,12 +136,12 @@ void Enc28j60::write_buffer(uint16_t len, uint8_t *data)
 
     // for (int i = 0; i < len; i++) {
     //     // printf("byte %d = %02x\n", i, data[i]);
-    //     if (spi_is_writable(spi1) == 0) {
+    //     if (spi_is_writable(mSpiInst) == 0) {
     //         printf("SPI: NO SPACE AVAILABLE FOR WRITE\n");
     //     }
-    //     spi_write_blocking(spi1, &data[i], 1);
+    //     spi_write_blocking(mSpiInst, &data[i], 1);
     // }
-    spi_write_blocking(spi1, data, len);
+    spi_write_blocking(mSpiInst, data, len);
 
     cs_disable();
 }
@@ -177,7 +181,7 @@ void Enc28j60::phy_write(uint8_t address, uint16_t data)
     Enc28j60::write(mii::regadr::Address, mii::regadr::RegBank, address);
     // write the PHY data
     Enc28j60::write(mii::wrl::Address, mii::wrl::RegBank, data);
-    Enc28j60::write(mii::wrh::Address, mii::wrl::RegBank, data >> 8);
+    Enc28j60::write(mii::wrh::Address, mii::wrh::RegBank, data >> 8);
     // wait until the PHY write completes
     mii::stat stat;
     stat.value = Enc28j60::read(mii::stat::Address, mii::stat::RegBank);
@@ -401,7 +405,7 @@ uint16_t Enc28j60::packet_receive(uint16_t maxlen, uint8_t *packet)
     // Move the RX read pointer to the start of the next received packet
     // This frees the memory we just read out
     Enc28j60::write(eth::rxrdptl::Address, eth::rxrdptl::RegBank, (NextPacketPtr));
-    Enc28j60::write(eth::rxrdptl::Address, eth::rxrdptl::RegBank, (NextPacketPtr) >> 8);
+    Enc28j60::write(eth::rxrdpth::Address, eth::rxrdpth::RegBank, (NextPacketPtr) >> 8);
     // decrement the packet counter indicate we are done with this packet
     common::con2 con2;
     con2.pktdec = 1;
