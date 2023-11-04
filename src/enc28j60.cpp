@@ -153,8 +153,8 @@ void Enc28j60::set_bank(uint8_t _bank)
     {
         // set the bank
         common::con1 con1;
-        Enc28j60::write_op(bit_field_clear, con1.Address, con1.bsel.Mask << con1.bsel.Position);
-        Enc28j60::write_op(bit_field_set, con1.Address, _bank);
+        write_op(bit_field_clear, con1.Address, con1.bsel.Mask << con1.bsel.Position);
+        write_op(bit_field_set, con1.Address, _bank);
         bank = _bank;
     }
 }
@@ -162,40 +162,40 @@ void Enc28j60::set_bank(uint8_t _bank)
 uint8_t Enc28j60::read(uint8_t address, uint8_t _bank)
 {
     // set the bank
-    Enc28j60::set_bank(_bank);
+    set_bank(_bank);
     // do the read
-    return Enc28j60::read_op(read_control_register, address);
+    return read_op(read_control_register, address);
 }
 
 void Enc28j60::write(uint8_t address, uint8_t _bank, uint8_t data)
 {
     // set the bank
-    Enc28j60::set_bank(_bank);
+    set_bank(_bank);
     // do the write
-    Enc28j60::write_op(write_control_register, address, data);
+    write_op(write_control_register, address, data);
 }
 
 void Enc28j60::phy_write(uint8_t address, uint16_t data)
 {
     // set the PHY register address
-    Enc28j60::write(mii::regadr::Address, mii::regadr::RegBank, address);
+    write(mii::regadr::Address, mii::regadr::RegBank, address);
     // write the PHY data
-    Enc28j60::write(mii::wrl::Address, mii::wrl::RegBank, data);
-    Enc28j60::write(mii::wrh::Address, mii::wrh::RegBank, data >> 8);
+    write(mii::wrl::Address, mii::wrl::RegBank, data);
+    write(mii::wrh::Address, mii::wrh::RegBank, data >> 8);
     // wait until the PHY write completes
     mii::stat stat;
-    stat.value = Enc28j60::read(mii::stat::Address, mii::stat::RegBank);
+    stat.value = read(mii::stat::Address, mii::stat::RegBank);
     while(stat.busy)
     {
         sleep_ms(15);
-        stat.value = Enc28j60::read(mii::stat::Address, mii::stat::RegBank);
+        stat.value = read(mii::stat::Address, mii::stat::RegBank);
     }
 }
 
 void Enc28j60::clkout(uint8_t clk)
 {
     //setup clkout: 2 is 12.5MHz:
-    Enc28j60::write(eth::cocon::Address, eth::cocon::RegBank, clk & 0x7);
+    write(eth::cocon::Address, eth::cocon::RegBank, clk & 0x7);
 }
 
 void Enc28j60::init(uint8_t *macaddr)
@@ -218,31 +218,31 @@ void Enc28j60::init(uint8_t *macaddr)
     //SPCR = (1<<SPE)|(1<<MSTR);
     //SPSR |= (1<<SPI2X);
     // perform system reset
-    Enc28j60::write_op(system_reset, 0, system_reset);
+    write_op(system_reset, 0, system_reset);
     sleep_ms(50);
     // check CLKRDY bit to see if reset is complete
     // The CLKRDY does not work. See Rev. B4 Silicon Errata point. Just wait.
-    //while(!(Enc28j60::read(ESTAT) & ESTAT_CLKRDY));
+    //while(!(read(ESTAT) & ESTAT_CLKRDY));
     // do bank 0 stuff
     // initialize receive buffer
     // 16-bit transfers, must write low byte first
     // set receive buffer start address
     NextPacketPtr = RXSTART_INIT;
     // Rx start
-    Enc28j60::write(eth::rxstl::Address, eth::rxstl::RegBank, RXSTART_INIT & 0xFF);
-    Enc28j60::write(eth::rxsth::Address, eth::rxsth::RegBank, RXSTART_INIT >> 8);
+    write(eth::rxstl::Address, eth::rxstl::RegBank, RXSTART_INIT & 0xFF);
+    write(eth::rxsth::Address, eth::rxsth::RegBank, RXSTART_INIT >> 8);
     // set receive pointer address
-    Enc28j60::write(eth::rxrdptl::Address, eth::rxrdptl::RegBank, RXSTART_INIT & 0xFF);
-    Enc28j60::write(eth::rxrdpth::Address, eth::rxrdpth::RegBank, RXSTART_INIT >> 8);
+    write(eth::rxrdptl::Address, eth::rxrdptl::RegBank, RXSTART_INIT & 0xFF);
+    write(eth::rxrdpth::Address, eth::rxrdpth::RegBank, RXSTART_INIT >> 8);
     // RX end
-    Enc28j60::write(eth::rxndl::Address, eth::rxndl::RegBank, RXSTOP_INIT & 0xFF);
-    Enc28j60::write(eth::rxndh::Address, eth::rxndh::RegBank, RXSTOP_INIT >> 8);
+    write(eth::rxndl::Address, eth::rxndl::RegBank, RXSTOP_INIT & 0xFF);
+    write(eth::rxndh::Address, eth::rxndh::RegBank, RXSTOP_INIT >> 8);
     // TX start
-    Enc28j60::write(eth::txstl::Address, eth::txstl::RegBank, TXSTART_INIT & 0xFF);
-    Enc28j60::write(eth::txsth::Address, eth::txsth::RegBank, TXSTART_INIT >> 8);
+    write(eth::txstl::Address, eth::txstl::RegBank, TXSTART_INIT & 0xFF);
+    write(eth::txsth::Address, eth::txsth::RegBank, TXSTART_INIT >> 8);
     // TX end
-    Enc28j60::write(eth::txndl::Address, eth::txndl::RegBank, TXSTOP_INIT & 0xFF);
-    Enc28j60::write(eth::txndh::Address, eth::txndh::RegBank, TXSTOP_INIT >> 8);
+    write(eth::txndl::Address, eth::txndl::RegBank, TXSTOP_INIT & 0xFF);
+    write(eth::txndh::Address, eth::txndh::RegBank, TXSTOP_INIT >> 8);
     // do bank 1 stuff, packet filter:
     // For broadcast packets we allow only ARP packtets
     // All other packets should be unicast only for our mac (MAADR)
@@ -257,11 +257,11 @@ void Enc28j60::init(uint8_t *macaddr)
     rxfcon.ucen = 1;
     rxfcon.crcen = 1;
     rxfcon.pmen = 1;
-    Enc28j60::write(rxfcon.Address, rxfcon.RegBank, rxfcon.value);
-    Enc28j60::write(eth::pmm0::Address, eth::pmm0::RegBank, 0x3f);
-    Enc28j60::write(eth::pmm1::Address, eth::pmm1::RegBank, 0x30);
-    Enc28j60::write(eth::pmcsl::Address, eth::pmcsl::RegBank, 0xf9);
-    Enc28j60::write(eth::pmcsh::Address, eth::pmcsh::RegBank, 0xf7);
+    write(rxfcon.Address, rxfcon.RegBank, rxfcon.value);
+    write(eth::pmm0::Address, eth::pmm0::RegBank, 0x3f);
+    write(eth::pmm1::Address, eth::pmm1::RegBank, 0x30);
+    write(eth::pmcsl::Address, eth::pmcsl::RegBank, 0xf9);
+    write(eth::pmcsh::Address, eth::pmcsh::RegBank, 0xf7);
     //
     //
     // do bank 2 stuff
@@ -270,87 +270,87 @@ void Enc28j60::init(uint8_t *macaddr)
     con1.rxen = 1;
     con1.txpaus = 1;
     con1.rxpaus = 1;
-    Enc28j60::write(con1.Address, con1.RegBank, con1.value);
+    write(con1.Address, con1.RegBank, con1.value);
     // bring MAC out of reset
-    // TODO: why was this here?: Enc28j60::write(MACON2, 0x00);
+    // TODO: why was this here?: write(MACON2, 0x00);
     // enable automatic padding to 60bytes and CRC operations
 
     mac::con3 con3;
     con3.padcfg = 1;
     con3.txcrcen = 1;
     con3.frmlnen = 1;
-    Enc28j60::write_op(bit_field_set, con3.Address, con3.value);
+    write_op(bit_field_set, con3.Address, con3.value);
     // set inter-frame gap (non-back-to-back)
-    Enc28j60::write(mac::ipgl::Address, mac::ipgl::RegBank, 0x12);
-    Enc28j60::write(mac::ipgh::Address, mac::ipgh::RegBank, 0x0C);
+    write(mac::ipgl::Address, mac::ipgl::RegBank, 0x12);
+    write(mac::ipgh::Address, mac::ipgh::RegBank, 0x0C);
     // set inter-frame gap (back-to-back)
-    Enc28j60::write(mac::bbipg::Address, mac::bbipg::RegBank, 0x12);
+    write(mac::bbipg::Address, mac::bbipg::RegBank, 0x12);
     // Set the maximum packet size which the controller will accept
     // Do not send packets longer than MAX_FRAMELEN:
-    Enc28j60::write(mac::mxfll::Address, mac::mxfll::RegBank, MAX_FRAMELEN & 0xFF);
-    Enc28j60::write(mac::mxflh::Address, mac::mxflh::RegBank, MAX_FRAMELEN >> 8);
+    write(mac::mxfll::Address, mac::mxfll::RegBank, MAX_FRAMELEN & 0xFF);
+    write(mac::mxflh::Address, mac::mxflh::RegBank, MAX_FRAMELEN >> 8);
     // do bank 3 stuff
     // write MAC address
     // NOTE: MAC address in ENC28J60 is byte-backward
-    Enc28j60::write(mac::adr6::Address, mac::adr6::RegBank, macaddr[0]);
-    Enc28j60::write(mac::adr5::Address, mac::adr5::RegBank, macaddr[1]);
-    Enc28j60::write(mac::adr4::Address, mac::adr4::RegBank, macaddr[2]);
-    Enc28j60::write(mac::adr3::Address, mac::adr3::RegBank, macaddr[3]);
-    Enc28j60::write(mac::adr2::Address, mac::adr2::RegBank, macaddr[4]);
-    Enc28j60::write(mac::adr1::Address, mac::adr1::RegBank, macaddr[5]);
+    write(mac::adr6::Address, mac::adr6::RegBank, macaddr[0]);
+    write(mac::adr5::Address, mac::adr5::RegBank, macaddr[1]);
+    write(mac::adr4::Address, mac::adr4::RegBank, macaddr[2]);
+    write(mac::adr3::Address, mac::adr3::RegBank, macaddr[3]);
+    write(mac::adr2::Address, mac::adr2::RegBank, macaddr[4]);
+    write(mac::adr1::Address, mac::adr1::RegBank, macaddr[5]);
     // no loopback of transmitted frames
-    Enc28j60::phy_write(PHCON2, PHCON2_HDLDIS);
+    phy_write(PHCON2, PHCON2_HDLDIS);
     
     // switch to bank 0
     // TODO: Is this required?:
-    Enc28j60::set_bank(0);
+    set_bank(0);
     
     // enable interrutps
     common::ie ie;
     ie.intie = 1;
     ie.pktie = 1;
-    Enc28j60::write_op(bit_field_set, ie.Address, ie.value);
+    write_op(bit_field_set, ie.Address, ie.value);
     // enable packet reception
     common::con1 con1x;
     con1x.rxen = 1;
-    Enc28j60::write_op(bit_field_set, con1x.Address, con1x.value);
+    write_op(bit_field_set, con1x.Address, con1x.value);
 }
 
 uint8_t Enc28j60::revision(void)
 {
-    return (Enc28j60::read(eth::revid::Address, eth::revid::RegBank));
+    return (read(eth::revid::Address, eth::revid::RegBank));
 }
 
 void Enc28j60::packet_send(uint16_t len, uint8_t *packet)
 {
     // Set the write pointer to start of transmit buffer area
-    Enc28j60::write(eth::wrptl::Address, eth::wrptl::RegBank, TXSTART_INIT & 0xFF);
-    Enc28j60::write(eth::wrpth::Address, eth::wrpth::RegBank, TXSTART_INIT >> 8);
+    write(eth::wrptl::Address, eth::wrptl::RegBank, TXSTART_INIT & 0xFF);
+    write(eth::wrpth::Address, eth::wrpth::RegBank, TXSTART_INIT >> 8);
 
     // Set the TXND pointer to correspond to the packet size given
-    Enc28j60::write(eth::txndl::Address, eth::txndl::RegBank, (TXSTART_INIT + len) & 0xFF);
-    Enc28j60::write(eth::txndh::Address, eth::txndh::RegBank, (TXSTART_INIT + len) >> 8);
+    write(eth::txndl::Address, eth::txndl::RegBank, (TXSTART_INIT + len) & 0xFF);
+    write(eth::txndh::Address, eth::txndh::RegBank, (TXSTART_INIT + len) >> 8);
     // write per-packet control byte (0x00 means use macon3 settings)
-    Enc28j60::write_op(write_buffer_memory, 0, 0x00);
+    write_op(write_buffer_memory, 0, 0x00);
     // copy the packet into the transmit buffer
-    Enc28j60::write_buffer(len, packet);
+    write_buffer(len, packet);
 
     // send the contents of the transmit buffer onto the network
     common::con1 con1;
     con1.txrts = 1;
-    Enc28j60::write_op(bit_field_set, con1.Address, con1.value);
+    write_op(bit_field_set, con1.Address, con1.value);
     // Reset the transmit logic problem. See Rev. B4 Silicon Errata point 12.
     // http://ww1.microchip.com/downloads/en/DeviceDoc/80349c.pdf
 
     common::ir ir;
-    ir.value = Enc28j60::read(ir.Address, ir.RegBank);
+    ir.value = read(ir.Address, ir.RegBank);
     if (ir.txerif)
     {
-        Enc28j60::write_op(bit_field_clear, con1.Address, con1.value);
+        write_op(bit_field_clear, con1.Address, con1.value);
     }
 
     // status vector: TXND + 1;
-    // uint16_t status = ((Enc28j60::read(ETXNDH) << 8) | Enc28j60::read(ETXNDL)) + 1;
+    // uint16_t status = ((read(ETXNDH) << 8) | read(ETXNDL)) + 1;
 }
 
 // Gets a packet from the network receive buffer, if one is available.
@@ -363,27 +363,27 @@ uint16_t Enc28j60::packet_receive(uint16_t maxlen, uint8_t *packet)
     uint16_t rxstat;
     uint16_t len;
     // check if a packet has been received and buffered
-    //if( !(Enc28j60::read(EIR) & EIR_PKTIF) ){
+    //if( !(read(EIR) & EIR_PKTIF) ){
     // The above does not work. See Rev. B4 Silicon Errata point 6.
-    if (Enc28j60::read(eth::pktcnt::Address, eth::pktcnt::RegBank) == 0)
+    if (read(eth::pktcnt::Address, eth::pktcnt::RegBank) == 0)
     {
         // printf("exit: len %d\n", len);
         return (0);
     }
 
     // Set the read pointer to the start of the received packet
-    Enc28j60::write(eth::rdptl::Address, eth::rdptl::RegBank, (NextPacketPtr));
-    Enc28j60::write(eth::rdpth::Address, eth::rdpth::RegBank, (NextPacketPtr) >> 8);
+    write(eth::rdptl::Address, eth::rdptl::RegBank, (NextPacketPtr));
+    write(eth::rdpth::Address, eth::rdpth::RegBank, (NextPacketPtr) >> 8);
     // read the next packet pointer
-    NextPacketPtr = Enc28j60::read_op(read_buffer_memory, 0);
-    NextPacketPtr |= Enc28j60::read_op(read_buffer_memory, 0) << 8;
+    NextPacketPtr = read_op(read_buffer_memory, 0);
+    NextPacketPtr |= read_op(read_buffer_memory, 0) << 8;
     // read the packet length (see datasheet page 43)
-    len = Enc28j60::read_op(read_buffer_memory, 0);
-    len |= Enc28j60::read_op(read_buffer_memory, 0) << 8;
+    len = read_op(read_buffer_memory, 0);
+    len |= read_op(read_buffer_memory, 0) << 8;
     len -= 4; //remove the CRC count
     // read the receive status (see datasheet page 43)
-    rxstat = Enc28j60::read_op(read_buffer_memory, 0);
-    rxstat |= Enc28j60::read_op(read_buffer_memory, 0) << 8;
+    rxstat = read_op(read_buffer_memory, 0);
+    rxstat |= read_op(read_buffer_memory, 0) << 8;
     // limit retrieve length
     if (len > maxlen - 1)
     {
@@ -400,16 +400,16 @@ uint16_t Enc28j60::packet_receive(uint16_t maxlen, uint8_t *packet)
     else
     {
         // copy the packet from the receive buffer
-        Enc28j60::read_buffer(len, packet);
+        read_buffer(len, packet);
     }
     // Move the RX read pointer to the start of the next received packet
     // This frees the memory we just read out
-    Enc28j60::write(eth::rxrdptl::Address, eth::rxrdptl::RegBank, (NextPacketPtr));
-    Enc28j60::write(eth::rxrdpth::Address, eth::rxrdpth::RegBank, (NextPacketPtr) >> 8);
+    write(eth::rxrdptl::Address, eth::rxrdptl::RegBank, (NextPacketPtr));
+    write(eth::rxrdpth::Address, eth::rxrdpth::RegBank, (NextPacketPtr) >> 8);
     // decrement the packet counter indicate we are done with this packet
     common::con2 con2;
     con2.pktdec = 1;
-    Enc28j60::write_op(bit_field_set, con2.Address, con2.value);
+    write_op(bit_field_set, con2.Address, con2.value);
 
     // printf("Packet len %d\n", len);
     return (len);
