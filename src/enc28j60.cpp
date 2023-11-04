@@ -1,4 +1,4 @@
-#include "enc28j60_new.h"
+#include "enc28j60.h"
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
 #include "hardware/timer.h"

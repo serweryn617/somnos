@@ -12,16 +12,20 @@
 
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
-#include "hardware/i2c.h"
+
 #include "hardware/spi.h"
 
-#include "ina219/base.h"
-#include "i2c_device.h"
-#include "enc28j60_new.h"
 #include "enc28j60/common.h"
 
 #include <stdio.h>
 #include <string.h>
+
+#include "ina219.h"
+#include "enc28j60.h"
+#include "pico_i2c_driver.h"
+#include "pico_spi_driver.h"
+// #include "i2c_driver_concept.h"
+// #include "spi_driver_concept.h"
 
 #define SPI_PORT spi1
 #define PIN_SCK 10
@@ -190,13 +194,7 @@ int main() {
     stdio_init_all();
 
     // This example will use I2C0 on the default SDA and SCL pins (GP4, GP5 on a Pico)
-    i2c_init(i2c0, 100 * 1000);
     spi_init(SPI_PORT, 1 * 1000 * 1000);
-
-    gpio_set_function(16, GPIO_FUNC_I2C);
-    gpio_set_function(17, GPIO_FUNC_I2C);
-    gpio_pull_up(16);
-    gpio_pull_up(17);
 
     gpio_set_function(PIN_MISO, GPIO_FUNC_SPI);
     gpio_set_function(PIN_CS, GPIO_FUNC_SIO);
@@ -242,31 +240,19 @@ int main() {
 
     create_udp_socket();
 
-    I2CDevice<uint8_t, uint16_t> ina219(0x40, i2c0);
-
-    dral::ina219::cal ina_calibration;
-    ina_calibration.value = 13422;
-    ina219.write(ina_calibration.Address, ina_calibration.value);
+    PicoI2CDriver ina219_driver(i2c0, 16, 17, 0x40);
+    ina219_driver.init();
+    INA219<PicoI2CDriver> ina219(ina219_driver);
+    ina219.calibrate();
 
     while (true) {
-        // sw = !sw;
-        // sleep_ms(500);
-        // gpio_put(mosfet_pin, sw);
-        // sleep_ms(500);
+        sw = !sw;
+        sleep_ms(500);
+        gpio_put(mosfet_pin, sw);
+        sleep_ms(500);
 
-        // int16_t shunt_voltage = ina219.read(dral::ina219::shunt::Address);
-        // float sh = (float)shunt_voltage / 100;
-        // printf("Shunt voltage: %.2f mV\n", sh);
-
-        // dral::ina219::bus bus_voltage;
-        // bus_voltage.value = ina219.read(dral::ina219::bus::Address);
-        // float volt = (float)bus_voltage.data / 250;
-        // printf("Bus voltage: %.2f V\n", volt);
-
-        // int16_t current = ina219.read(dral::ina219::curr::Address);
-        // float curr = (float)current * 0.0305;
-        // printf("current %.2f mA\n\n", curr);
-
+        float sh = ina219.shunt_voltage();
+        printf("Shunt voltage: %.2f mV\n", sh);
 
         uint16_t packet_len = enc28j60.packet_receive(ETHERNET_MTU, (uint8_t *)eth_pkt);
         if (packet_len)

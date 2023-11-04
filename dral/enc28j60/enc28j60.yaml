@@ -9,7 +9,6 @@ device:
       description: Ethernet Interrupt Enable
       offset: 0x1B
       reset_value: 0x00
-      reg_bank: 0
       fields:
       - name: INTIE
         description: Global INT Interrupt Enable
@@ -43,7 +42,6 @@ device:
       description: Ethernet Interrupt Request (Flag)
       offset: 0x1C
       reset_value: 0x00
-      reg_bank: 0
       fields:
       - name: PKTIF 
         description: Receive Packet Pending Interrupt Flag
@@ -73,7 +71,6 @@ device:
       description: Ethernet Status
       offset: 0x1D
       reset_value: 0x00
-      reg_bank: 0
       fields:
       - name: INTR
         description: INT Interrupt Flag
@@ -103,7 +100,6 @@ device:
       description: Ethernet Control Register 2
       offset: 0x1E
       reset_value: 0x80
-      reg_bank: 0
       fields:
       - name: AUTOINC 
         description: Automatic Buffer Pointer Increment Enable
@@ -125,7 +121,6 @@ device:
       description: Ethernet Control Register 1
       offset: 0x1F
       reset_value: 0x00
-      reg_bank: 0
       fields:
       - name: TXRST 
         description: Transmit Logic Reset
