@@ -32,7 +32,7 @@
 
 #include "../register_model.h"
 
-namespace dral::enc28j60 {
+namespace dral::enc28j60::mii {
 
 struct cmd
 {

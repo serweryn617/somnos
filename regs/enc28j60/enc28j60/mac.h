@@ -32,7 +32,7 @@
 
 #include "../register_model.h"
 
-namespace dral::enc28j60 {
+namespace dral::enc28j60::mac {
 
 struct con1
 {
@@ -44,7 +44,7 @@ struct con1
     BitFieldModel<3, 1> txpaus;
     BitFieldModel<2, 1> rxpaus;
     BitFieldModel<1, 1> passall;
-    BitFieldModel<0, 1> marxen;
+    BitFieldModel<0, 1> rxen;
   };
 };
 
@@ -84,7 +84,7 @@ struct bbipg
   union
   {
     uint8_t value;
-    BitFieldModel<0, 7> bbipg;
+    BitFieldModel<0, 7> data;
   };
 };
 

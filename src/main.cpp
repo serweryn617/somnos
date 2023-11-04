@@ -17,7 +17,8 @@
 
 #include "ina219/base.h"
 #include "i2c_device.h"
-#include "enc28j60.h"
+#include "enc28j60_new.h"
+#include "enc28j60/common.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -34,7 +35,7 @@
 
 uint8_t mac[6] = {0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92};
 
-
+Enc28j60 enc28j60(SPI_PORT);
 
 struct udp_pcb* upcb;
 
@@ -140,18 +141,22 @@ static err_t netif_output(struct netif *netif, struct pbuf *p)
     /* Start MAC transmit here */
 
     printf("enc28j60: Sending packet of len %d\n", p->len);
-    enc28j60PacketSend(p->len, (uint8_t *)p->payload);
+    enc28j60.packet_send(p->len, (uint8_t *)p->payload);
     // pbuf_free(p);
 
     // error sending
-    if (enc28j60Read(ESTAT) & ESTAT_TXABRT)
+    dral::enc28j60::common::stat stat;
+    stat.value = enc28j60.read(stat.Address, stat.RegBank);
+    if (stat.txabrt)
     {
         // a seven-byte transmit status vector will be
         // written to the location pointed to by ETXND + 1,
         printf("ERR - transmit aborted\n");
     }
 
-    if (enc28j60Read(EIR) & EIR_TXERIF)
+    dral::enc28j60::common::ir ir;
+    ir.value = enc28j60.read(ir.Address, ir.RegBank);
+    if (ir.txerif)
     {
         printf("ERR - transmit interrupt flag set\n");
     }
@@ -229,7 +234,7 @@ int main() {
     dhcp_inform(&netif);
     // dhcp_start(&netif);
 
-    enc28j60Init(mac);
+    enc28j60.init(mac);
     uint8_t *eth_pkt = (uint8_t*)malloc(ETHERNET_MTU);
     struct pbuf *p = NULL;
 
@@ -263,7 +268,7 @@ int main() {
         // printf("current %.2f mA\n\n", curr);
 
 
-        uint16_t packet_len = enc28j60PacketReceive(ETHERNET_MTU, (uint8_t *)eth_pkt);
+        uint16_t packet_len = enc28j60.packet_receive(ETHERNET_MTU, (uint8_t *)eth_pkt);
         if (packet_len)
         {
             printf("enc: Received packet of length = %d\n", packet_len);

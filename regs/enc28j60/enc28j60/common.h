@@ -32,7 +32,7 @@
 
 #include "../register_model.h"
 
-namespace dral::enc28j60 {
+namespace dral::enc28j60::common {
 
 struct ie
 {
@@ -74,7 +74,7 @@ struct stat
   union
   {
     uint8_t value;
-    BitFieldModel<7, 1> int;
+    BitFieldModel<7, 1> intr;
     BitFieldModel<6, 1> bufer;
     BitFieldModel<4, 1> latecol;
     BitFieldModel<2, 1> rxbusy;

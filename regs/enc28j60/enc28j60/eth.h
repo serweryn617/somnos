@@ -32,7 +32,7 @@
 
 #include "../register_model.h"
 
-namespace dral::enc28j60 {
+namespace dral::enc28j60::eth {
 
 struct rdptl
 {
@@ -613,7 +613,7 @@ struct cocon
   union
   {
     uint8_t value;
-    BitFieldModel<0, 3> cocon;
+    BitFieldModel<0, 3> data;
   };
 };
 
