@@ -10,12 +10,7 @@ RUN apk add --no-cache \
     clang-extra-tools
 
 # Raspberry Pi Pico C/C++ SDK 
-ARG SDK_PATH=/opt/pico_sdk
-RUN git clone --depth 1 --branch 1.5.1 https://github.com/raspberrypi/pico-sdk $SDK_PATH && \
-    cd $SDK_PATH && \
-    git submodule update --init lib/tinyusb lib/lwip
-
-ENV PICO_SDK_PATH=$SDK_PATH
+ENV PICO_SDK_PATH=/workspace/pico-sdk
 
 # Picotool
 # RUN git clone --depth 1 --branch 1.1.2 https://github.com/raspberrypi/picotool.git /home/picotool && \
