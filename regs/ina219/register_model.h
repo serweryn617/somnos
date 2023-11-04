@@ -27,8 +27,8 @@
  * This is an auto generated file. Do not modify!
  */
 
-#ifndef DRAL_REGISTER_MODEL_H
-#define DRAL_REGISTER_MODEL_H
+#ifndef DRAL_INA219_REGISTER_MODEL_H
+#define DRAL_INA219_REGISTER_MODEL_H
 
 #include <cstdint>
 
@@ -119,4 +119,4 @@ private:
 
 }  // namespace
 
-#endif /* DRAL_REGISTER_MODEL_H */
+#endif /* DRAL_INA219_REGISTER_MODEL_H */

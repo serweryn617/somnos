@@ -1,7 +1,7 @@
 [dral]include header.dral[#dral]
 
-#ifndef DRAL_REGISTER_MODEL_H
-#define DRAL_REGISTER_MODEL_H
+#ifndef DRAL_[dral style="uppercase"]device.name[#dral]_REGISTER_MODEL_H
+#define DRAL_[dral style="uppercase"]device.name[#dral]_REGISTER_MODEL_H
 
 #include <cstdint>
 
@@ -92,4 +92,4 @@ private:
 
 }  // namespace
 
-#endif /* DRAL_REGISTER_MODEL_H */
+#endif /* DRAL_[dral style="uppercase"]device.name[#dral]_REGISTER_MODEL_H */

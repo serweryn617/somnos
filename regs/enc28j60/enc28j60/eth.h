@@ -52,7 +52,7 @@ struct rdpth
   union
   {
     uint8_t value;
-    BitFieldModel<0, 5> data;  // TODO: How to group such fields?
+    BitFieldModel<0, 5> data;
   };
 };
 

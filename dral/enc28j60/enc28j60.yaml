@@ -75,7 +75,7 @@ device:
       reset_value: 0x00
       reg_bank: 0
       fields:
-      - name: INT
+      - name: INTR
         description: INT Interrupt Flag
         position: 7
         width: 1
@@ -170,7 +170,7 @@ device:
       reset_value: 0x05
       reg_bank: 0
       fields:
-      - name: DATA
+      - name: DATA  # TODO: How to manage such fields?
         position: 0
         width: 5
     - name: WRPTL
@@ -561,7 +561,7 @@ device:
       reset_value: 0x04
       reg_bank: 3
       fields:
-      - name: COCON
+      - name: DATA
         description: Clock Output Configuration
         position: 0
         width: 3
@@ -612,7 +612,7 @@ device:
         description: Pass All Received Frames Enable
         position: 1
         width: 1
-      - name: MARXEN
+      - name: RXEN
         description: MAC Receive Enable
         position: 0
         width: 1
@@ -670,7 +670,7 @@ device:
       reset_value: 0x00
       reg_bank: 2
       fields:
-      - name: BBIPG
+      - name: DATA
         description: Back-to-Back Inter-Packet Gap Delay Time
         position: 0
         width: 7
