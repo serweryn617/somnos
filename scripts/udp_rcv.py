@@ -9,7 +9,6 @@ sock.bind((UDP_IP, UDP_PORT))
 while True:
     data, addr = sock.recvfrom(1024)
     value = data[1] | (data[2] << 8)
-    # print("Value:", data[0])
     if chr(data[0]) == "B":
         print("Bus:", value / 250, 'V')
     if chr(data[0]) == "S":

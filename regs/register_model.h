@@ -34,7 +34,7 @@
 
 namespace dral {
 
-template<typename T, T position, T width = 1>
+template<typename T, unsigned int position, unsigned int width = 1>
 class BitFieldModel
 {
 public:
@@ -91,31 +91,31 @@ private:
   static_assert(width >= 1 && width <= sizeof(T) * 8, "BitFiled width invalid");
 };
 
-// template<typename T, T position>
-// class BitFieldModel<position, 1U>
-// {
-// public:
-//   static constexpr T Width = 1U;
-//   static constexpr T Mask = (1U << Width) - 1U;
-//   static constexpr T Position = position;
+template<typename T, unsigned int position>
+class BitFieldModel<T, position, 1U>
+{
+public:
+  static constexpr T Width = 1U;
+  static constexpr T Mask = (1U << Width) - 1U;
+  static constexpr T Position = position;
 
-// public:
-//   BitFieldModel& operator=(bool value)
-//   {
-//     m_value = (m_value & ~(Mask << position)) | (value << position);
-//     return *this;
-//   }
+public:
+  BitFieldModel& operator=(bool value)
+  {
+    m_value = (m_value & ~(Mask << position)) | (value << position);
+    return *this;
+  }
 
-//   explicit operator bool() const
-//   {
-//     return m_value & (Mask << position);
-//   }
+  explicit operator bool() const
+  {
+    return m_value & (Mask << position);
+  }
 
-// private:
-//   T m_value;
+private:
+  T m_value;
 
-//   static_assert(position >= 0 && position <= 15, "BitFiled position must be between 0 and 15");
-// };
+  static_assert(position >= 0 && position < sizeof(T) * 8, "BitFiled position invalid");
+};
 
 }  // namespace
 
