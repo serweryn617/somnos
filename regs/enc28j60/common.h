@@ -32,7 +32,7 @@
 
 #include "../register_model.h"
 
-namespace dral::enc28j60 {
+namespace dral::enc28j60::common {
 
 struct ie
 {
@@ -41,13 +41,13 @@ struct ie
   union
   {
     uint8_t value;
-    BitFieldModel<7, 1> intie;
-    BitFieldModel<6, 1> pktie;
-    BitFieldModel<5, 1> dmaie;
-    BitFieldModel<4, 1> linkie;
-    BitFieldModel<3, 1> txie;
-    BitFieldModel<1, 1> txerie;
-    BitFieldModel<0, 1> rxerie;
+    BitFieldModel<uint8_t, 7, 1> intie;
+    BitFieldModel<uint8_t, 6, 1> pktie;
+    BitFieldModel<uint8_t, 5, 1> dmaie;
+    BitFieldModel<uint8_t, 4, 1> linkie;
+    BitFieldModel<uint8_t, 3, 1> txie;
+    BitFieldModel<uint8_t, 1, 1> txerie;
+    BitFieldModel<uint8_t, 0, 1> rxerie;
   };
 };
 
@@ -58,12 +58,12 @@ struct ir
   union
   {
     uint8_t value;
-    BitFieldModel<6, 1> pktif;
-    BitFieldModel<5, 1> dmaif;
-    BitFieldModel<4, 1> linkif;
-    BitFieldModel<3, 1> txif;
-    BitFieldModel<1, 1> txerif;
-    BitFieldModel<0, 1> rxerif;
+    BitFieldModel<uint8_t, 6, 1> pktif;
+    BitFieldModel<uint8_t, 5, 1> dmaif;
+    BitFieldModel<uint8_t, 4, 1> linkif;
+    BitFieldModel<uint8_t, 3, 1> txif;
+    BitFieldModel<uint8_t, 1, 1> txerif;
+    BitFieldModel<uint8_t, 0, 1> rxerif;
   };
 };
 
@@ -74,12 +74,12 @@ struct stat
   union
   {
     uint8_t value;
-    BitFieldModel<7, 1> int;
-    BitFieldModel<6, 1> bufer;
-    BitFieldModel<4, 1> latecol;
-    BitFieldModel<2, 1> rxbusy;
-    BitFieldModel<1, 1> txabrt;
-    BitFieldModel<0, 1> clkrdy;
+    BitFieldModel<uint8_t, 7, 1> intr;
+    BitFieldModel<uint8_t, 6, 1> bufer;
+    BitFieldModel<uint8_t, 4, 1> latecol;
+    BitFieldModel<uint8_t, 2, 1> rxbusy;
+    BitFieldModel<uint8_t, 1, 1> txabrt;
+    BitFieldModel<uint8_t, 0, 1> clkrdy;
   };
 };
 
@@ -90,10 +90,10 @@ struct con2
   union
   {
     uint8_t value;
-    BitFieldModel<7, 1> autoinc;
-    BitFieldModel<6, 1> pktdec;
-    BitFieldModel<5, 1> pwrsv;
-    BitFieldModel<3, 1> vrps;
+    BitFieldModel<uint8_t, 7, 1> autoinc;
+    BitFieldModel<uint8_t, 6, 1> pktdec;
+    BitFieldModel<uint8_t, 5, 1> pwrsv;
+    BitFieldModel<uint8_t, 3, 1> vrps;
   };
 };
 
@@ -104,13 +104,13 @@ struct con1
   union
   {
     uint8_t value;
-    BitFieldModel<7, 1> txrst;
-    BitFieldModel<6, 1> rxrst;
-    BitFieldModel<5, 1> dmast;
-    BitFieldModel<4, 1> csumen;
-    BitFieldModel<3, 1> txrts;
-    BitFieldModel<2, 1> rxen;
-    BitFieldModel<0, 2> bsel;
+    BitFieldModel<uint8_t, 7, 1> txrst;
+    BitFieldModel<uint8_t, 6, 1> rxrst;
+    BitFieldModel<uint8_t, 5, 1> dmast;
+    BitFieldModel<uint8_t, 4, 1> csumen;
+    BitFieldModel<uint8_t, 3, 1> txrts;
+    BitFieldModel<uint8_t, 2, 1> rxen;
+    BitFieldModel<uint8_t, 0, 2> bsel;
   };
 };
 

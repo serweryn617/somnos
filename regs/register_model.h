@@ -32,25 +32,25 @@
 
 #include <cstdint>
 
-namespace dral::enc28j60 {
+namespace dral {
 
-template<uint8_t position, uint8_t width = 1>
+template<typename T, T position, T width = 1>
 class BitFieldModel
 {
 public:
-  static constexpr uint8_t Width = width;
-  static constexpr uint8_t Mask = (1U << width) - 1U;
-  static constexpr uint8_t Position = position;
+  static constexpr T Width = width;
+  static constexpr T Mask = (1U << width) - 1U;
+  static constexpr T Position = position;
 
 public:
-  template<typename T>
-  BitFieldModel& operator=(T value)
+  template<typename U>
+  BitFieldModel& operator=(U value)
   {
     m_value = (m_value & ~(Mask << position)) | ((value & Mask) << position);
     return *this;
   }
 
-  operator uint8_t() const
+  operator T() const
   {
     return (m_value >> position) & Mask;
   }
@@ -65,9 +65,9 @@ public:
     return *this = *this + 1U;
   }
 
-  uint8_t operator++(int)
+  T operator++(int)
   {
-    const uint8_t result = *this;
+    const T result = *this;
     ++*this;
     return result;
   }
@@ -77,45 +77,45 @@ public:
     return *this = *this - 1U;
   }
 
-  uint8_t operator--(int)
+  T operator--(int)
   {
-    const uint8_t result = *this;
+    const T result = *this;
     --*this;
     return result;
   }
 
 private:
-  uint8_t m_value;
+  T m_value;
 
-  static_assert(position >= 0 && position <= 7, "BitFiled position must be between 0 and 7");
-  static_assert(width >= 1 && width <= 8, "BitFiled width must be between 1 and 8");
+  static_assert(position >= 0 && position < sizeof(T) * 8, "BitFiled position invalid");
+  static_assert(width >= 1 && width <= sizeof(T) * 8, "BitFiled width invalid");
 };
 
-template<uint8_t position>
-class BitFieldModel<position, 1U>
-{
-public:
-  static constexpr uint8_t Width = 1U;
-  static constexpr uint8_t Mask = (1U << Width) - 1U;
-  static constexpr uint8_t Position = position;
+// template<typename T, T position>
+// class BitFieldModel<position, 1U>
+// {
+// public:
+//   static constexpr T Width = 1U;
+//   static constexpr T Mask = (1U << Width) - 1U;
+//   static constexpr T Position = position;
 
-public:
-  BitFieldModel& operator=(bool value)
-  {
-    m_value = (m_value & ~(Mask << position)) | (value << position);
-    return *this;
-  }
+// public:
+//   BitFieldModel& operator=(bool value)
+//   {
+//     m_value = (m_value & ~(Mask << position)) | (value << position);
+//     return *this;
+//   }
 
-  explicit operator bool() const
-  {
-    return m_value & (Mask << position);
-  }
+//   explicit operator bool() const
+//   {
+//     return m_value & (Mask << position);
+//   }
 
-private:
-  uint8_t m_value;
+// private:
+//   T m_value;
 
-  static_assert(position >= 0 && position <= 7, "BitFiled position must be between 0 and 7");
-};
+//   static_assert(position >= 0 && position <= 15, "BitFiled position must be between 0 and 15");
+// };
 
 }  // namespace
 

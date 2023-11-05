@@ -27,80 +27,93 @@
  * This is an auto generated file. Do not modify!
  */
 
-#ifndef DRAL_INA219_BASE_H
-#define DRAL_INA219_BASE_H
+#ifndef DRAL_ENC28J60_MII_H
+#define DRAL_ENC28J60_MII_H
 
 #include "../register_model.h"
 
-namespace dral::ina219 {
+namespace dral::enc28j60::mii {
 
-struct cfg
+struct cmd
 {
-  constexpr static uint8_t Address = 0x00;
+  constexpr static uint8_t Address = 0x12;
+  constexpr static uint8_t RegBank = 0x02;
   union
   {
-    uint16_t value;
-    BitFieldModel<0, 3> mode;
-    BitFieldModel<3, 4> sadc;
-    BitFieldModel<7, 4> badc;
-    BitFieldModel<11, 2> pg;
-    BitFieldModel<13, 1> brng;
-    BitFieldModel<15, 1> rst;
+    uint8_t value;
+    BitFieldModel<uint8_t, 1, 1> miiscan;
+    BitFieldModel<uint8_t, 0, 1> miird;
   };
 };
 
-struct shunt
+struct regadr
 {
-  constexpr static uint8_t Address = 0x01;
+  constexpr static uint8_t Address = 0x14;
+  constexpr static uint8_t RegBank = 0x02;
   union
   {
-    uint16_t value;
-    BitFieldModel<0, 16> pga;
+    uint8_t value;
+    BitFieldModel<uint8_t, 0, 5> data;
   };
 };
 
-struct bus
+struct wrl
 {
-  constexpr static uint8_t Address = 0x02;
+  constexpr static uint8_t Address = 0x16;
+  constexpr static uint8_t RegBank = 0x02;
   union
   {
-    uint16_t value;
-    BitFieldModel<0, 1> ovf;
-    BitFieldModel<1, 1> cnvr;
-    BitFieldModel<3, 13> data;
-  };
-};
-
-struct pwr
-{
-  constexpr static uint8_t Address = 0x03;
-  union
-  {
-    uint16_t value;
+    uint8_t value;
     
   };
 };
 
-struct curr
+struct wrh
 {
-  constexpr static uint8_t Address = 0x04;
+  constexpr static uint8_t Address = 0x17;
+  constexpr static uint8_t RegBank = 0x02;
   union
   {
-    uint16_t value;
+    uint8_t value;
     
   };
 };
 
-struct cal
+struct rdl
 {
-  constexpr static uint8_t Address = 0x05;
+  constexpr static uint8_t Address = 0x18;
+  constexpr static uint8_t RegBank = 0x02;
   union
   {
-    uint16_t value;
+    uint8_t value;
     
+  };
+};
+
+struct rdh
+{
+  constexpr static uint8_t Address = 0x19;
+  constexpr static uint8_t RegBank = 0x02;
+  union
+  {
+    uint8_t value;
+    
+  };
+};
+
+struct stat
+{
+  constexpr static uint8_t Address = 0x0A;
+  constexpr static uint8_t RegBank = 0x03;
+  union
+  {
+    uint8_t value;
+    BitFieldModel<uint8_t, 2, 1> nvalid;
+    BitFieldModel<uint8_t, 1, 1> scan;
+    BitFieldModel<uint8_t, 0, 1> busy;
   };
 };
 
 }
 
-#endif /* DRAL_INA219_BASE_H */
+#endif /* DRAL_ENC28J60_MII_H */

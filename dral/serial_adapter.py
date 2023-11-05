@@ -29,6 +29,10 @@ class SerialDeviceAdapter(dral.adapter.BaseAdapter):
                     f = dral.Field(**f)
                     fields.append(f)
 
+                # TODO: Mark this field optional in D-RAL
+                if "reg_bank" not in r:
+                    r["reg_bank"] = 0
+
                 r["fields"] = fields
                 r = dral.Register(**r)
                 registers.append(r)
