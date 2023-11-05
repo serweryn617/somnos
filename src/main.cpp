@@ -216,12 +216,12 @@ int main() {
     dhcp_inform(&netif);
     // dhcp_start(&netif);
 
+    enc_driver.init();
     enc28j60.init(mac_addr);
     uint8_t *eth_pkt = (uint8_t*)malloc(ETHERNET_MTU);
     struct pbuf *p = NULL;
 
     netif_set_link_up(&netif);
-
     create_udp_socket();
 
     PicoI2CDriver ina219_driver(i2c0, 16, 17, 0x40);

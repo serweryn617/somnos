@@ -29,8 +29,8 @@ public:
     void init()
     {
         spi_init(spi_inst_, 1 * 1000 * 1000);
-        gpio_set_function(pin_cs_, GPIO_FUNC_SPI);
-        gpio_set_function(pin_rx_, GPIO_FUNC_SIO);
+        gpio_set_function(pin_cs_, GPIO_FUNC_SIO);
+        gpio_set_function(pin_rx_, GPIO_FUNC_SPI);
         gpio_set_function(pin_tx_, GPIO_FUNC_SPI);
         gpio_set_function(pin_sck_, GPIO_FUNC_SPI);
         gpio_set_dir(pin_cs_, GPIO_OUT);
