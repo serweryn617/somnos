@@ -40,12 +40,12 @@ struct cfg
   union
   {
     uint16_t value;
-    BitFieldModel<0, 3> mode;
-    BitFieldModel<3, 4> sadc;
-    BitFieldModel<7, 4> badc;
-    BitFieldModel<11, 2> pg;
-    BitFieldModel<13, 1> brng;
-    BitFieldModel<15, 1> rst;
+    BitFieldModel<uint16_t, 0, 3> mode;
+    BitFieldModel<uint16_t, 3, 4> sadc;
+    BitFieldModel<uint16_t, 7, 4> badc;
+    BitFieldModel<uint16_t, 11, 2> pg;
+    BitFieldModel<uint16_t, 13, 1> brng;
+    BitFieldModel<uint16_t, 15, 1> rst;
   };
 };
 
@@ -55,7 +55,7 @@ struct shunt
   union
   {
     uint16_t value;
-    BitFieldModel<0, 16> pga;
+    BitFieldModel<uint16_t, 0, 16> pga;
   };
 };
 
@@ -65,9 +65,9 @@ struct bus
   union
   {
     uint16_t value;
-    BitFieldModel<0, 1> ovf;
-    BitFieldModel<1, 1> cnvr;
-    BitFieldModel<3, 13> data;
+    BitFieldModel<uint16_t, 0, 1> ovf;
+    BitFieldModel<uint16_t, 1, 1> cnvr;
+    BitFieldModel<uint16_t, 3, 13> data;
   };
 };
 

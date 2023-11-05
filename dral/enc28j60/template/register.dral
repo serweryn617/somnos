@@ -4,7 +4,7 @@ struct [dral style="lowercase"]register.name[#dral]
   constexpr static uint8_t RegBank = [dral format="{:#04X}"]register.reg_bank[#dral];
   union
   {
-    uint8_t value;
+    uint[dral]register.size[#dral]_t value;
     [dral template="bitfield.dral"]register.fields[#dral]
   };
 };

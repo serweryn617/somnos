@@ -27,30 +27,30 @@
  * This is an auto generated file. Do not modify!
  */
 
-#ifndef DRAL_INA219_REGISTER_MODEL_H
-#define DRAL_INA219_REGISTER_MODEL_H
+#ifndef DRAL_REGISTER_MODEL_H
+#define DRAL_REGISTER_MODEL_H
 
 #include <cstdint>
 
-namespace dral::ina219 {
+namespace dral {
 
-template<uint16_t position, uint16_t width = 1>
+template<typename T, T position, T width = 1>
 class BitFieldModel
 {
 public:
-  static constexpr uint16_t Width = width;
-  static constexpr uint16_t Mask = (1U << width) - 1U;
-  static constexpr uint16_t Position = position;
+  static constexpr T Width = width;
+  static constexpr T Mask = (1U << width) - 1U;
+  static constexpr T Position = position;
 
 public:
-  template<typename T>
-  BitFieldModel& operator=(T value)
+  template<typename U>
+  BitFieldModel& operator=(U value)
   {
     m_value = (m_value & ~(Mask << position)) | ((value & Mask) << position);
     return *this;
   }
 
-  operator uint16_t() const
+  operator T() const
   {
     return (m_value >> position) & Mask;
   }
@@ -65,9 +65,9 @@ public:
     return *this = *this + 1U;
   }
 
-  uint16_t operator++(int)
+  T operator++(int)
   {
-    const uint16_t result = *this;
+    const T result = *this;
     ++*this;
     return result;
   }
@@ -77,46 +77,46 @@ public:
     return *this = *this - 1U;
   }
 
-  uint16_t operator--(int)
+  T operator--(int)
   {
-    const uint16_t result = *this;
+    const T result = *this;
     --*this;
     return result;
   }
 
 private:
-  uint16_t m_value;
+  T m_value;
 
-  static_assert(position >= 0 && position <= 15, "BitFiled position must be between 0 and 15");
-  static_assert(width >= 1 && width <= 16, "BitFiled width must be between 1 and 16");
+  static_assert(position >= 0 && position < sizeof(T) * 8, "BitFiled position invalid");
+  static_assert(width >= 1 && width <= sizeof(T) * 8, "BitFiled width invalid");
 };
 
-template<uint16_t position>
-class BitFieldModel<position, 1U>
-{
-public:
-  static constexpr uint16_t Width = 1U;
-  static constexpr uint16_t Mask = (1U << Width) - 1U;
-  static constexpr uint16_t Position = position;
+// template<typename T, T position>
+// class BitFieldModel<position, 1U>
+// {
+// public:
+//   static constexpr T Width = 1U;
+//   static constexpr T Mask = (1U << Width) - 1U;
+//   static constexpr T Position = position;
 
-public:
-  BitFieldModel& operator=(bool value)
-  {
-    m_value = (m_value & ~(Mask << position)) | (value << position);
-    return *this;
-  }
+// public:
+//   BitFieldModel& operator=(bool value)
+//   {
+//     m_value = (m_value & ~(Mask << position)) | (value << position);
+//     return *this;
+//   }
 
-  explicit operator bool() const
-  {
-    return m_value & (Mask << position);
-  }
+//   explicit operator bool() const
+//   {
+//     return m_value & (Mask << position);
+//   }
 
-private:
-  uint16_t m_value;
+// private:
+//   T m_value;
 
-  static_assert(position >= 0 && position <= 15, "BitFiled position must be between 0 and 15");
-};
+//   static_assert(position >= 0 && position <= 15, "BitFiled position must be between 0 and 15");
+// };
 
 }  // namespace
 
-#endif /* DRAL_INA219_REGISTER_MODEL_H */
+#endif /* DRAL_REGISTER_MODEL_H */

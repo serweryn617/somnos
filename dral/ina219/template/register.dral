@@ -3,7 +3,7 @@ struct [dral style="lowercase"]register.name[#dral]
   constexpr static uint8_t Address = [dral format="{:#04X}"]register.offset[#dral];
   union
   {
-    uint16_t value;
+    uint[dral]register.size[#dral]_t value;
     [dral template="bitfield.dral"]register.fields[#dral]
   };
 };

@@ -20,9 +20,6 @@ python3 serial_adapter.py ina219/ina219.yaml ina219_out -t serial -T ina219/temp
 Copy output to repository:
 
 ```bash
-mkdir -p ../regs/enc28j60/
-cp -r enc28j60_out/dralOutput/cpp/* ../regs/enc28j60/
-
-mkdir -p ../regs/ina219/
-cp -r ina219_out/dralOutput/cpp/* ../regs/ina219/
+cp -r enc28j60_out/dralOutput/cpp/* ../regs/
+cp -r ina219_out/dralOutput/cpp/* ../regs/
 ```

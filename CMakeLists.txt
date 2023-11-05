@@ -20,8 +20,7 @@ add_executable(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     inc
-    regs/enc28j60
-    regs/ina219
+    regs
     lwip
 )
 

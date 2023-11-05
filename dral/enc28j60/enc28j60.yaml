@@ -7,6 +7,7 @@ device:
     registers:
     - name: IE
       description: Ethernet Interrupt Enable
+      size: 8
       offset: 0x1B
       reset_value: 0x00
       fields:
@@ -40,6 +41,7 @@ device:
         width: 1
     - name: IR
       description: Ethernet Interrupt Request (Flag)
+      size: 8
       offset: 0x1C
       reset_value: 0x00
       fields:
@@ -69,6 +71,7 @@ device:
         width: 1
     - name: STAT
       description: Ethernet Status
+      size: 8
       offset: 0x1D
       reset_value: 0x00
       fields:
@@ -98,6 +101,7 @@ device:
         width: 1
     - name: CON2
       description: Ethernet Control Register 2
+      size: 8
       offset: 0x1E
       reset_value: 0x80
       fields:
@@ -119,6 +123,7 @@ device:
         width: 1
     - name: CON1
       description: Ethernet Control Register 1
+      size: 8
       offset: 0x1F
       reset_value: 0x00
       fields:
@@ -155,12 +160,14 @@ device:
     registers:
     - name: RDPTL
       description: Read Pointer Low Byte
+      size: 8
       offset: 0x00
       reset_value: 0xFA
       reg_bank: 0
       fields: []
     - name: RDPTH
       description: Read Pointer High Byte
+      size: 8
       offset: 0x01
       reset_value: 0x05
       reg_bank: 0
@@ -170,12 +177,14 @@ device:
         width: 5
     - name: WRPTL
       description: Write Pointer Low Byte
+      size: 8
       offset: 0x02
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: WRPTH
       description: Write Pointer High Byte
+      size: 8
       offset: 0x03
       reset_value: 0x00
       reg_bank: 0
@@ -185,12 +194,14 @@ device:
         width: 5
     - name: TXSTL
       description: TX Start Low Byte
+      size: 8
       offset: 0x04
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: TXSTH
       description: TX Start High Byte
+      size: 8
       offset: 0x05
       reset_value: 0x00
       reg_bank: 0
@@ -200,12 +211,14 @@ device:
         width: 5
     - name: TXNDL
       description: TX End Low Byte
+      size: 8
       offset: 0x06
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: TXNDH
       description: TX End High Byte
+      size: 8
       offset: 0x07
       reset_value: 0x00
       reg_bank: 0
@@ -215,12 +228,14 @@ device:
         width: 5
     - name: RXSTL
       description: RX Start Low Byte
+      size: 8
       offset: 0x08
       reset_value: 0xFA
       reg_bank: 0
       fields: []
     - name: RXSTH
       description: RX Start High Byte
+      size: 8
       offset: 0x09
       reset_value: 0x05
       reg_bank: 0
@@ -230,12 +245,14 @@ device:
         width: 5
     - name: RXNDL
       description: RX End Low Byte
+      size: 8
       offset: 0x0A
       reset_value: 0xFF
       reg_bank: 0
       fields: []
     - name: RXNDH
       description: RX End High Byte
+      size: 8
       offset: 0x0B
       reset_value: 0x1F
       reg_bank: 0
@@ -245,12 +262,14 @@ device:
         width: 5
     - name: RXRDPTL
       description: RX RD Pointer Low Byte
+      size: 8
       offset: 0x0C
       reset_value: 0xFA
       reg_bank: 0
       fields: []
     - name: RXRDPTH
       description: RX RD Pointer High Byte
+      size: 8
       offset: 0x0D
       reset_value: 0x05
       reg_bank: 0
@@ -260,12 +279,14 @@ device:
         width: 5
     - name: RXWRPTL
       description: RX WR Pointer Low Byte
+      size: 8
       offset: 0x0E
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: RXWRPTH
       description: RX WR Pointer High Byte
+      size: 8
       offset: 0x0F
       reset_value: 0x00
       reg_bank: 0
@@ -275,12 +296,14 @@ device:
         width: 5
     - name: DMASTL
       description: DMA Start Low Byte
+      size: 8
       offset: 0x10
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: DMASTH
       description: DMA Start High Byte
+      size: 8
       offset: 0x11
       reset_value: 0x00
       reg_bank: 0
@@ -290,12 +313,14 @@ device:
         width: 5
     - name: DMANDL
       description: DMA End Low Byte
+      size: 8
       offset: 0x12
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: DMANDH
       description: DMA End High Byte
+      size: 8
       offset: 0x13
       reset_value: 0x00
       reg_bank: 0
@@ -305,12 +330,14 @@ device:
         width: 5
     - name: DMADSTL
       description: DMA Destination Low Byte
+      size: 8
       offset: 0x14
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: DMADSTH
       description: DMA Destination High Byte
+      size: 8
       offset: 0x15
       reset_value: 0x00
       reg_bank: 0
@@ -320,132 +347,154 @@ device:
         width: 5
     - name: DMACSL
       description: DMA Checksum Low Byte
+      size: 8
       offset: 0x16
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: DMACSH
       description: DMA Checksum High Byte
+      size: 8
       offset: 0x17
       reset_value: 0x00
       reg_bank: 0
       fields: []
     - name: HT0
       description: Hash Table Byte 0
+      size: 8
       offset: 0x00
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT1
       description: Hash Table Byte 1
+      size: 8
       offset: 0x01
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT2
       description: Hash Table Byte 2
+      size: 8
       offset: 0x02
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT3
       description: Hash Table Byte 3
+      size: 8
       offset: 0x03
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT4
       description: Hash Table Byte 4
+      size: 8
       offset: 0x04
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT5
       description: Hash Table Byte 5
+      size: 8
       offset: 0x05
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT6
       description: Hash Table Byte 6
+      size: 8
       offset: 0x06
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: HT7
       description: Hash Table Byte 7
+      size: 8
       offset: 0x07
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM0
       description: Pattern Match Mask Byte 0
+      size: 8
       offset: 0x08
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM1
       description: Pattern Match Mask Byte 1
+      size: 8
       offset: 0x09
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM2
       description: Pattern Match Mask Byte 2
+      size: 8
       offset: 0x0A
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM3
       description: Pattern Match Mask Byte 3
+      size: 8
       offset: 0x0B
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM4
       description: Pattern Match Mask Byte 4
+      size: 8
       offset: 0x0C
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM5
       description: Pattern Match Mask Byte 5
+      size: 8
       offset: 0x0D
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM6
       description: Pattern Match Mask Byte 6
+      size: 8
       offset: 0x0E
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMM7
       description: Pattern Match Mask Byte 7
+      size: 8
       offset: 0x0F
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMCSL
       description: Pattern Match Checksum Low Byte
+      size: 8
       offset: 0x10
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMCSH
       description: Pattern Match Checksum High Byte
+      size: 8
       offset: 0x11
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMOL
       description: Pattern Match Offset Low Byte
+      size: 8
       offset: 0x14
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: PMOH
       description: Pattern Match Offset High Byte
+      size: 8
       offset: 0x15
       reset_value: 0x00
       reg_bank: 1
@@ -455,6 +504,7 @@ device:
         width: 5
     - name: RXFCON
       description: Ethernet Receive Filter Control
+      size: 8
       offset: 0x18
       reset_value: 0xA1
       reg_bank: 1
@@ -493,18 +543,21 @@ device:
         width: 1
     - name: PKTCNT
       description: Ethernet Packet Count
+      size: 8
       offset: 0x19
       reset_value: 0x00
       reg_bank: 1
       fields: []
     - name: BSTSD
       description: Built-in Self-Test Fill Seed
+      size: 8
       offset: 0x06
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: BSTCON
       description: Ethernet Self-Test Control
+      size: 8
       offset: 0x07
       reset_value: 0x00
       reg_bank: 3
@@ -531,18 +584,21 @@ device:
         width: 1
     - name: BSTCSL
       description: Built-in Self-Test Checksum Low Byte
+      size: 8
       offset: 0x08
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: BSTCSH
       description: Built-in Self-Test Checksum High Byte
+      size: 8
       offset: 0x09
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: REVID
       description: Ethernet Revision ID
+      size: 8
       offset: 0x12
       reset_value: 0x00
       reg_bank: 3
@@ -552,6 +608,7 @@ device:
         width: 5
     - name: COCON
       description: Clock Output Control
+      size: 8
       offset: 0x15
       reset_value: 0x04
       reg_bank: 3
@@ -562,6 +619,7 @@ device:
         width: 3
     - name: FLOCON
       description: Ethernet Flow Control
+      size: 8
       offset: 0x17
       reset_value: 0x00
       reg_bank: 3
@@ -576,12 +634,14 @@ device:
         width: 2
     - name: PAUSL
       description: Pause Timer Value Low Byte
+      size: 8
       offset: 0x18
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: PAUSH
       description: Pause Timer Value High Byte
+      size: 8
       offset: 0x19
       reset_value: 0x10
       reg_bank: 3
@@ -591,6 +651,7 @@ device:
     registers:
     - name: CON1
       description: MAC Control Register 1
+      size: 8
       offset: 0x00
       reset_value: 0x00
       reg_bank: 2
@@ -613,6 +674,7 @@ device:
         width: 1
     - name: CON3
       description: MAC Control Register 3
+      size: 8
       offset: 0x02
       reset_value: 0x00
       reg_bank: 2
@@ -643,6 +705,7 @@ device:
         width: 1
     - name: CON4
       description: MAC Control Register 4
+      size: 8
       offset: 0x03
       reset_value: 0x00
       reg_bank: 2
@@ -661,6 +724,7 @@ device:
         width: 1
     - name: BBIPG
       description: Back-to-Back Inter-Packet Gap
+      size: 8
       offset: 0x04
       reset_value: 0x00
       reg_bank: 2
@@ -671,6 +735,7 @@ device:
         width: 7
     - name: IPGL
       description: Non-Back-to-Back Inter-Packet Gap Low Byte
+      size: 8
       offset: 0x06
       reset_value: 0x00
       reg_bank: 2
@@ -680,6 +745,7 @@ device:
         width: 7
     - name: IPGH
       description: Non-Back-to-Back Inter-Packet Gap High Byte
+      size: 8
       offset: 0x07
       reset_value: 0x00
       reg_bank: 2
@@ -689,6 +755,7 @@ device:
         width: 7
     - name: CLCON1
       description: Retransmission Maximum
+      size: 8
       offset: 0x08
       reset_value: 0x0F
       reg_bank: 2
@@ -698,6 +765,7 @@ device:
         width: 4
     - name: CLCON2
       description: Collision Window
+      size: 8
       offset: 0x09
       reset_value: 0x37
       reg_bank: 2
@@ -707,48 +775,56 @@ device:
         width: 6
     - name: MXFLL
       description: Maximum Frame Length Low Byte
+      size: 8
       offset: 0x0A
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: MXFLH
       description: Maximum Frame Length High Byte
+      size: 8
       offset: 0x0B
       reset_value: 0x06
       reg_bank: 2
       fields: []
     - name: ADR5
       description: MAC Address Byte 5
+      size: 8
       offset: 0x00
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR6
       description:  MAC Address Byte 6
+      size: 8
       offset: 0x01
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR3
       description:  MAC Address Byte 3
+      size: 8
       offset: 0x02
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR4
       description: MAC Address Byte 4
+      size: 8
       offset: 0x03
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR1
       description: MAC Address Byte 1
+      size: 8
       offset: 0x04
       reset_value: 0x00
       reg_bank: 3
       fields: []
     - name: ADR2
       description: MAC Address Byte 1
+      size: 8
       offset: 0x05
       reset_value: 0x00
       reg_bank: 3
@@ -758,6 +834,7 @@ device:
     registers:
     - name: CMD
       description: MII Command Register
+      size: 8
       offset: 0x12
       reset_value: 0x00
       reg_bank: 2
@@ -772,6 +849,7 @@ device:
         width: 1
     - name: REGADR
       description: MII Register Address
+      size: 8
       offset: 0x14
       reset_value: 0x00
       reg_bank: 2
@@ -781,30 +859,35 @@ device:
         width: 5
     - name: WRL
       description: MII Write Data Low Byte
+      size: 8
       offset: 0x16
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: WRH
       description: MII Write Data High Byte
+      size: 8
       offset: 0x17
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: RDL
       description: MII Read Data Low Byte
+      size: 8
       offset: 0x18
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: RDH
       description: MII Read Data High Byte
+      size: 8
       offset: 0x19
       reset_value: 0x00
       reg_bank: 2
       fields: []
     - name: STAT
       description: MII Status
+      size: 8
       offset: 0x0A
       reset_value: 0x00
       reg_bank: 3
@@ -826,6 +909,7 @@ device:
     registers:
     - name: CON1
       description: 
+      size: 16
       offset: 0x00
       reset_value: 0x0000
       fields:
@@ -843,6 +927,7 @@ device:
         width: 1
     - name: STAT1
       description: 
+      size: 16
       offset: 0x01
       reset_value: 0x1800
       fields:
@@ -860,6 +945,7 @@ device:
         width: 1
     - name: ID1
       description: 
+      size: 16
       offset: 0x02
       reset_value: 0x0083
       fields:
@@ -868,6 +954,7 @@ device:
         width: 16
     - name: ID2
       description: 
+      size: 16
       offset: 0x03
       reset_value: 0x1400
       fields:
@@ -882,6 +969,7 @@ device:
         width: 4
     - name: CON2
       description: 
+      size: 16
       offset: 0x10
       reset_value: 
       fields:
@@ -899,6 +987,7 @@ device:
         width: 1
     - name: STAT2
       description: 
+      size: 16
       offset: 0x11
       reset_value: 0x0000
       fields:
@@ -922,6 +1011,7 @@ device:
         width: 1
     - name: IE
       description: 
+      size: 16
       offset: 0x12
       reset_value: 0x0000
       fields:
@@ -933,6 +1023,7 @@ device:
         width: 1
     - name: IR
       description: 
+      size: 16
       offset: 0x13
       reset_value: 0x00
       fields:
@@ -944,6 +1035,7 @@ device:
         width: 1
     - name: LCON
       description: 
+      size: 16
       offset: 0x14
       reset_value: 0x3422
       fields:
