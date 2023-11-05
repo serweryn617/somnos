@@ -93,23 +93,17 @@ err_t create_udp_socket(){
     return err;
 }
 
-err_t send_msg_to_dest(){
+err_t send_msg_to_dest(char prefix, uint16_t value){
     struct pbuf *p;
     uint8_t data[100]={0};
 
-    data[0] = 'T';
-    data[1] = 'C';
-    data[2] = '=';
-    data[3] = '0';
-    data[4] = 0xD;
-
-
-    //sprintf((char*)data, "sending udp client message");
+    data[0] = prefix;
+    data[1] = value & 0xff;
+    data[2] = value >> 8;
 
     /* allocate pbuf from pool*/
     //p = pbuf_alloc(PBUF_TRANSPORT,strlen((char*)data), PBUF_POOL);
-    p = pbuf_alloc(PBUF_TRANSPORT, 5, PBUF_POOL);
-
+    p = pbuf_alloc(PBUF_TRANSPORT, 3, PBUF_POOL);
 
     if (p != NULL)
     {
@@ -195,6 +189,7 @@ int main() {
     gpio_init(mosfet_pin);
     gpio_set_dir(mosfet_pin, GPIO_OUT);
     bool sw = false;
+    gpio_put(mosfet_pin, 1);
 
     ip_addr_t addr, mask, static_ip;
     IP4_ADDR(&static_ip, 192, 168, 1, 111);
@@ -231,13 +226,16 @@ int main() {
     ina219.calibrate();
 
     while (true) {
-        sw = !sw;
-        sleep_ms(100);
-        gpio_put(mosfet_pin, sw);
-        sleep_ms(100);
+        // sw = !sw;
+        // sleep_ms(100);
+        // gpio_put(mosfet_pin, sw);
+        // sleep_ms(100);
 
-        float sh = ina219.shunt_voltage();
-        printf("Shunt voltage: %.2f mV\n", sh);
+        // float sh = ina219.shunt_voltage();
+        // printf("Shunt voltage: %.2f mV\n", sh);
+
+        // float bus = ina219.bus_voltage();
+        // printf("Bus voltage: %.2f V\n", bus);
 
         uint16_t packet_len = enc28j60.packet_receive(ETHERNET_MTU, (uint8_t *)eth_pkt);
         if (packet_len)
@@ -263,12 +261,14 @@ int main() {
             }
         }
 
-        send_msg_to_dest();
+        send_msg_to_dest('B', ina219.bus_voltage_raw());
+        send_msg_to_dest('S', ina219.shunt_voltage_raw());
+        send_msg_to_dest('C', ina219.current_raw());
 
         /* Cyclic lwIP timers check */
         sys_check_timeouts();
 
-        sleep_ms(100);
+        sleep_ms(1000);
     }
 
     return 0;

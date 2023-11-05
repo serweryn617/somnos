@@ -53,15 +53,41 @@ public:
         uint16_t shunt_voltage = shunt_voltage_raw();
         return static_cast<float>(shunt_voltage) / 100;
     }
+
+    uint16_t bus_voltage_raw()
+    {
+        dral::ina219::bus bus;
+        bus.value = read_register(dral::ina219::bus::Address);
+        return bus.data;
+    }
+
+    float bus_voltage()
+    {
+        uint16_t shunt_voltage = shunt_voltage_raw();
+        return static_cast<float>(shunt_voltage) / 250;
+    }
+
+    // uint16_t power_raw()
+    // {
+    //     return read_register(dral::ina219::pwr::Address);
+    // }
+
+    // float power()
+    // {
+    //     uint16_t shunt_voltage = shunt_voltage_raw();
+    //     return static_cast<float>(shunt_voltage) / 100;
+    // }
+
+    uint16_t current_raw()
+    {
+        return read_register(dral::ina219::curr::Address);
+    }
+
+    float current()
+    {
+        uint16_t shunt_voltage = shunt_voltage_raw();
+        return static_cast<float>(shunt_voltage) * 0.0305;
+    }
 };
-
-        // dral::ina219::bus bus_voltage;
-        // bus_voltage.value = ina219.read(dral::ina219::bus::Address);
-        // float volt = (float)bus_voltage.data / 250;
-        // printf("Bus voltage: %.2f V\n", volt);
-
-        // int16_t current = ina219.read(dral::ina219::curr::Address);
-        // float curr = (float)current * 0.0305;
-        // printf("current %.2f mA\n\n", curr);
 
 #endif // INA219_H
