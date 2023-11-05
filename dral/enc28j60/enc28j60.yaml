@@ -824,7 +824,7 @@ device:
   - name: PHY
     description: Common Ethernet Registers
     registers:
-    - name: PHCON1
+    - name: CON1
       description: 
       offset: 0x00
       reset_value: 0x0000
@@ -841,7 +841,7 @@ device:
       - name: PDPXMD
         position: 8
         width: 1
-    - name: PHSTAT1
+    - name: STAT1
       description: 
       offset: 0x01
       reset_value: 0x1800
@@ -858,7 +858,7 @@ device:
       - name: JBSTAT
         position: 1
         width: 1
-    - name: PHID1
+    - name: ID1
       description: 
       offset: 0x02
       reset_value: 0x0083
@@ -866,7 +866,7 @@ device:
       - name: OUI
         position: 0
         width: 16
-    - name: PHID2
+    - name: ID2
       description: 
       offset: 0x03
       reset_value: 0x1400
@@ -880,7 +880,7 @@ device:
       - name: PREV
         position: 0
         width: 4
-    - name: PHCON2
+    - name: CON2
       description: 
       offset: 0x10
       reset_value: 
@@ -897,7 +897,7 @@ device:
       - name: HDLDIS
         position: 8
         width: 1
-    - name: PHSTAT2
+    - name: STAT2
       description: 
       offset: 0x11
       reset_value: 0x0000
@@ -920,7 +920,7 @@ device:
       - name: PLRITY
         position: 5
         width: 1
-    - name: PHIE
+    - name: IE
       description: 
       offset: 0x12
       reset_value: 0x0000
@@ -931,7 +931,7 @@ device:
       - name: PGEIE
         position: 1
         width: 1
-    - name: PHIR
+    - name: IR
       description: 
       offset: 0x13
       reset_value: 0x00
@@ -942,7 +942,7 @@ device:
       - name: PGIF
         position: 2
         width: 1
-    - name: PHLCON
+    - name: LCON
       description: 
       offset: 0x14
       reset_value: 0x3422

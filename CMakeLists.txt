@@ -16,7 +16,6 @@ set(CMAKE_CXX_STANDARD 20)
 # Tell CMake where to find the executable source file
 add_executable(${PROJECT_NAME}
     src/main.cpp
-    src/enc28j60.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE

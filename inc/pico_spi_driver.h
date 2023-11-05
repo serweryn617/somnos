@@ -1,22 +1,46 @@
-#ifndef PICO_SPI_DEVICE_H
-#define PICO_SPI_DEVICE_H
+#ifndef PICO_SPI_DRIVER_H
+#define PICO_SPI_DRIVER_H
 
 #include "pico/stdlib.h"
+#include "hardware/spi.h"
+#include "spi_driver_concept.h"
 
-class PicoSPIDevice
+// enum class cs : bool 
+// {
+//     enable = false,
+//     disable = true,
+// };
+
+class PicoSPIDriver
 {
 private:
     spi_inst_t *spi_inst_;
     uint8_t pin_cs_, pin_rx_, pin_tx_, pin_sck_;
 
 public:
-    PicoSPIDevice(spi_inst_t *spi_inst, uint8_t pin_cs, uint8_t pin_rx, uint8_t pin_tx, uint8_t pin_sck)
+    PicoSPIDriver(spi_inst_t *spi_inst, uint8_t pin_cs, uint8_t pin_rx, uint8_t pin_tx, uint8_t pin_sck)
         : spi_inst_(spi_inst)
         , pin_cs_(pin_cs)
         , pin_rx_(pin_rx)
         , pin_tx_(pin_tx)
         , pin_sck_(pin_sck)
     {};
+
+    void init()
+    {
+        spi_init(spi_inst_, 1 * 1000 * 1000);
+        gpio_set_function(pin_cs_, GPIO_FUNC_SPI);
+        gpio_set_function(pin_rx_, GPIO_FUNC_SIO);
+        gpio_set_function(pin_tx_, GPIO_FUNC_SPI);
+        gpio_set_function(pin_sck_, GPIO_FUNC_SPI);
+        gpio_set_dir(pin_cs_, GPIO_OUT);
+        gpio_put(pin_cs_, 1);
+    }
+
+    void set_cs(bool state)
+    {
+        gpio_put(pin_cs_, state);
+    }
 
     int read_data(uint8_t *buffer, uint8_t length = 1)
     {
@@ -29,4 +53,6 @@ public:
     }
 };
 
-#endif // PICO_SPI_DEVICE_H
+static_assert(spi_driver_concept<PicoSPIDriver>);
+
+#endif // PICO_SPI_DRIVER_H
