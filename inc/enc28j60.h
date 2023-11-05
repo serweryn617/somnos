@@ -169,7 +169,7 @@ public:
         // set the PHY register address
         write(mii::regadr::Address, mii::regadr::RegBank, address);
         // write the PHY data
-        write(mii::wrl::Address, mii::wrl::RegBank, data);
+        write(mii::wrl::Address, mii::wrl::RegBank, data & 0xff);
         write(mii::wrh::Address, mii::wrh::RegBank, data >> 8);
         // wait until the PHY write completes
         mii::stat stat;

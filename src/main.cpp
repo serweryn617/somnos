@@ -201,6 +201,9 @@ int main() {
     IP4_ADDR(&mask, 255, 255, 255, 0);
     IP4_ADDR(&addr, 192, 168, 1, 1);
 
+    enc_driver.init();
+    enc28j60.init(mac_addr);
+
     struct netif netif;
     lwip_init();
     // IP4_ADDR_ANY if using DHCP client
@@ -216,8 +219,6 @@ int main() {
     dhcp_inform(&netif);
     // dhcp_start(&netif);
 
-    enc_driver.init();
-    enc28j60.init(mac_addr);
     uint8_t *eth_pkt = (uint8_t*)malloc(ETHERNET_MTU);
     struct pbuf *p = NULL;
 
@@ -231,9 +232,9 @@ int main() {
 
     while (true) {
         sw = !sw;
-        sleep_ms(500);
+        sleep_ms(100);
         gpio_put(mosfet_pin, sw);
-        sleep_ms(500);
+        sleep_ms(100);
 
         float sh = ina219.shunt_voltage();
         printf("Shunt voltage: %.2f mV\n", sh);
@@ -267,7 +268,7 @@ int main() {
         /* Cyclic lwIP timers check */
         sys_check_timeouts();
 
-        sleep_ms(500);
+        sleep_ms(100);
     }
 
     return 0;
