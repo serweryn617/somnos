@@ -137,22 +137,22 @@ static err_t netif_output(struct netif *netif, struct pbuf *p)
     enc28j60.packet_send(p->len, (uint8_t *)p->payload);
     // pbuf_free(p);
 
-    // error sending
-    dral::enc28j60::common::stat stat;
-    stat.value = enc28j60.read(stat.Address, stat.RegBank);
-    if (stat.txabrt)
-    {
-        // a seven-byte transmit status vector will be
-        // written to the location pointed to by ETXND + 1,
-        printf("ERR - transmit aborted\n");
-    }
+    // // error sending
+    // dral::enc28j60::common::stat stat;
+    // stat.value = enc28j60.read(stat.Address, stat.RegBank);
+    // if (stat.txabrt)
+    // {
+    //     // a seven-byte transmit status vector will be
+    //     // written to the location pointed to by ETXND + 1,
+    //     printf("ERR - transmit aborted\n");
+    // }
 
-    dral::enc28j60::common::ir ir;
-    ir.value = enc28j60.read(ir.Address, ir.RegBank);
-    if (ir.txerif)
-    {
-        printf("ERR - transmit interrupt flag set\n");
-    }
+    // dral::enc28j60::common::ir ir;
+    // ir.value = enc28j60.read(ir.Address, ir.RegBank);
+    // if (ir.txerif)
+    // {
+    //     printf("ERR - transmit interrupt flag set\n");
+    // }
 
     // unlock_interrupts();
     return ERR_OK;
