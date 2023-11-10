@@ -44,16 +44,22 @@ private:
         bool bank_change = bank_ != requested_bank;
         if(!common_regs && bank_change)
         {
+            spi_driver_.set_cs(0);
             common::con1 con1;
             uint8_t command = bit_field_clear | con1.Address;
             spi_driver_.write_data(&command);
             uint8_t data = con1.bsel.Mask << con1.bsel.Position;
             spi_driver_.write_data(&data);
+            spi_driver_.set_cs(1);
 
+            sleep_us(1);
+
+            spi_driver_.set_cs(0);
             command = bit_field_set | con1.Address;
             spi_driver_.write_data(&command);
             data = (requested_bank & con1.bsel.Mask) << con1.bsel.Position;
             spi_driver_.write_data(&data);
+            spi_driver_.set_cs(1);
 
             bank_ = requested_bank;
         }
@@ -61,8 +67,8 @@ private:
 
     uint8_t read_eth(uint8_t address, uint8_t bank)
     {
-        spi_driver_.set_cs(0);
         set_bank(bank, address);
+        spi_driver_.set_cs(0);
 
         uint8_t command = read_control_register | address;
         spi_driver_.write_data(&command);
@@ -76,8 +82,8 @@ private:
 
     uint8_t read_mac_mii(uint8_t address, uint8_t bank)
     {
-        spi_driver_.set_cs(0);
         set_bank(bank, address);
+        spi_driver_.set_cs(0);
 
         uint8_t command = read_control_register | address;
         spi_driver_.write_data(&command);
@@ -92,8 +98,8 @@ private:
 
     void write_reg(uint8_t address, uint8_t bank, uint8_t data, uint8_t op = write_control_register)
     {
-        spi_driver_.set_cs(0);
         set_bank(bank, address);
+        spi_driver_.set_cs(0);
 
         uint8_t command = op | address;
         spi_driver_.write_data(&command);
