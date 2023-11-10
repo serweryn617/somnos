@@ -30,7 +30,7 @@
 // based on example from: https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
 #define ETHERNET_MTU 1500
 
-
+using namespace devices::enc28j60;
 uint8_t mac_addr[6] = {0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92};
 
 PicoSPIDriver enc_driver(SPI_PORT, PIN_CS, PIN_MISO, PIN_MOSI, PIN_SCK);
