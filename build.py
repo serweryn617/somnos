@@ -53,7 +53,7 @@ def commands():
 
 @build.command(help='Run interactive')
 def run():
-    command = f'docker run --rm -it -v {FILE_PATH}:/workspace pico_builder /bin/sh'
+    command = f'docker run --rm -it -u {os.getuid()}:{os.getgid()} -v {FILE_PATH}:/workspace pico_builder /bin/sh'
     subprocess.run(command, shell=True)
 
 
@@ -76,9 +76,9 @@ def format():
 @build.command(help='Setup Docker')
 def submodules():
     command = f'''
-        git submodule update --init --depth 1 picotool pico-sdk;
+        git submodule update --init --depth 1 sdk/picotool sdk/pico-sdk;
         git submodule status;
-        cd pico-sdk;
+        cd sdk/pico-sdk;
         git submodule update --init --depth 1 lib/tinyusb lib/lwip;
         git submodule status;
     '''.split()
