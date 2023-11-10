@@ -5,6 +5,8 @@
 #include "hardware/i2c.h"
 #include "i2c_driver_concept.h"
 
+namespace drivers::pico {
+
 class PicoI2CDriver
 {
 private:
@@ -40,6 +42,8 @@ public:
     }
 };
 
-static_assert(i2c_driver_concept<PicoI2CDriver>);
+static_assert(drivers::concepts::i2c_driver_concept<PicoI2CDriver>);
 
-#endif // PICO_I2C_DRIVER_H
+}  // namespace drivers::pico
+
+#endif  // PICO_I2C_DRIVER_H

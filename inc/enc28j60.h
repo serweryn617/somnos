@@ -15,7 +15,7 @@
 
 namespace devices::enc28j60 {
 
-template<spi_driver_concept SPIDriver>
+template<drivers::concepts::spi_driver_concept SPIDriver>
 class Enc28j60
 {
 private:
@@ -238,10 +238,9 @@ public:
         write_reg(dral::enc28j60::mac::mxfll::Address, dral::enc28j60::mac::mxfll::RegBank, max_frame_len & 0xFF);
         write_reg(dral::enc28j60::mac::mxflh::Address, dral::enc28j60::mac::mxflh::RegBank, max_frame_len >> 8);
 
-        write_reg(dral::enc28j60::mac::bbipg::Address, dral::enc28j60::mac::bbipg::RegBank, 0x15);  // 15 full 12 half
+        write_reg(dral::enc28j60::mac::bbipg::Address, dral::enc28j60::mac::bbipg::RegBank, 0x15);
 
         write_reg(dral::enc28j60::mac::ipgl::Address, dral::enc28j60::mac::ipgl::RegBank, 0x12);
-        // write_reg(dral::enc28j60::mac::ipgh::Address, dral::enc28j60::mac::ipgh::RegBank, 0x0C);
 
         write_reg(dral::enc28j60::mac::adr1::Address, dral::enc28j60::mac::adr1::RegBank, macaddr[0]);
         write_reg(dral::enc28j60::mac::adr2::Address, dral::enc28j60::mac::adr2::RegBank, macaddr[1]);
@@ -335,5 +334,5 @@ public:
 
 }  // namespace devices::enc28j60
 
-#endif // ENC28J60_H
+#endif  // ENC28J60_H
 

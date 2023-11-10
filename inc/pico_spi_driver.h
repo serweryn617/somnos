@@ -5,11 +5,7 @@
 #include "hardware/spi.h"
 #include "spi_driver_concept.h"
 
-// enum class cs : bool 
-// {
-//     enable = false,
-//     disable = true,
-// };
+namespace drivers::pico {
 
 class PicoSPIDriver
 {
@@ -53,6 +49,8 @@ public:
     }
 };
 
-static_assert(spi_driver_concept<PicoSPIDriver>);
+static_assert(drivers::concepts::spi_driver_concept<PicoSPIDriver>);
 
-#endif // PICO_SPI_DRIVER_H
+}  // namespace drivers::pico
+
+#endif  // PICO_SPI_DRIVER_H

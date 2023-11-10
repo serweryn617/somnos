@@ -4,7 +4,9 @@
 #include "ina219/base.h"
 #include "i2c_driver_concept.h"
 
-template<i2c_driver_concept I2CDriver>
+namespace devices::ina219 {
+
+template<drivers::concepts::i2c_driver_concept I2CDriver>
 class INA219
 {
 private:
@@ -90,4 +92,6 @@ public:
     }
 };
 
-#endif // INA219_H
+}  // namespace devices::ina219
+
+#endif  // INA219_H
