@@ -9,33 +9,30 @@
 #include "enc28j60/mii.h"
 #include "enc28j60/phy.h"
 
+#include "enc28j60_enums.h"
+#include "misc.h"
 #include "spi_driver_concept.h"
 
-constexpr unsigned int receive_buffer_start = 0x0;  // errata
-constexpr unsigned int receive_buffer_end = 0x19EF;
-
-constexpr unsigned int transmit_buffer_start = 0x19F0;
-constexpr unsigned int transmit_buffer_end = 0x1FF0;
-
-constexpr unsigned int max_frame_len = 1518;
-
-constexpr uint8_t read_control_register = 0x00;
-constexpr uint8_t read_buffer_memory = 0x3A;
-constexpr uint8_t write_control_register = 0x40;
-constexpr uint8_t write_buffer_memory = 0x7A;
-constexpr uint8_t bit_field_set = 0x80;
-constexpr uint8_t bit_field_clear = 0xA0;
-constexpr uint8_t system_reset = 0xFF;
-
+namespace devices::enc28j60 {
 
 template<spi_driver_concept SPIDriver>
 class Enc28j60
 {
 private:
     SPIDriver& spi_driver_;
-
     uint8_t bank_ = 0;
     uint16_t next_packet_ptr_;
+
+    static constexpr unsigned int receive_buffer_start = 0x0;  // errata
+    static constexpr unsigned int receive_buffer_end = 0x19EF;
+    static constexpr unsigned int transmit_buffer_start = 0x19F0;
+    static constexpr unsigned int transmit_buffer_end = 0x1FF0;
+    static constexpr unsigned int max_frame_len = 1518;
+
+    void set_cs(cs state)
+    {
+        spi_driver_.set_cs(misc::to_underlying_type(state));
+    }
 
     void set_bank(uint8_t requested_bank, uint8_t address)
     {
@@ -47,22 +44,22 @@ private:
             return;
         }
 
-        spi_driver_.set_cs(0);
+        set_cs(cs::enable);
         dral::enc28j60::common::con1 con1;
-        uint8_t command = bit_field_clear | con1.Address;
+        uint8_t command = misc::to_underlying_type(op::bit_field_clear) | con1.Address;
         spi_driver_.write_data(&command);
         uint8_t data = con1.bsel.Mask << con1.bsel.Position;
         spi_driver_.write_data(&data);
-        spi_driver_.set_cs(1);
+        set_cs(cs::disable);
 
         sleep_us(1);
 
-        spi_driver_.set_cs(0);
-        command = bit_field_set | con1.Address;
+        set_cs(cs::enable);
+        command = misc::to_underlying_type(op::bit_field_set) | con1.Address;
         spi_driver_.write_data(&command);
         data = (requested_bank & con1.bsel.Mask) << con1.bsel.Position;
         spi_driver_.write_data(&data);
-        spi_driver_.set_cs(1);
+        set_cs(cs::disable);
 
         bank_ = requested_bank;
     }
@@ -71,15 +68,15 @@ private:
     {
         set_bank(bank, address);
 
-        spi_driver_.set_cs(0);
+        set_cs(cs::enable);
 
-        uint8_t command = read_control_register | address;
+        uint8_t command = misc::to_underlying_type(op::read_control_register) | address;
         spi_driver_.write_data(&command);
 
         uint8_t data;
         spi_driver_.read_data(&data);
 
-        spi_driver_.set_cs(1);
+        set_cs(cs::disable);
         return data;
     }
 
@@ -87,30 +84,30 @@ private:
     {
         set_bank(bank, address);
 
-        spi_driver_.set_cs(0);
+        set_cs(cs::enable);
 
-        uint8_t command = read_control_register | address;
+        uint8_t command = misc::to_underlying_type(op::read_control_register) | address;
         spi_driver_.write_data(&command);
 
         uint8_t data;
         spi_driver_.read_data(&data);  // dummy byte
         spi_driver_.read_data(&data);
 
-        spi_driver_.set_cs(1);
+        set_cs(cs::disable);
         return data;
     }
 
-    void write_reg(uint8_t address, uint8_t bank, uint8_t data, uint8_t op = write_control_register)
+    void write_reg(uint8_t address, uint8_t bank, uint8_t data, op operation = op::write_control_register)
     {
         set_bank(bank, address);
 
-        spi_driver_.set_cs(0);
+        set_cs(cs::enable);
 
-        uint8_t command = op | address;
+        uint8_t command = misc::to_underlying_type(operation) | address;
         spi_driver_.write_data(&command);
         spi_driver_.write_data(&data);
 
-        spi_driver_.set_cs(1);
+        set_cs(cs::disable);
     }
 
     uint16_t read_phy(uint8_t address, uint16_t data)
@@ -155,24 +152,24 @@ private:
 
     void read_buffer(uint8_t *data, uint8_t len)
     {
-        spi_driver_.set_cs(0);
+        set_cs(cs::enable);
 
-        uint8_t op = read_buffer_memory;
+        uint8_t op = misc::to_underlying_type(op::read_buffer_memory);
         spi_driver_.write_data(&op);
         spi_driver_.read_data(data, len);
 
-        spi_driver_.set_cs(1);
+        set_cs(cs::disable);
     }
 
     void write_buffer(uint8_t *data, uint8_t len = 1)
     {
-        spi_driver_.set_cs(0);
+        set_cs(cs::enable);
 
-        uint8_t op = write_buffer_memory;
+        uint8_t op = misc::to_underlying_type(op::write_buffer_memory);
         spi_driver_.write_data(&op);
         spi_driver_.write_data(data, len);
 
-        spi_driver_.set_cs(1);
+        set_cs(cs::disable);
     }
 
 public:
@@ -182,12 +179,12 @@ public:
 
     void reset()
     {
-        spi_driver_.set_cs(0);
+        set_cs(cs::enable);
 
-        uint8_t op = system_reset;
+        uint8_t op = misc::to_underlying_type(op::system_reset);
         spi_driver_.write_data(&op);
 
-        spi_driver_.set_cs(1);
+        set_cs(cs::disable);
 
         sleep_ms(1);  // errata
     }
@@ -236,7 +233,7 @@ public:
         con3.txcrcen = 1;
         con3.fuldpx = 1;
         con3.frmlnen = 1;
-        write_reg(con3.Address, con3.RegBank, con3.value, bit_field_set);
+        write_reg(con3.Address, con3.RegBank, con3.value, op::bit_field_set);
 
         write_reg(dral::enc28j60::mac::mxfll::Address, dral::enc28j60::mac::mxfll::RegBank, max_frame_len & 0xFF);
         write_reg(dral::enc28j60::mac::mxflh::Address, dral::enc28j60::mac::mxflh::RegBank, max_frame_len >> 8);
@@ -265,12 +262,12 @@ public:
     {
         dral::enc28j60::common::con1 con1x;
         con1x.rxen = 1;
-        write_reg(con1x.Address, con1x.RegBank, con1x.value, bit_field_set);
+        write_reg(con1x.Address, con1x.RegBank, con1x.value, op::bit_field_set);
     }
 
     void init(uint8_t *macaddr)
     {
-        spi_driver_.set_cs(1);
+        set_cs(cs::disable);
 
         reset();
         init_buffers();
@@ -308,7 +305,7 @@ public:
 
         dral::enc28j60::common::con2 con2;
         con2.pktdec = 1;
-        write_reg(con2.Address, con2.RegBank, con2.value, bit_field_set);
+        write_reg(con2.Address, con2.RegBank, con2.value, op::bit_field_set);
 
         return len;
     }
@@ -327,7 +324,7 @@ public:
 
         dral::enc28j60::common::con1 con1;
         con1.txrts = 1;
-        write_reg(con1.Address, con1.RegBank, con1.value, bit_field_set);
+        write_reg(con1.Address, con1.RegBank, con1.value, op::bit_field_set);
     }
 
     uint8_t revision()
@@ -335,6 +332,8 @@ public:
         return read_eth(dral::enc28j60::eth::revid::Address, dral::enc28j60::eth::revid::RegBank);
     }
 };
+
+}  // namespace devices::enc28j60
 
 #endif // ENC28J60_H
 
