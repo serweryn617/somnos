@@ -1,21 +1,21 @@
 #ifndef INA219_H
 #define INA219_H
 
-#include "regs/ina219/base.h"
 #include "drivers/concepts/i2c_driver_concept.h"
+#include "regs/ina219/base.h"
 
 namespace devices::ina219 {
 
 template<drivers::concepts::i2c_driver_concept I2CDriver>
-class INA219
-{
+class INA219 {
 private:
     I2CDriver& i2c_driver_;
 
 public:
     INA219(I2CDriver& i2c_driver)
         : i2c_driver_(i2c_driver)
-    {}
+    {
+    }
 
     uint16_t read_register(uint8_t address)
     {
@@ -45,10 +45,7 @@ public:
         write_register(ina_calibration.Address, ina_calibration.value);
     }
 
-    uint16_t shunt_voltage_raw()
-    {
-        return read_register(dral::ina219::shunt::Address);
-    }
+    uint16_t shunt_voltage_raw() { return read_register(dral::ina219::shunt::Address); }
 
     float shunt_voltage()
     {
@@ -80,10 +77,7 @@ public:
     //     return static_cast<float>(shunt_voltage) / 100;
     // }
 
-    uint16_t current_raw()
-    {
-        return read_register(dral::ina219::curr::Address);
-    }
+    uint16_t current_raw() { return read_register(dral::ina219::curr::Address); }
 
     float current()
     {

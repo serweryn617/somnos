@@ -10,14 +10,13 @@
 #include "regs/enc28j60/phy.h"
 
 #include "devices/enc28j60/enc28j60_enums.h"
-#include "utils/utils.h"
 #include "drivers/concepts/spi_driver_concept.h"
+#include "utils/utils.h"
 
 namespace devices::enc28j60 {
 
 template<drivers::concepts::spi_driver_concept SPIDriver>
-class Enc28j60
-{
+class Enc28j60 {
 private:
     SPIDriver& spi_driver_;
     uint8_t bank_ = 0;
@@ -29,24 +28,20 @@ private:
     static constexpr unsigned int transmit_buffer_end = 0x1FF0;
     static constexpr unsigned int max_frame_len = 1518;
 
-    void set_cs(cs state)
-    {
-        spi_driver_.set_cs(utils::to_underlying_type(state));
-    }
+    void set_cs(cs state) { spi_driver_.set_cs(utils::underlying_type(state)); }
 
     void set_bank(uint8_t requested_bank, uint8_t address)
     {
         bool common_regs = address >= 0x1B;
         bool no_bank_change = bank_ == requested_bank;
 
-        if(common_regs || no_bank_change)
-        {
+        if (common_regs || no_bank_change) {
             return;
         }
 
         set_cs(cs::enable);
         dral::enc28j60::common::con1 con1;
-        uint8_t command = utils::to_underlying_type(op::bit_field_clear) | con1.Address;
+        uint8_t command = utils::underlying_type(op::bit_field_clear) | con1.Address;
         spi_driver_.write_data(&command);
         uint8_t data = con1.bsel.Mask << con1.bsel.Position;
         spi_driver_.write_data(&data);
@@ -55,7 +50,7 @@ private:
         sleep_us(1);
 
         set_cs(cs::enable);
-        command = utils::to_underlying_type(op::bit_field_set) | con1.Address;
+        command = utils::underlying_type(op::bit_field_set) | con1.Address;
         spi_driver_.write_data(&command);
         data = (requested_bank & con1.bsel.Mask) << con1.bsel.Position;
         spi_driver_.write_data(&data);
@@ -70,7 +65,7 @@ private:
 
         set_cs(cs::enable);
 
-        uint8_t command = utils::to_underlying_type(op::read_control_register) | address;
+        uint8_t command = utils::underlying_type(op::read_control_register) | address;
         spi_driver_.write_data(&command);
 
         uint8_t data;
@@ -86,7 +81,7 @@ private:
 
         set_cs(cs::enable);
 
-        uint8_t command = utils::to_underlying_type(op::read_control_register) | address;
+        uint8_t command = utils::underlying_type(op::read_control_register) | address;
         spi_driver_.write_data(&command);
 
         uint8_t data;
@@ -103,7 +98,7 @@ private:
 
         set_cs(cs::enable);
 
-        uint8_t command = utils::to_underlying_type(operation) | address;
+        uint8_t command = utils::underlying_type(operation) | address;
         spi_driver_.write_data(&command);
         spi_driver_.write_data(&data);
 
@@ -120,8 +115,7 @@ private:
 
         dral::enc28j60::mii::stat stat;
         stat.value = read_mac_mii(dral::enc28j60::mii::stat::Address, dral::enc28j60::mii::stat::RegBank);
-        while(stat.busy)
-        {
+        while (stat.busy) {
             sleep_us(11);  // PHY read takes 10.24 us
             stat.value = read_mac_mii(dral::enc28j60::mii::stat::Address, dral::enc28j60::mii::stat::RegBank);
         }
@@ -143,29 +137,28 @@ private:
 
         dral::enc28j60::mii::stat stat;
         stat.value = read_mac_mii(dral::enc28j60::mii::stat::Address, dral::enc28j60::mii::stat::RegBank);
-        while(stat.busy)
-        {
+        while (stat.busy) {
             sleep_us(11);  // PHY write takes 10.24 us
             stat.value = read_mac_mii(dral::enc28j60::mii::stat::Address, dral::enc28j60::mii::stat::RegBank);
         }
     }
 
-    void read_buffer(uint8_t *data, uint8_t len)
+    void read_buffer(uint8_t* data, uint8_t len)
     {
         set_cs(cs::enable);
 
-        uint8_t op = utils::to_underlying_type(op::read_buffer_memory);
+        uint8_t op = utils::underlying_type(op::read_buffer_memory);
         spi_driver_.write_data(&op);
         spi_driver_.read_data(data, len);
 
         set_cs(cs::disable);
     }
 
-    void write_buffer(uint8_t *data, uint8_t len = 1)
+    void write_buffer(uint8_t* data, uint8_t len = 1)
     {
         set_cs(cs::enable);
 
-        uint8_t op = utils::to_underlying_type(op::write_buffer_memory);
+        uint8_t op = utils::underlying_type(op::write_buffer_memory);
         spi_driver_.write_data(&op);
         spi_driver_.write_data(data, len);
 
@@ -175,13 +168,14 @@ private:
 public:
     Enc28j60(SPIDriver& spi_driver)
         : spi_driver_(spi_driver)
-    {}
+    {
+    }
 
     void reset()
     {
         set_cs(cs::enable);
 
-        uint8_t op = utils::to_underlying_type(op::system_reset);
+        uint8_t op = utils::underlying_type(op::system_reset);
         spi_driver_.write_data(&op);
 
         set_cs(cs::disable);
@@ -264,7 +258,7 @@ public:
         write_reg(con1x.Address, con1x.RegBank, con1x.value, op::bit_field_set);
     }
 
-    void init(uint8_t *macaddr)
+    void init(uint8_t* macaddr)
     {
         set_cs(cs::disable);
 
@@ -276,10 +270,9 @@ public:
         enable_receive();
     }
 
-    uint16_t packet_receive(uint16_t maxlen, uint8_t *packet)
+    uint16_t packet_receive(uint16_t maxlen, uint8_t* packet)
     {
-        if (read_eth(dral::enc28j60::eth::pktcnt::Address, dral::enc28j60::eth::pktcnt::RegBank) == 0)
-        {
+        if (read_eth(dral::enc28j60::eth::pktcnt::Address, dral::enc28j60::eth::pktcnt::RegBank) == 0) {
             return 0;
         }
 
@@ -309,7 +302,7 @@ public:
         return len;
     }
 
-    void packet_send(uint16_t len, uint8_t *packet)
+    void packet_send(uint16_t len, uint8_t* packet)
     {
         write_reg(dral::enc28j60::eth::wrptl::Address, dral::enc28j60::eth::wrptl::RegBank, transmit_buffer_start & 0xFF);
         write_reg(dral::enc28j60::eth::wrpth::Address, dral::enc28j60::eth::wrpth::RegBank, transmit_buffer_start >> 8);
@@ -326,13 +319,9 @@ public:
         write_reg(con1.Address, con1.RegBank, con1.value, op::bit_field_set);
     }
 
-    uint8_t revision()
-    {
-        return read_eth(dral::enc28j60::eth::revid::Address, dral::enc28j60::eth::revid::RegBank);
-    }
+    uint8_t revision() { return read_eth(dral::enc28j60::eth::revid::Address, dral::enc28j60::eth::revid::RegBank); }
 };
 
 }  // namespace devices::enc28j60
 
 #endif  // ENC28J60_H
-

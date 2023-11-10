@@ -5,6 +5,8 @@
 
 namespace drivers::concepts {
 
+// clang-format off
+
 template<typename T>
 concept i2c_driver_concept = requires(T i2c_driver, uint8_t *buffer, uint8_t length) {
     { i2c_driver.read_data(buffer, length) } -> std::same_as<int>;
@@ -12,6 +14,8 @@ concept i2c_driver_concept = requires(T i2c_driver, uint8_t *buffer, uint8_t len
     { i2c_driver.read_data(buffer) } -> std::same_as<int>;
     { i2c_driver.write_data(buffer) } -> std::same_as<int>;
 };
+
+// clang-format on
 
 }  // namespace drivers::concepts
 

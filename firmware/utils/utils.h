@@ -6,7 +6,8 @@
 namespace utils {
 
 template<typename T>
-constexpr auto to_underlying_type(T v) {
+constexpr auto underlying_type(T v)
+{
     return static_cast<std::underlying_type_t<T>>(v);
 }
 
