@@ -2,10 +2,11 @@
 
 Setup build environment:
 ```bash
-./build.py setup
+./project.py submodules
+./project.py setup
 ```
 
 Build the project:
 ```bash
-./build.py
+./project.py
 ```

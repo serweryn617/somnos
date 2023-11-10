@@ -18,8 +18,8 @@
 
 #include "devices/enc28j60/enc28j60.h"
 #include "devices/ina219/ina219.h"
-#include "drivers/pico/pico_i2c_driver.h"
-#include "drivers/pico/pico_spi_driver.h"
+#include "drivers/pico/inc/pico_i2c_driver.h"
+#include "drivers/pico/inc/pico_spi_driver.h"
 
 #define SPI_PORT spi1
 #define PIN_SCK 10

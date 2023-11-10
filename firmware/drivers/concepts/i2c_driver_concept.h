@@ -2,6 +2,7 @@
 #define I2C_DRIVER_CONCEPT_H
 
 #include <concepts>
+#include <cstdint>
 
 namespace drivers::concepts {
 
