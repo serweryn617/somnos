@@ -30,7 +30,7 @@
 // based on example from: https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
 #define ETHERNET_MTU 1500
 
-
+using namespace devices::enc28j60;
 uint8_t mac_addr[6] = {0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92};
 
 PicoSPIDriver enc_driver(SPI_PORT, PIN_CS, PIN_MISO, PIN_MOSI, PIN_SCK);
@@ -137,22 +137,22 @@ static err_t netif_output(struct netif *netif, struct pbuf *p)
     enc28j60.packet_send(p->len, (uint8_t *)p->payload);
     // pbuf_free(p);
 
-    // error sending
-    dral::enc28j60::common::stat stat;
-    stat.value = enc28j60.read(stat.Address, stat.RegBank);
-    if (stat.txabrt)
-    {
-        // a seven-byte transmit status vector will be
-        // written to the location pointed to by ETXND + 1,
-        printf("ERR - transmit aborted\n");
-    }
+    // // error sending
+    // dral::enc28j60::common::stat stat;
+    // stat.value = enc28j60.read(stat.Address, stat.RegBank);
+    // if (stat.txabrt)
+    // {
+    //     // a seven-byte transmit status vector will be
+    //     // written to the location pointed to by ETXND + 1,
+    //     printf("ERR - transmit aborted\n");
+    // }
 
-    dral::enc28j60::common::ir ir;
-    ir.value = enc28j60.read(ir.Address, ir.RegBank);
-    if (ir.txerif)
-    {
-        printf("ERR - transmit interrupt flag set\n");
-    }
+    // dral::enc28j60::common::ir ir;
+    // ir.value = enc28j60.read(ir.Address, ir.RegBank);
+    // if (ir.txerif)
+    // {
+    //     printf("ERR - transmit interrupt flag set\n");
+    // }
 
     // unlock_interrupts();
     return ERR_OK;

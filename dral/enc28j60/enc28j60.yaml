@@ -839,11 +839,11 @@ device:
       reset_value: 0x00
       reg_bank: 2
       fields:
-      - name: MIISCAN
+      - name: SCAN
         description: MII Scan Enable
         position: 1
         width: 1
-      - name: MIIRD
+      - name: RD
         description: MII Read Enable
         position: 0
         width: 1
