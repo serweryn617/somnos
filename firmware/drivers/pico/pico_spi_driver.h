@@ -3,7 +3,7 @@
 
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
-#include "spi_driver_concept.h"
+#include "drivers/concepts/spi_driver_concept.h"
 
 namespace drivers::pico {
 

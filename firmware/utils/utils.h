@@ -1,15 +1,15 @@
-#ifndef MISC_H
-#define MISC_H
+#ifndef UTILS_H
+#define UTILS_H
 
 #include <type_traits>
 
-namespace misc {
+namespace utils {
 
 template<typename T>
 constexpr auto to_underlying_type(T v) {
     return static_cast<std::underlying_type_t<T>>(v);
 }
 
-}  // namespace misc
+}  // namespace utils
 
-#endif  // MISC_H
+#endif  // UTILS_H

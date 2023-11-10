@@ -15,13 +15,13 @@ set(CMAKE_CXX_STANDARD 20)
 
 # Tell CMake where to find the executable source file
 add_executable(${PROJECT_NAME}
-    src/main.cpp
+    firmware/somnos/src/main.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-    inc
+    firmware
     regs
-    lwip
+    firmware/lwip
 )
 
 # add_subdirectory(dral)

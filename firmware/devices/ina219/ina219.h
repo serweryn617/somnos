@@ -1,8 +1,8 @@
 #ifndef INA219_H
 #define INA219_H
 
-#include "ina219/base.h"
-#include "i2c_driver_concept.h"
+#include "regs/ina219/base.h"
+#include "drivers/concepts/i2c_driver_concept.h"
 
 namespace devices::ina219 {
 

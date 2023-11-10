@@ -3,7 +3,7 @@
 
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
-#include "i2c_driver_concept.h"
+#include "drivers/concepts/i2c_driver_concept.h"
 
 namespace drivers::pico {
 

@@ -3,15 +3,15 @@
 
 #include <algorithm>
 
-#include "enc28j60/common.h"
-#include "enc28j60/eth.h"
-#include "enc28j60/mac.h"
-#include "enc28j60/mii.h"
-#include "enc28j60/phy.h"
+#include "regs/enc28j60/common.h"
+#include "regs/enc28j60/eth.h"
+#include "regs/enc28j60/mac.h"
+#include "regs/enc28j60/mii.h"
+#include "regs/enc28j60/phy.h"
 
-#include "enc28j60_enums.h"
-#include "misc.h"
-#include "spi_driver_concept.h"
+#include "devices/enc28j60/enc28j60_enums.h"
+#include "utils/utils.h"
+#include "drivers/concepts/spi_driver_concept.h"
 
 namespace devices::enc28j60 {
 
@@ -31,7 +31,7 @@ private:
 
     void set_cs(cs state)
     {
-        spi_driver_.set_cs(misc::to_underlying_type(state));
+        spi_driver_.set_cs(utils::to_underlying_type(state));
     }
 
     void set_bank(uint8_t requested_bank, uint8_t address)
@@ -46,7 +46,7 @@ private:
 
         set_cs(cs::enable);
         dral::enc28j60::common::con1 con1;
-        uint8_t command = misc::to_underlying_type(op::bit_field_clear) | con1.Address;
+        uint8_t command = utils::to_underlying_type(op::bit_field_clear) | con1.Address;
         spi_driver_.write_data(&command);
         uint8_t data = con1.bsel.Mask << con1.bsel.Position;
         spi_driver_.write_data(&data);
@@ -55,7 +55,7 @@ private:
         sleep_us(1);
 
         set_cs(cs::enable);
-        command = misc::to_underlying_type(op::bit_field_set) | con1.Address;
+        command = utils::to_underlying_type(op::bit_field_set) | con1.Address;
         spi_driver_.write_data(&command);
         data = (requested_bank & con1.bsel.Mask) << con1.bsel.Position;
         spi_driver_.write_data(&data);
@@ -70,7 +70,7 @@ private:
 
         set_cs(cs::enable);
 
-        uint8_t command = misc::to_underlying_type(op::read_control_register) | address;
+        uint8_t command = utils::to_underlying_type(op::read_control_register) | address;
         spi_driver_.write_data(&command);
 
         uint8_t data;
@@ -86,7 +86,7 @@ private:
 
         set_cs(cs::enable);
 
-        uint8_t command = misc::to_underlying_type(op::read_control_register) | address;
+        uint8_t command = utils::to_underlying_type(op::read_control_register) | address;
         spi_driver_.write_data(&command);
 
         uint8_t data;
@@ -103,7 +103,7 @@ private:
 
         set_cs(cs::enable);
 
-        uint8_t command = misc::to_underlying_type(operation) | address;
+        uint8_t command = utils::to_underlying_type(operation) | address;
         spi_driver_.write_data(&command);
         spi_driver_.write_data(&data);
 
@@ -154,7 +154,7 @@ private:
     {
         set_cs(cs::enable);
 
-        uint8_t op = misc::to_underlying_type(op::read_buffer_memory);
+        uint8_t op = utils::to_underlying_type(op::read_buffer_memory);
         spi_driver_.write_data(&op);
         spi_driver_.read_data(data, len);
 
@@ -165,7 +165,7 @@ private:
     {
         set_cs(cs::enable);
 
-        uint8_t op = misc::to_underlying_type(op::write_buffer_memory);
+        uint8_t op = utils::to_underlying_type(op::write_buffer_memory);
         spi_driver_.write_data(&op);
         spi_driver_.write_data(data, len);
 
@@ -181,7 +181,7 @@ public:
     {
         set_cs(cs::enable);
 
-        uint8_t op = misc::to_underlying_type(op::system_reset);
+        uint8_t op = utils::to_underlying_type(op::system_reset);
         spi_driver_.write_data(&op);
 
         set_cs(cs::disable);
