@@ -16,8 +16,10 @@ set(CMAKE_CXX_STANDARD 20)
 # Tell CMake where to find the executable source file
 add_executable(${PROJECT_NAME}
     firmware/somnos/src/main.cpp
+    firmware/somnos/src/objects.cpp
     firmware/drivers/pico/src/pico_i2c_driver.cpp
     firmware/drivers/pico/src/pico_spi_driver.cpp
+    firmware/netif/src/netif.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE

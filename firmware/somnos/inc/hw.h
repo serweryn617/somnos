@@ -31,6 +31,6 @@ struct netif {
     static constexpr uint32_t ethernet_mtu = 1500;
 };
 
-}
+}  // namespace hw
 
 #endif  // HW_H
