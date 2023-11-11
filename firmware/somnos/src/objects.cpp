@@ -11,7 +11,7 @@ using namespace drivers::pico;
 
 namespace objects {
 
-PicoSPIDriver enc_driver(spi0, hw::enc28j60::spi::cs, hw::enc28j60::spi::miso, hw::enc28j60::spi::mosi, hw::enc28j60::spi::sck);
+PicoSPIDriver enc_driver(spi1, hw::enc28j60::spi::cs, hw::enc28j60::spi::miso, hw::enc28j60::spi::mosi, hw::enc28j60::spi::sck);
 Enc28j60<PicoSPIDriver> enc28j60(enc_driver);
 
 }
