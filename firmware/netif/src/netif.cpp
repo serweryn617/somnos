@@ -211,24 +211,24 @@ void receive()
     }
 }
 
-void interface::init()
+void interface::init_()
 {
     init();
 }
 
-void interface::send(char prefix, uint16_t value)
-{
-    send(prefix, value);
-}
-
-void interface::check_timers()
-{
-    check_timers();
-}
-
-void interface::receive()
+void interface::receive_()
 {
     receive();
+}
+
+void interface::send_(char prefix, uint16_t value)
+{
+    send_msg_to_dest(prefix, value);
+}
+
+void interface::check_timers_()
+{
+    check_timers();
 }
 
 }

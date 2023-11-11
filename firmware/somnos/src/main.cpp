@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "pico/binary_info.h"
 #include "pico/stdlib.h"
 
@@ -44,8 +42,8 @@ int main()
     objects::enc_driver.init();
     uint8_t mac_addr[6] = { 0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92 };
     objects::enc28j60.init(mac_addr);
-    network::interface netif;
-    netif.init();
+    network::interface network_adapter;
+    network_adapter.init_();
 
     while (true) {
         // sw = !sw;
@@ -59,13 +57,13 @@ int main()
         // float bus = ina219.bus_voltage();
         // printf("Bus voltage: %.2f V\n", bus);
 
-        netif.receive();
+        network_adapter.receive_();
 
-        // send_msg_to_dest('B', ina219.bus_voltage_raw());
-        // send_msg_to_dest('S', ina219.shunt_voltage_raw());
-        // send_msg_to_dest('C', ina219.current_raw());
+        network_adapter.send_('B', ina219.bus_voltage_raw());
+        network_adapter.send_('S', ina219.shunt_voltage_raw());
+        network_adapter.send_('C', ina219.current_raw());
 
-        netif.check_timers();
+        network_adapter.check_timers_();
 
         sleep_ms(1000);
     }

@@ -10,10 +10,10 @@ class interface
 public:
     interface() {}
 
-    void init();
-    void send(char prefix, uint16_t value);
-    void check_timers();
-    void receive();
+    void init_();
+    void receive_();
+    void send_(char prefix, uint16_t value);
+    void check_timers_();
 };
 
 }  // namespace netif
