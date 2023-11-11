@@ -9,16 +9,14 @@
 #include "drivers/pico/inc/pico_i2c_driver.h"
 #include "drivers/pico/inc/pico_spi_driver.h"
 
-#include "somnos/inc/hw.h"
 #include "netif/inc/netif.h"
+#include "somnos/inc/hw.h"
 
 #include "somnos/inc/objects.h"
 
 using namespace devices::enc28j60;
 using namespace devices::ina219;
 using namespace drivers::pico;
-
-
 
 int main()
 {

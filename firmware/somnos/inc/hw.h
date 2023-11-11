@@ -1,9 +1,9 @@
 #ifndef HW_H
 #define HW_H
 
-#include <cstdint>
 #include "hardware/i2c.h"
 #include "hardware/spi.h"
+#include <cstdint>
 
 namespace hw {
 

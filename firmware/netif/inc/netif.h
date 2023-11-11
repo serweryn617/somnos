@@ -1,12 +1,9 @@
 #ifndef NETIF_H
 #define NETIF_H
 
-
-
 namespace network {
 
-class interface
-{
+class interface {
 public:
     interface() {}
 

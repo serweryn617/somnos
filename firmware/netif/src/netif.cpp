@@ -10,9 +10,9 @@
 #include "lwip/udp.h"
 #include "netif/etharp.h"
 
+#include "netif/inc/netif.h"
 #include "somnos/inc/hw.h"
 #include "somnos/inc/objects.h"
-#include "netif/inc/netif.h"
 
 namespace network {
 

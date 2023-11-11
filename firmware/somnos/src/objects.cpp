@@ -1,9 +1,9 @@
+#include "somnos/inc/objects.h"
 #include "devices/enc28j60/enc28j60.h"
 #include "devices/ina219/ina219.h"
 #include "drivers/pico/inc/pico_i2c_driver.h"
 #include "drivers/pico/inc/pico_spi_driver.h"
 #include "somnos/inc/hw.h"
-#include "somnos/inc/objects.h"
 
 using namespace devices::enc28j60;
 using namespace devices::ina219;
