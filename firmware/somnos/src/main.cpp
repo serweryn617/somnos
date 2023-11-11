@@ -21,14 +21,7 @@
 #include "drivers/pico/inc/pico_i2c_driver.h"
 #include "drivers/pico/inc/pico_spi_driver.h"
 
-#define SPI_PORT spi1
-#define PIN_SCK 10
-#define PIN_MOSI 11
-#define PIN_MISO 12
-#define PIN_CS 13
-
-// based on example from: https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
-#define ETHERNET_MTU 1500
+#include "somnos/inc/hw.h"
 
 using namespace devices::enc28j60;
 using namespace devices::ina219;
@@ -36,14 +29,13 @@ using namespace drivers::pico;
 
 uint8_t mac_addr[6] = { 0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92 };
 
-PicoSPIDriver enc_driver(SPI_PORT, PIN_CS, PIN_MISO, PIN_MOSI, PIN_SCK);
+PicoSPIDriver enc_driver(spi0, hw::enc28j60::spi::cs, hw::enc28j60::spi::miso, hw::enc28j60::spi::mosi, hw::enc28j60::spi::sck);
 Enc28j60 enc28j60(enc_driver);
 
 struct udp_pcb* upcb;
 
 void udp_receive_callback(void* arg, struct udp_pcb* upcb, struct pbuf* p, const ip_addr_t* addr, u16_t port)
 {
-
     // struct pbuf *p;
     uint8_t data[100] = { 0 };
     sprintf((char*)data, "sending udp client message");
@@ -166,7 +158,7 @@ static err_t netif_initialize(struct netif* netif)
     netif->linkoutput = netif_output;
     netif->output = etharp_output;
     // netif->output_ip6 = ethip6_output;
-    netif->mtu = ETHERNET_MTU;
+    netif->mtu = hw::netif::ethernet_mtu;
     netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_ETHERNET | NETIF_FLAG_IGMP | NETIF_FLAG_MLD6;
     // MIB2_INIT_NETIF(netif, snmp_ifType_ethernet_csmacd, 100000000);
     SMEMCPY(netif->hwaddr, mac_addr, sizeof(netif->hwaddr));
@@ -211,13 +203,13 @@ int main()
     dhcp_inform(&netif);
     // dhcp_start(&netif);
 
-    uint8_t* eth_pkt = (uint8_t*)malloc(ETHERNET_MTU);
+    uint8_t* eth_pkt = (uint8_t*)malloc(hw::netif::ethernet_mtu);
     struct pbuf* p = NULL;
 
     netif_set_link_up(&netif);
     create_udp_socket();
 
-    PicoI2CDriver ina219_driver(i2c0, 16, 17, 0x40);
+    PicoI2CDriver ina219_driver(i2c0, hw::ina219::i2c::sda, hw::ina219::i2c::scl, hw::ina219::i2c::address);
     ina219_driver.init();
     INA219<PicoI2CDriver> ina219(ina219_driver);
     ina219.calibrate();
@@ -234,13 +226,13 @@ int main()
         // float bus = ina219.bus_voltage();
         // printf("Bus voltage: %.2f V\n", bus);
 
-        uint16_t packet_len = enc28j60.packet_receive(ETHERNET_MTU, (uint8_t*)eth_pkt);
+        uint16_t packet_len = enc28j60.packet_receive(hw::netif::ethernet_mtu, (uint8_t*)eth_pkt);
         if (packet_len) {
             printf("enc: Received packet of length = %d\n", packet_len);
             p = pbuf_alloc(PBUF_RAW, packet_len, PBUF_POOL);
             pbuf_take(p, eth_pkt, packet_len);
             free(eth_pkt);
-            eth_pkt = (uint8_t*)malloc(ETHERNET_MTU);
+            eth_pkt = (uint8_t*)malloc(hw::netif::ethernet_mtu);
         }
         else {
             // printf("enc: no packet received\n");
