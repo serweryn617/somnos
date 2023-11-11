@@ -77,7 +77,7 @@ static err_t create_udp_socket()
     return err;
 }
 
-err_t send_msg_to_dest(char prefix, uint16_t value)
+err_t network_send(char prefix, uint16_t value)
 {
     struct pbuf* p;
     uint8_t data[100] = { 0 };
@@ -155,7 +155,7 @@ static err_t netif_initialize(struct netif* netif)
     return ERR_OK;
 }
 
-void init()
+void network_init()
 {
     IP4_ADDR(&static_ip, 192, 168, 1, 111);
     IP4_ADDR(&mask, 255, 255, 255, 0);
@@ -181,13 +181,13 @@ void init()
     create_udp_socket();
 }
 
-void check_timers()
+void network_check_timers()
 {
     /* Cyclic lwIP timers check */
     sys_check_timeouts();
 }
 
-void receive()
+void network_receive()
 {
     uint16_t packet_len = objects::enc28j60.packet_receive(hw::netif::ethernet_mtu, (uint8_t*)eth_pkt);
 
@@ -213,22 +213,22 @@ void receive()
 
 void interface::init_()
 {
-    init();
+    network_init();
 }
 
 void interface::receive_()
 {
-    receive();
+    network_receive();
 }
 
 void interface::send_(char prefix, uint16_t value)
 {
-    send_msg_to_dest(prefix, value);
+    network_send(prefix, value);
 }
 
 void interface::check_timers_()
 {
-    check_timers();
+    network_check_timers();
 }
 
 }
