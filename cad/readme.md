@@ -17,6 +17,8 @@ Mechanical parts nice to have:
 
 KiCAD todo:
  - update schematic
+ - change lib name and validate symbols and footprints
+ - remove gateron and soic4
 
 Eletronics v1.1:
  - disconnect clkout
