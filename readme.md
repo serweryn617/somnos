@@ -8,5 +8,5 @@ Setup build environment:
 
 Build the project:
 ```bash
-./project.py
+./project.py build
 ```
