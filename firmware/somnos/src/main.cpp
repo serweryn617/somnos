@@ -29,7 +29,7 @@ using namespace drivers::pico;
 
 uint8_t mac_addr[6] = { 0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92 };
 
-PicoSPIDriver enc_driver(spi0, hw::enc28j60::spi::cs, hw::enc28j60::spi::miso, hw::enc28j60::spi::mosi, hw::enc28j60::spi::sck);
+PicoSPIDriver enc_driver(spi1, hw::enc28j60::spi::cs, hw::enc28j60::spi::miso, hw::enc28j60::spi::mosi, hw::enc28j60::spi::sck);
 Enc28j60 enc28j60(enc_driver);
 
 struct udp_pcb* upcb;
