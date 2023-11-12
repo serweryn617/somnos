@@ -140,7 +140,7 @@ public:
         : netif_(network_interface)
     {}
 
-    void network_init()
+    void init()
     {
         IP4_ADDR(&static_ip, 192, 168, 1, 111);
         IP4_ADDR(&mask, 255, 255, 255, 0);
@@ -166,7 +166,7 @@ public:
         create_udp_socket();
     }
 
-    void network_receive()
+    void receive()
     {
         uint16_t packet_len = netif_.packet_receive(hw::netif::ethernet_mtu, (uint8_t*)eth_pkt);
 
@@ -190,7 +190,7 @@ public:
         }
     }
 
-    err_t network_send(char prefix, uint16_t value)
+    err_t send(char prefix, uint16_t value)
     {
         struct pbuf* p;
         uint8_t data[100] = { 0 };
@@ -217,7 +217,7 @@ public:
         return ERR_MEM;
     }
 
-    void network_check_timers()
+    void check_timers()
     {
         /* Cyclic lwIP timers check */
         sys_check_timeouts();
