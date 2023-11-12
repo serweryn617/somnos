@@ -12,8 +12,6 @@
 #include "netif/inc/netif.h"
 #include "somnos/inc/hw.h"
 
-#include "somnos/inc/objects.h"
-
 using namespace devices::enc28j60;
 using namespace devices::ina219;
 using namespace drivers::pico;
@@ -37,11 +35,13 @@ int main()
     INA219<PicoI2CDriver> ina219(ina219_driver);
     ina219.calibrate();
 
-    objects::enc_driver.init();
     uint8_t mac_addr[6] = { 0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92 };
-    objects::enc28j60.init(mac_addr);
-    network::interface network_adapter;
-    network_adapter.init_();
+    PicoSPIDriver enc_driver(spi1, hw::enc28j60::spi::cs, hw::enc28j60::spi::miso, hw::enc28j60::spi::mosi, hw::enc28j60::spi::sck);
+    Enc28j60 enc28j60(enc_driver);
+    enc_driver.init();
+    enc28j60.init(mac_addr);
+    network::interface network_adapter(enc28j60);
+    network_adapter.network_init();
 
     while (true) {
         // sw = !sw;
@@ -55,13 +55,13 @@ int main()
         // float bus = ina219.bus_voltage();
         // printf("Bus voltage: %.2f V\n", bus);
 
-        network_adapter.receive_();
+        network_adapter.network_receive();
 
-        network_adapter.send_('B', ina219.bus_voltage_raw());
-        network_adapter.send_('S', ina219.shunt_voltage_raw());
-        network_adapter.send_('C', ina219.current_raw());
+        network_adapter.network_send('B', ina219.bus_voltage_raw());
+        network_adapter.network_send('S', ina219.shunt_voltage_raw());
+        network_adapter.network_send('C', ina219.current_raw());
 
-        network_adapter.check_timers_();
+        network_adapter.network_check_timers();
 
         sleep_ms(1000);
     }
