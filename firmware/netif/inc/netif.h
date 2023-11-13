@@ -1,7 +1,6 @@
 #ifndef NETIF_H
 #define NETIF_H
 
-
 #include "lwip/dhcp.h"
 #include "lwip/inet.h"
 #include "lwip/init.h"
@@ -11,8 +10,10 @@
 #include "lwip/timeouts.h"
 #include "lwip/udp.h"
 #include "netif/etharp.h"
-#include "somnos/inc/hw.h"
 #include "netif/inc/netif_concept.h"
+#include "somnos/inc/hw.h"
+
+// https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
 
 namespace network {
 
@@ -25,7 +26,6 @@ private:
     uint8_t* eth_pkt;
     struct pbuf* p = NULL;
     ip_addr_t address, mask, static_ip;
-
 
     static void udp_receive_callback(void* arg, struct udp_pcb* upcb, struct pbuf* p, const ip_addr_t* address, u16_t port)
     {
