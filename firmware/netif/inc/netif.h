@@ -14,9 +14,10 @@
 
 #include "somnos/inc/hw.h"
 
-// lwIP documentation: https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
+// lwIP documentation:
+// https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
 
-// inspiration:
+// references:
 // https://github.com/Juddling/pi-pico-enc28j60
 // https://github.com/guyg3333/LWIP_udp_example_nucleo_144/
 
@@ -30,60 +31,48 @@ private:
     struct netif netif;
     uint8_t* eth_pkt;
     struct pbuf* p = NULL;
-    ip_addr_t static_ip, mask, address;
+    ip_addr_t static_ip, mask, gateway;
 
     static void udp_receive_callback(void* arg, struct udp_pcb* upcb, struct pbuf* p, const ip_addr_t* address, u16_t port)
     {
-        // struct pbuf *p;
-        uint8_t data[100] = { 0 };
-        sprintf((char*)data, "sending udp client message");
-        /* allocate pbuf from pool*/
-        p = pbuf_alloc(PBUF_TRANSPORT, strlen((char*)data), PBUF_POOL);
-        if (p != NULL) {
-            /* copy data to pbuf */
-            pbuf_take(p, (char*)data, strlen((char*)data));
-
-            /* send udp data */
-            udp_send(upcb, p);
-
-            /* free pbuf */
-            pbuf_free(p);
+        // auto* instance = static_cast<interface<NetworkInterface>*>(arg);
+        printf("udp_receive_callback: p->len: %d\n", p->len);
+        printf("udp_receive_callback: p->payload: ");
+        for (size_t i = 0; i < p->len; i++)
+        {
+            printf("%c", ((char*)p->payload)[i]);
         }
+        printf("\n");
+
+        pbuf_free(p);
     }
 
     err_t create_udp_socket()
     {
-        err_t err = ERR_OK;
+        err_t err;
         ip4_addr_t destIPAddr;
-        upcb = udp_new();
 
+        upcb = udp_new();
         if (upcb == NULL) {
             return ERR_MEM;
         }
-        // Load the static IP of the destination address
-        // 169.254.157.160:
 
-        // Tx_buf[30] = 192; // destination IP
-        //    Tx_buf[31] = 168;
-        //    Tx_buf[32] = 1;
-        //    Tx_buf[33] = 49;
-
-        IP4_ADDR(&destIPAddr, 192, 168, 1, 26);
-        upcb->local_port = 5001;
-        // upcb->local_port = 4004; // Set our local port to 4004
-        //  Should bind to the local ip and port
-        err = udp_bind(upcb, IP4_ADDR_ANY, 5004);
+        err = udp_bind(upcb, IP4_ADDR_ANY, 4444);
         if (err != ERR_OK) {
+            printf("udp_bind %i\n", err);
             return err;
         }
-        // Connect to the other port
+
+        // Connected pcb can only receive from the connected remote
+        IP4_ADDR(&destIPAddr, 192, 168, 1, 26);
         err = udp_connect(upcb, &destIPAddr, 5001);
         if (err != ERR_OK) {
+            printf("udp_connect %i\n", err);
             return err;
         }
-        // Set the receive function
+
         udp_recv(upcb, udp_receive_callback, NULL);
-        return err;
+        return ERR_OK;
     }
 
     static err_t netif_output(struct netif* netif, struct pbuf* p)
@@ -124,11 +113,11 @@ public:
     {
         IP4_ADDR(&static_ip, 192, 168, 1, 111);
         IP4_ADDR(&mask, 255, 255, 255, 0);
-        IP4_ADDR(&address, 192, 168, 1, 1);
+        IP4_ADDR(&gateway, 192, 168, 1, 1);
 
         lwip_init();
 
-        netif_add(&netif, &static_ip, &mask, &address, this, netif_initialize, netif_input);
+        netif_add(&netif, &static_ip, &mask, &gateway, this, netif_initialize, netif_input);
         netif.name[0] = 'e';
         netif.name[1] = '0';
         // netif_create_ip6_linklocal_address(&netif, 1);
@@ -187,22 +176,18 @@ public:
         data[1] = value & 0xff;
         data[2] = value >> 8;
 
-        /* allocate pbuf from pool*/
-        // p = pbuf_alloc(PBUF_TRANSPORT,strlen((char*)data), PBUF_POOL);
-        p = pbuf_alloc(PBUF_TRANSPORT, 3, PBUF_POOL);
+        p = pbuf_alloc(PBUF_TRANSPORT, 3, PBUF_POOL);  // strlen((char*)data)
 
-        if (p != NULL) {
-            /* copy data to pbuf */
-            pbuf_take(p, (char*)data, strlen((char*)data));
-
-            /* send udp data */
-            udp_send(upcb, p);
-
-            /* free pbuf */
-            pbuf_free(p);
-            return ERR_OK;
+        if (p == NULL) {
+            return ERR_MEM;
         }
-        return ERR_MEM;
+
+        pbuf_take(p, (char*)data, strlen((char*)data));
+
+        udp_send(upcb, p);  // use udp_send_to for non connected pcb
+
+        pbuf_free(p);
+        return ERR_OK;
     }
 
     void check_timers()
