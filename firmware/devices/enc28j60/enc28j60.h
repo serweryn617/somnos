@@ -320,6 +320,8 @@ public:
         dral::enc28j60::common::con1 con1;
         con1.txrts = 1;
         write_reg(con1.Address, con1.RegBank, con1.value, op::bit_field_set);
+
+        // check stat.txabrt and ir.txerif
     }
 
     uint8_t revision() { return read_eth(dral::enc28j60::eth::revid::Address, dral::enc28j60::eth::revid::RegBank); }
