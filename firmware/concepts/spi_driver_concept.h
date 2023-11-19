@@ -4,7 +4,7 @@
 #include <concepts>
 #include <cstdint>
 
-namespace drivers::concepts {
+namespace concepts::drivers {
 
 // clang-format off
 
@@ -19,6 +19,6 @@ concept spi_driver_concept = requires(T spi_driver, uint8_t *buffer, uint8_t len
 
 // clang-format on
 
-}  // namespace drivers::concepts
+}  // namespace concepts::drivers
 
 #endif  // SPI_DRIVER_CONCEPT_H

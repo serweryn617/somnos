@@ -18,7 +18,6 @@ using namespace drivers::pico;
 
 int main()
 {
-    // Enable UART so we can print status output
     stdio_init_all();
 
     // Make the I2C pins available to picotool
