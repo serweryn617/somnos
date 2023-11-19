@@ -27,7 +27,7 @@ template<network::concepts::netif_concept NetworkInterface>
 class interface {
 private:
     NetworkInterface& netif_;
-    struct udp_pcb* upcb;
+    struct udp_pcb* upcb;  // protocol control block
     struct netif netif;
     uint8_t* eth_pkt;
     struct pbuf* p = NULL;
@@ -50,7 +50,6 @@ private:
     err_t create_udp_socket()
     {
         err_t err;
-        ip4_addr_t destIPAddr;
 
         upcb = udp_new();
         if (upcb == NULL) {
@@ -64,12 +63,13 @@ private:
         }
 
         // Connected pcb can only receive from the connected remote
-        IP4_ADDR(&destIPAddr, 192, 168, 1, 26);
-        err = udp_connect(upcb, &destIPAddr, 5001);
-        if (err != ERR_OK) {
-            printf("udp_connect %i\n", err);
-            return err;
-        }
+        // ip4_addr_t destIPAddr;
+        // IP4_ADDR(&destIPAddr, 192, 168, 1, 26);
+        // err = udp_connect(upcb, &destIPAddr, 5001);
+        // if (err != ERR_OK) {
+        //     printf("udp_connect %i\n", err);
+        //     return err;
+        // }
 
         udp_recv(upcb, udp_receive_callback, NULL);
         return ERR_OK;
@@ -184,7 +184,10 @@ public:
 
         pbuf_take(p, (char*)data, strlen((char*)data));
 
-        udp_send(upcb, p);  // use udp_send_to for non connected pcb
+        // udp_send(upcb, p);  // use udp_sendto for non connected pcb
+        ip4_addr_t destIPAddr;
+        IP4_ADDR(&destIPAddr, 192, 168, 1, 26);
+        udp_sendto(upcb, p, &destIPAddr, 5001);
 
         pbuf_free(p);
         return ERR_OK;
