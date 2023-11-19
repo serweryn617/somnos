@@ -12,6 +12,9 @@
 #include "devices/enc28j60/enc28j60_enums.h"
 #include "drivers/concepts/spi_driver_concept.h"
 #include "utils/utils.h"
+// #include "netif/inc/netif_concept.h"
+
+#include "pico/stdlib.h"
 
 namespace devices::enc28j60 {
 
@@ -317,10 +320,14 @@ public:
         dral::enc28j60::common::con1 con1;
         con1.txrts = 1;
         write_reg(con1.Address, con1.RegBank, con1.value, op::bit_field_set);
+
+        // check stat.txabrt and ir.txerif
     }
 
     uint8_t revision() { return read_eth(dral::enc28j60::eth::revid::Address, dral::enc28j60::eth::revid::RegBank); }
 };
+
+// static_assert(network::concepts::netif_concept<Enc28j60<>>);
 
 }  // namespace devices::enc28j60
 

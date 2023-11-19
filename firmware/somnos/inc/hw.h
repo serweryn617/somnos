@@ -1,9 +1,9 @@
 #ifndef HW_H
 #define HW_H
 
-#include <cstdint>
 #include "hardware/i2c.h"
 #include "hardware/spi.h"
+#include <cstdint>
 
 namespace hw {
 
@@ -31,6 +31,6 @@ struct netif {
     static constexpr uint32_t ethernet_mtu = 1500;
 };
 
-}
+}  // namespace hw
 
 #endif  // HW_H
