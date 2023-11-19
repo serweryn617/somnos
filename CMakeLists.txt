@@ -9,15 +9,15 @@ include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 include($ENV{PICO_SDK_PATH}/tools/CMakeLists.txt)
 
 # Set name of project (as PROJECT_NAME) and C/C++ standards
-project(somnos C CXX ASM)
+project(firmware C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 
 # Tell CMake where to find the executable source file
 add_executable(${PROJECT_NAME}
-    firmware/somnos/src/main.cpp
-    firmware/drivers/pico/src/pico_i2c_driver.cpp
-    firmware/drivers/pico/src/pico_spi_driver.cpp
+    firmware/main/src/main.cpp
+    firmware/drivers/pico/i2c/src/pico_i2c_driver.cpp
+    firmware/drivers/pico/spi/src/pico_spi_driver.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE

@@ -19,7 +19,7 @@
 #include "netif/etharp.h"
 
 #include "concepts/network_adapter_concept.h"
-#include "somnos/inc/hw.h"  // TODO: remove
+#include "main/inc/hw.h"  // TODO: remove
 
 namespace network {
 
@@ -66,8 +66,7 @@ private:
         // auto* instance = static_cast<Interface<NetworkAdapter>*>(arg);
         printf("udp_receive_callback: p->len: %d\n", p->len);
         printf("udp_receive_callback: p->payload: ");
-        for (size_t i = 0; i < p->len; i++)
-        {
+        for (size_t i = 0; i < p->len; i++) {
             printf("%c", ((char*)p->payload)[i]);
         }
         printf("\n");
@@ -85,8 +84,7 @@ private:
         return ERR_OK;
     }
 
-    static void netif_status_callback(struct netif* netif)
-    {}
+    static void netif_status_callback(struct netif* netif) {}
 
     static err_t netif_initialize(struct netif* netif)
     {
@@ -94,10 +92,10 @@ private:
         uint8_t mac_addr[6] = { 0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92 };
 
         netif->linkoutput = netif_output;
-        netif->output     = etharp_output;
+        netif->output = etharp_output;
         // netif->output_ip6 = ethip6_output;
-        netif->mtu        = hw::netif::ethernet_mtu;
-        netif->flags      = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_ETHERNET | NETIF_FLAG_IGMP | NETIF_FLAG_MLD6;
+        netif->mtu = hw::netif::ethernet_mtu;
+        netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_ETHERNET | NETIF_FLAG_IGMP | NETIF_FLAG_MLD6;
         // MIB2_INIT_NETIF(netif, snmp_ifType_ethernet_csmacd, 100000000);
         SMEMCPY(netif->hwaddr, mac_addr, sizeof(netif->hwaddr));
         netif->hwaddr_len = sizeof(netif->hwaddr);
@@ -107,7 +105,8 @@ private:
 public:
     Interface(NetworkAdapter& adapetr)
         : adapetr_(adapetr)
-    {}
+    {
+    }
 
     void init()
     {
@@ -193,10 +192,7 @@ public:
         return ERR_OK;
     }
 
-    void check_timers()
-    {
-        sys_check_timeouts();
-    }
+    void check_timers() { sys_check_timeouts(); }
 };
 
 }  // namespace network

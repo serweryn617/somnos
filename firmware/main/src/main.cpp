@@ -6,15 +6,16 @@
 
 #include "devices/enc28j60/enc28j60.h"
 #include "devices/ina219/ina219.h"
-#include "drivers/pico/inc/pico_i2c_driver.h"
-#include "drivers/pico/inc/pico_spi_driver.h"
+#include "drivers/pico/i2c/inc/pico_i2c_driver.h"
+#include "drivers/pico/spi/inc/pico_spi_driver.h"
 
-#include "netif/inc/netif.h"
-#include "somnos/inc/hw.h"
+#include "main/inc/hw.h"
+#include "network_interface/network_interface.h"
 
 using namespace devices::enc28j60;
 using namespace devices::ina219;
 using namespace drivers::pico;
+using namespace network;
 
 int main()
 {
@@ -39,7 +40,7 @@ int main()
     spi_driver.init();
     Enc28j60 enc28j60(spi_driver);
     enc28j60.init(mac_addr);
-    network::interface network_interface(enc28j60);
+    Interface network_interface(enc28j60);
     network_interface.init();
 
     while (true) {

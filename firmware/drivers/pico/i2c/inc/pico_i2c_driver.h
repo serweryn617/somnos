@@ -1,7 +1,7 @@
 #ifndef PICO_I2C_DRIVER_H
 #define PICO_I2C_DRIVER_H
 
-#include "drivers/concepts/i2c_driver_concept.h"
+#include "concepts/i2c_driver_concept.h"
 #include "hardware/i2c.h"
 #include "pico/stdlib.h"
 
@@ -21,7 +21,7 @@ public:
     int write_data(uint8_t* buffer, uint8_t length = 1);
 };
 
-static_assert(drivers::concepts::i2c_driver_concept<PicoI2CDriver>);
+static_assert(concepts::drivers::i2c_driver_concept<PicoI2CDriver>);
 
 }  // namespace drivers::pico
 
