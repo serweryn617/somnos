@@ -1,4 +1,4 @@
-#include "drivers/pico/inc/pico_spi_driver.h"
+#include "drivers/pico/spi/inc/pico_spi_driver.h"
 
 namespace drivers::pico {
 

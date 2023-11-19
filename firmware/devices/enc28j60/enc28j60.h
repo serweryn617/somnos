@@ -9,16 +9,16 @@
 #include "regs/enc28j60/mii.h"
 #include "regs/enc28j60/phy.h"
 
+// #include "concepts/network_adapter_concept.h"
+#include "concepts/spi_driver_concept.h"
 #include "devices/enc28j60/enc28j60_enums.h"
-#include "drivers/concepts/spi_driver_concept.h"
 #include "utils/utils.h"
-// #include "netif/inc/netif_concept.h"
 
 #include "pico/stdlib.h"
 
 namespace devices::enc28j60 {
 
-template<drivers::concepts::spi_driver_concept SPIDriver>
+template<concepts::drivers::spi_driver_concept SPIDriver>
 class Enc28j60 {
 private:
     SPIDriver& spi_driver_;
@@ -327,7 +327,7 @@ public:
     uint8_t revision() { return read_eth(dral::enc28j60::eth::revid::Address, dral::enc28j60::eth::revid::RegBank); }
 };
 
-// static_assert(network::concepts::netif_concept<Enc28j60<>>);
+// static_assert(concepts::network::network_adapter_concept<Enc28j60<>>);  // TODO: Can this be done with templates?
 
 }  // namespace devices::enc28j60
 

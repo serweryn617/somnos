@@ -1,6 +1,13 @@
 #ifndef NETIF_H
 #define NETIF_H
 
+// lwIP documentation:
+// https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
+
+// references:
+// https://github.com/Juddling/pi-pico-enc28j60
+// https://github.com/guyg3333/LWIP_udp_example_nucleo_144/
+
 #include "lwip/dhcp.h"
 #include "lwip/inet.h"
 #include "lwip/init.h"
@@ -10,42 +17,21 @@
 #include "lwip/timeouts.h"
 #include "lwip/udp.h"
 #include "netif/etharp.h"
-#include "netif/inc/netif_concept.h"
 
-#include "somnos/inc/hw.h"
-
-// lwIP documentation:
-// https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
-
-// references:
-// https://github.com/Juddling/pi-pico-enc28j60
-// https://github.com/guyg3333/LWIP_udp_example_nucleo_144/
+#include "concepts/network_adapter_concept.h"
+#include "main/inc/hw.h"  // TODO: remove
 
 namespace network {
 
-template<network::concepts::netif_concept NetworkInterface>
-class interface {
+template<concepts::network::network_adapter_concept NetworkAdapter>
+class Interface {
 private:
-    NetworkInterface& netif_;
+    NetworkAdapter& adapetr_;
     struct udp_pcb* upcb;  // protocol control block
     struct netif netif;
     uint8_t* eth_pkt;
     struct pbuf* p = NULL;
     ip_addr_t static_ip, mask, gateway;
-
-    static void udp_receive_callback(void* arg, struct udp_pcb* upcb, struct pbuf* p, const ip_addr_t* address, u16_t port)
-    {
-        // auto* instance = static_cast<interface<NetworkInterface>*>(arg);
-        printf("udp_receive_callback: p->len: %d\n", p->len);
-        printf("udp_receive_callback: p->payload: ");
-        for (size_t i = 0; i < p->len; i++)
-        {
-            printf("%c", ((char*)p->payload)[i]);
-        }
-        printf("\n");
-
-        pbuf_free(p);
-    }
 
     err_t create_udp_socket()
     {
@@ -75,18 +61,30 @@ private:
         return ERR_OK;
     }
 
+    static void udp_receive_callback(void* arg, struct udp_pcb* upcb, struct pbuf* p, const ip_addr_t* address, u16_t port)
+    {
+        // auto* instance = static_cast<Interface<NetworkAdapter>*>(arg);
+        printf("udp_receive_callback: p->len: %d\n", p->len);
+        printf("udp_receive_callback: p->payload: ");
+        for (size_t i = 0; i < p->len; i++) {
+            printf("%c", ((char*)p->payload)[i]);
+        }
+        printf("\n");
+
+        pbuf_free(p);
+    }
+
     static err_t netif_output(struct netif* netif, struct pbuf* p)
     {
         LINK_STATS_INC(link.xmit);
 
-        auto* instance = static_cast<interface<NetworkInterface>*>(netif->state);
-        instance->netif_.packet_send(p->len, (uint8_t*)p->payload);  // TODO: Use tot_len?
+        auto* instance = static_cast<Interface<NetworkAdapter>*>(netif->state);
+        instance->adapetr_.packet_send(p->len, (uint8_t*)p->payload);  // TODO: Use tot_len?
 
         return ERR_OK;
     }
 
-    static void netif_status_callback(struct netif* netif)
-    {}
+    static void netif_status_callback(struct netif* netif) {}
 
     static err_t netif_initialize(struct netif* netif)
     {
@@ -94,10 +92,10 @@ private:
         uint8_t mac_addr[6] = { 0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92 };
 
         netif->linkoutput = netif_output;
-        netif->output     = etharp_output;
+        netif->output = etharp_output;
         // netif->output_ip6 = ethip6_output;
-        netif->mtu        = hw::netif::ethernet_mtu;
-        netif->flags      = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_ETHERNET | NETIF_FLAG_IGMP | NETIF_FLAG_MLD6;
+        netif->mtu = hw::netif::ethernet_mtu;
+        netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_ETHERNET | NETIF_FLAG_IGMP | NETIF_FLAG_MLD6;
         // MIB2_INIT_NETIF(netif, snmp_ifType_ethernet_csmacd, 100000000);
         SMEMCPY(netif->hwaddr, mac_addr, sizeof(netif->hwaddr));
         netif->hwaddr_len = sizeof(netif->hwaddr);
@@ -105,9 +103,10 @@ private:
     }
 
 public:
-    interface(NetworkInterface& network_interface)
-        : netif_(network_interface)
-    {}
+    Interface(NetworkAdapter& adapetr)
+        : adapetr_(adapetr)
+    {
+    }
 
     void init()
     {
@@ -144,7 +143,7 @@ public:
 
     void receive()
     {
-        uint16_t packet_len = netif_.packet_receive(hw::netif::ethernet_mtu, (uint8_t*)eth_pkt);
+        uint16_t packet_len = adapetr_.packet_receive(hw::netif::ethernet_mtu, (uint8_t*)eth_pkt);
 
         if (!packet_len) {
             return;
@@ -193,12 +192,9 @@ public:
         return ERR_OK;
     }
 
-    void check_timers()
-    {
-        sys_check_timeouts();
-    }
+    void check_timers() { sys_check_timeouts(); }
 };
 
-}  // namespace netif
+}  // namespace network
 
 #endif  // NETIF_H

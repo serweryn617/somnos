@@ -1,4 +1,4 @@
-#include "drivers/pico/inc/pico_i2c_driver.h"
+#include "drivers/pico/i2c/inc/pico_i2c_driver.h"
 
 namespace drivers::pico {
 

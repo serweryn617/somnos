@@ -1,12 +1,12 @@
 #ifndef INA219_H
 #define INA219_H
 
-#include "drivers/concepts/i2c_driver_concept.h"
+#include "concepts/i2c_driver_concept.h"
 #include "regs/ina219/base.h"
 
 namespace devices::ina219 {
 
-template<drivers::concepts::i2c_driver_concept I2CDriver>
+template<concepts::drivers::i2c_driver_concept I2CDriver>
 class INA219 {
 private:
     I2CDriver& i2c_driver_;

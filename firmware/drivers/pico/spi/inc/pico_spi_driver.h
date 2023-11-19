@@ -1,7 +1,7 @@
 #ifndef PICO_SPI_DRIVER_H
 #define PICO_SPI_DRIVER_H
 
-#include "drivers/concepts/spi_driver_concept.h"
+#include "concepts/spi_driver_concept.h"
 #include "hardware/spi.h"
 #include "pico/stdlib.h"
 
@@ -21,7 +21,7 @@ public:
     int write_data(uint8_t* buffer, uint8_t length = 1);
 };
 
-static_assert(drivers::concepts::spi_driver_concept<PicoSPIDriver>);
+static_assert(concepts::drivers::spi_driver_concept<PicoSPIDriver>);
 
 }  // namespace drivers::pico
 
