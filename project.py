@@ -6,6 +6,8 @@ import pathlib
 import subprocess
 import sys
 
+from scripts.udp_rcv import receiver
+
 
 FILE_PATH = pathlib.Path(__file__).parent.resolve()
 COMPILE_COMMANDS_PATH = FILE_PATH/'build'/'compile_commands.json'
@@ -91,22 +93,17 @@ if __name__ == '__main__':
     subparsers = parser.add_subparsers(dest='command')
 
     subparsers.add_parser('submodules', help='Initialize git submodules')
-
     subparsers.add_parser('setup', help='Setup Docker image')
+    subparsers.add_parser('commands', help='Update paths in compile_commands.json')
+    # subparsers.add_parser('picotool', help='Build picotool')
+    # subparsers.add_parser('upload', help='Upload built binary to device')
+    subparsers.add_parser('run', help='Run build container interactively')
+    subparsers.add_parser('format', help='Autoformat C++ code')
+    subparsers.add_parser('receive', help='Print data received from the device')
 
     build_parser = subparsers.add_parser('build', help='Build project')
     build_parser.add_argument('-c', '--clean', help='Perform full build from scratch', action='store_true')
     build_parser.add_argument('-s', '--skip-commands', dest='skip_commands', help='Do not update paths in compile_commands.json', action='store_true')
-
-    subparsers.add_parser('commands', help='Update paths in compile_commands.json')
-
-    # subparsers.add_parser('picotool', help='Build picotool')
-
-    # subparsers.add_parser('upload', help='Upload built binary to device')
-
-    subparsers.add_parser('run', help='Run build container interactively')
-
-    subparsers.add_parser('format', help='Autoformat C++ code')
 
     if len(sys.argv)==1:
         parser.print_help()
@@ -130,3 +127,5 @@ if __name__ == '__main__':
         run()
     elif args.command == 'format':
         autoformat()
+    elif args.command == 'receive':
+        receiver()
