@@ -27,12 +27,12 @@ int main()
     const uint mosfet_pin = 18;
     gpio_init(mosfet_pin);
     gpio_set_dir(mosfet_pin, GPIO_OUT);
-    bool sw = false;
-    gpio_put(mosfet_pin, 1);
+    // bool sw = false;
+    gpio_put(mosfet_pin, true);
 
     PicoI2CDriver i2c_driver(i2c0, hw::ina219::i2c::sda, hw::ina219::i2c::scl, hw::ina219::i2c::address);
     i2c_driver.init();
-    INA219<PicoI2CDriver> ina219(i2c_driver);
+    INA219 ina219(i2c_driver);
     ina219.calibrate();
 
     uint8_t mac_addr[6] = { 0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92 };

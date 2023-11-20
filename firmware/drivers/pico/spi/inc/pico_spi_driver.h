@@ -10,7 +10,10 @@ namespace drivers::pico {
 class PicoSPIDriver {
 private:
     spi_inst_t* spi_inst_;
-    uint8_t pin_cs_, pin_rx_, pin_tx_, pin_sck_;
+    uint8_t pin_cs_;
+    uint8_t pin_rx_;
+    uint8_t pin_tx_;
+    uint8_t pin_sck_;
 
 public:
     PicoSPIDriver(spi_inst_t* spi_inst, uint8_t pin_cs, uint8_t pin_rx, uint8_t pin_tx, uint8_t pin_sck);

@@ -11,7 +11,8 @@ class PicoI2CDriver {
 private:
     i2c_inst_t* i2c_inst_;
     uint8_t i2c_address_;
-    uint8_t pin_sda_, pin_scl_;
+    uint8_t pin_sda_;
+    uint8_t pin_scl_;
 
 public:
     PicoI2CDriver(i2c_inst_t* i2c_inst, uint8_t pin_sda, uint8_t pin_scl, uint8_t i2c_address);

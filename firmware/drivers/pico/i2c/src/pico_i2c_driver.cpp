@@ -22,7 +22,7 @@ int PicoI2CDriver::read_data(uint8_t* buffer, uint8_t length)
     return i2c_read_blocking(i2c_inst_, i2c_address_, buffer, length, false);
 }
 
-int PicoI2CDriver::write_data(uint8_t* buffer, uint8_t length)
+int PicoI2CDriver::write_data(const uint8_t* buffer, uint8_t length)
 {
     return i2c_write_blocking(i2c_inst_, i2c_address_, buffer, length, false);
 }

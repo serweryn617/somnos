@@ -30,7 +30,7 @@ int PicoSPIDriver::read_data(uint8_t* buffer, uint8_t length)
     return spi_read_blocking(spi_inst_, 0, buffer, length);
 }
 
-int PicoSPIDriver::write_data(uint8_t* buffer, uint8_t length)
+int PicoSPIDriver::write_data(const uint8_t* buffer, uint8_t length)
 {
     return spi_write_blocking(spi_inst_, buffer, length);
 }
