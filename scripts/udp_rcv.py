@@ -12,7 +12,7 @@ class UDPReceiver():
         self.sock.bind(("", UDP_PORT))
 
     def receive(self):
-        data, addr = self.sock.recvfrom(1024)
+        data, _ = self.sock.recvfrom(1024)
         return data
 
     def close(self):
@@ -31,13 +31,15 @@ def receiver():
 
     while True:
         data = rcv.receive()
-        value = data[1] | (data[2] << 8)
-        if chr(data[0]) == "B":
-            print("Bus:", value / 250, 'V')
-        if chr(data[0]) == "S":
-            print("Shunt:", value / 100, 'mV')
-        if chr(data[0]) == "C":
-            print("Current:", value * 0.0305, 'mA')
+        magic = data[0:4]
+
+        if magic == b"SMNS":
+            bus = int.from_bytes(data[4:6], byteorder='little', signed=True) / 250
+            shunt = int.from_bytes(data[6:8], byteorder='little', signed=True) / 100
+            current = int.from_bytes(data[8:10], byteorder='little', signed=True) * 0.0305
+            print("Bus:", bus, 'V')
+            print("Shunt:", shunt, 'mV')
+            print("Current:", current, 'mA')
 
 
 if __name__ == "__main__":

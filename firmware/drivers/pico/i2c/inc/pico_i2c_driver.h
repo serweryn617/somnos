@@ -19,7 +19,7 @@ public:
 
     void init();
     int read_data(uint8_t* buffer, uint8_t length = 1);
-    int write_data(uint8_t* buffer, uint8_t length = 1);
+    int write_data(const uint8_t* buffer, uint8_t length = 1);
 };
 
 static_assert(concepts::drivers::i2c_driver_concept<PicoI2CDriver>);

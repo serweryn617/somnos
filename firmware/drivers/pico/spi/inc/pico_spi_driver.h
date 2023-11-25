@@ -21,7 +21,7 @@ public:
     void init();
     void set_cs(bool state);
     int read_data(uint8_t* buffer, uint8_t length = 1);
-    int write_data(uint8_t* buffer, uint8_t length = 1);
+    int write_data(const uint8_t* buffer, uint8_t length = 1);
 };
 
 static_assert(concepts::drivers::spi_driver_concept<PicoSPIDriver>);

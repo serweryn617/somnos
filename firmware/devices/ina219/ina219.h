@@ -84,6 +84,8 @@ public:
         uint16_t shunt_voltage = shunt_voltage_raw();
         return static_cast<float>(shunt_voltage) * 0.0305;
     }
+
+    // TODO: check cnvr and ovf flags when reading values
 };
 
 }  // namespace devices::ina219

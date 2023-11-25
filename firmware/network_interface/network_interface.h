@@ -1,5 +1,5 @@
-#ifndef NETIF_H
-#define NETIF_H
+#ifndef NETWORK_INTERFACE_H
+#define NETWORK_INTERFACE_H
 
 // lwIP documentation:
 // https://www.nongnu.org/lwip/2_0_x/group__lwip__nosys.html
@@ -32,6 +32,8 @@ private:
     uint8_t* eth_pkt;
     struct pbuf* p = NULL;
     ip_addr_t static_ip, mask, gateway;
+    ip4_addr_t dest_ip;
+    uint16_t dest_port;
 
     err_t create_udp_socket()
     {
@@ -47,15 +49,6 @@ private:
             printf("udp_bind %i\n", err);
             return err;
         }
-
-        // Connected pcb can only receive from the connected remote
-        // ip4_addr_t destIPAddr;
-        // IP4_ADDR(&destIPAddr, 192, 168, 1, 26);
-        // err = udp_connect(upcb, &destIPAddr, 5001);
-        // if (err != ERR_OK) {
-        //     printf("udp_connect %i\n", err);
-        //     return err;
-        // }
 
         udp_recv(upcb, udp_receive_callback, NULL);
         return ERR_OK;
@@ -88,15 +81,12 @@ private:
 
     static err_t netif_initialize(struct netif* netif)
     {
-        // TODO: do something with this
-        uint8_t mac_addr[6] = { 0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92 };
+        uint8_t mac_addr[6] = { 0x11, 0xe8, 0xc3, 0xf8, 0xc6, 0x92 };  // TODO: remove
 
         netif->linkoutput = netif_output;
         netif->output = etharp_output;
-        // netif->output_ip6 = ethip6_output;
         netif->mtu = hw::netif::ethernet_mtu;
         netif->flags = NETIF_FLAG_BROADCAST | NETIF_FLAG_ETHARP | NETIF_FLAG_ETHERNET | NETIF_FLAG_IGMP | NETIF_FLAG_MLD6;
-        // MIB2_INIT_NETIF(netif, snmp_ifType_ethernet_csmacd, 100000000);
         SMEMCPY(netif->hwaddr, mac_addr, sizeof(netif->hwaddr));
         netif->hwaddr_len = sizeof(netif->hwaddr);
         return ERR_OK;
@@ -113,14 +103,14 @@ public:
         IP4_ADDR(&static_ip, 192, 168, 1, 111);
         IP4_ADDR(&mask, 255, 255, 255, 0);
         IP4_ADDR(&gateway, 192, 168, 1, 1);
+        IP4_ADDR(&dest_ip, 192, 168, 1, 26);
+        dest_port = 5001;
 
         lwip_init();
 
         netif_add(&netif, &static_ip, &mask, &gateway, this, netif_initialize, netif_input);
         netif.name[0] = 'e';
         netif.name[1] = '0';
-        // netif_create_ip6_linklocal_address(&netif, 1);
-        // netif.ip6_autoconfig_enabled = 1;
         netif_set_status_callback(&netif, netif_status_callback);
         netif_set_default(&netif);
         netif_set_up(&netif);
@@ -156,9 +146,6 @@ public:
         }
 
         pbuf_take(p, eth_pkt, packet_len);
-        // free(eth_pkt);
-        // eth_pkt = (uint8_t*)malloc(hw::netif::ethernet_mtu);
-
         LINK_STATS_INC(link.recv);
 
         if (netif.input(p, &netif) != ERR_OK) {
@@ -166,28 +153,17 @@ public:
         }
     }
 
-    err_t send(char prefix, uint16_t value)
+    err_t send(uint8_t* data, uint16_t length)
     {
         struct pbuf* p;
-        uint8_t data[100] = { 0 };
-
-        data[0] = prefix;
-        data[1] = value & 0xff;
-        data[2] = value >> 8;
-
-        p = pbuf_alloc(PBUF_TRANSPORT, 3, PBUF_POOL);  // strlen((char*)data)
+        p = pbuf_alloc(PBUF_TRANSPORT, length, PBUF_POOL);
 
         if (p == NULL) {
             return ERR_MEM;
         }
 
-        pbuf_take(p, (char*)data, strlen((char*)data));
-
-        // udp_send(upcb, p);  // use udp_sendto for non connected pcb
-        ip4_addr_t destIPAddr;
-        IP4_ADDR(&destIPAddr, 192, 168, 1, 26);
-        udp_sendto(upcb, p, &destIPAddr, 5001);
-
+        pbuf_take(p, data, length);
+        udp_sendto(upcb, p, &dest_ip, dest_port);
         pbuf_free(p);
         return ERR_OK;
     }
@@ -197,4 +173,4 @@ public:
 
 }  // namespace network
 
-#endif  // NETIF_H
+#endif  // NETWORK_INTERFACE_H
