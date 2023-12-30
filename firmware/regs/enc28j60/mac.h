@@ -32,192 +32,188 @@
 
 #include "../register_model.h"
 
-namespace dral::enc28j60::mac {
+namespace dral::enc28j60 {
 
-struct con1
+struct mac
 {
-  constexpr static uint8_t Address = 0x00;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct con1
   {
-    uint8_t value;
-    BitFieldModel<uint8_t, 3, 1> txpaus;
-    BitFieldModel<uint8_t, 2, 1> rxpaus;
-    BitFieldModel<uint8_t, 1, 1> passall;
-    BitFieldModel<uint8_t, 0, 1> rxen;
+    constexpr static uint8_t Address = 0x00;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+      BitFieldModel<uint8_t, 3, 1> txpaus;
+      BitFieldModel<uint8_t, 2, 1> rxpaus;
+      BitFieldModel<uint8_t, 1, 1> passall;
+      BitFieldModel<uint8_t, 0, 1> rxen;
+    };
   };
-};
 
-struct con3
-{
-  constexpr static uint8_t Address = 0x02;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct con3
   {
-    uint8_t value;
-    BitFieldModel<uint8_t, 5, 3> padcfg;
-    BitFieldModel<uint8_t, 4, 1> txcrcen;
-    BitFieldModel<uint8_t, 3, 1> phdren;
-    BitFieldModel<uint8_t, 2, 1> hfrmen;
-    BitFieldModel<uint8_t, 1, 1> frmlnen;
-    BitFieldModel<uint8_t, 0, 1> fuldpx;
+    constexpr static uint8_t Address = 0x02;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+      BitFieldModel<uint8_t, 5, 3> padcfg;
+      BitFieldModel<uint8_t, 4, 1> txcrcen;
+      BitFieldModel<uint8_t, 3, 1> phdren;
+      BitFieldModel<uint8_t, 2, 1> hfrmen;
+      BitFieldModel<uint8_t, 1, 1> frmlnen;
+      BitFieldModel<uint8_t, 0, 1> fuldpx;
+    };
   };
-};
 
-struct con4
-{
-  constexpr static uint8_t Address = 0x03;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct con4
   {
-    uint8_t value;
-    BitFieldModel<uint8_t, 6, 1> defer;
-    BitFieldModel<uint8_t, 5, 1> bpen;
-    BitFieldModel<uint8_t, 4, 1> nobkoff;
+    constexpr static uint8_t Address = 0x03;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+      BitFieldModel<uint8_t, 6, 1> defer;
+      BitFieldModel<uint8_t, 5, 1> bpen;
+      BitFieldModel<uint8_t, 4, 1> nobkoff;
+    };
   };
-};
 
-struct bbipg
-{
-  constexpr static uint8_t Address = 0x04;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct bbipg
   {
-    uint8_t value;
-    BitFieldModel<uint8_t, 0, 7> data;
+    constexpr static uint8_t Address = 0x04;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+      BitFieldModel<uint8_t, 0, 7> data;
+    };
   };
-};
 
-struct ipgl
-{
-  constexpr static uint8_t Address = 0x06;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct ipgl
   {
-    uint8_t value;
-    BitFieldModel<uint8_t, 0, 7> data;
+    constexpr static uint8_t Address = 0x06;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+      BitFieldModel<uint8_t, 0, 7> data;
+    };
   };
-};
 
-struct ipgh
-{
-  constexpr static uint8_t Address = 0x07;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct ipgh
   {
-    uint8_t value;
-    BitFieldModel<uint8_t, 0, 7> data;
+    constexpr static uint8_t Address = 0x07;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+      BitFieldModel<uint8_t, 0, 7> data;
+    };
   };
-};
 
-struct clcon1
-{
-  constexpr static uint8_t Address = 0x08;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct clcon1
   {
-    uint8_t value;
-    BitFieldModel<uint8_t, 0, 4> data;
+    constexpr static uint8_t Address = 0x08;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+      BitFieldModel<uint8_t, 0, 4> data;
+    };
   };
-};
 
-struct clcon2
-{
-  constexpr static uint8_t Address = 0x09;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct clcon2
   {
-    uint8_t value;
-    BitFieldModel<uint8_t, 0, 6> data;
+    constexpr static uint8_t Address = 0x09;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+      BitFieldModel<uint8_t, 0, 6> data;
+    };
   };
-};
 
-struct mxfll
-{
-  constexpr static uint8_t Address = 0x0A;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct mxfll
   {
-    uint8_t value;
-    
+    constexpr static uint8_t Address = 0x0A;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+    };
   };
-};
 
-struct mxflh
-{
-  constexpr static uint8_t Address = 0x0B;
-  constexpr static uint8_t RegBank = 0x02;
-  union
+  struct mxflh
   {
-    uint8_t value;
-    
+    constexpr static uint8_t Address = 0x0B;
+    constexpr static uint8_t RegBank = 0x02;
+    union
+    {
+      uint8_t value;
+    };
   };
-};
 
-struct adr5
-{
-  constexpr static uint8_t Address = 0x00;
-  constexpr static uint8_t RegBank = 0x03;
-  union
+  struct adr5
   {
-    uint8_t value;
-    
+    constexpr static uint8_t Address = 0x00;
+    constexpr static uint8_t RegBank = 0x03;
+    union
+    {
+      uint8_t value;
+    };
   };
-};
 
-struct adr6
-{
-  constexpr static uint8_t Address = 0x01;
-  constexpr static uint8_t RegBank = 0x03;
-  union
+  struct adr6
   {
-    uint8_t value;
-    
+    constexpr static uint8_t Address = 0x01;
+    constexpr static uint8_t RegBank = 0x03;
+    union
+    {
+      uint8_t value;
+    };
   };
-};
 
-struct adr3
-{
-  constexpr static uint8_t Address = 0x02;
-  constexpr static uint8_t RegBank = 0x03;
-  union
+  struct adr3
   {
-    uint8_t value;
-    
+    constexpr static uint8_t Address = 0x02;
+    constexpr static uint8_t RegBank = 0x03;
+    union
+    {
+      uint8_t value;
+    };
   };
-};
 
-struct adr4
-{
-  constexpr static uint8_t Address = 0x03;
-  constexpr static uint8_t RegBank = 0x03;
-  union
+  struct adr4
   {
-    uint8_t value;
-    
+    constexpr static uint8_t Address = 0x03;
+    constexpr static uint8_t RegBank = 0x03;
+    union
+    {
+      uint8_t value;
+    };
   };
-};
 
-struct adr1
-{
-  constexpr static uint8_t Address = 0x04;
-  constexpr static uint8_t RegBank = 0x03;
-  union
+  struct adr1
   {
-    uint8_t value;
-    
+    constexpr static uint8_t Address = 0x04;
+    constexpr static uint8_t RegBank = 0x03;
+    union
+    {
+      uint8_t value;
+    };
   };
-};
 
-struct adr2
-{
-  constexpr static uint8_t Address = 0x05;
-  constexpr static uint8_t RegBank = 0x03;
-  union
+  struct adr2
   {
-    uint8_t value;
-    
+    constexpr static uint8_t Address = 0x05;
+    constexpr static uint8_t RegBank = 0x03;
+    union
+    {
+      uint8_t value;
+    };
   };
+
 };
 
 }

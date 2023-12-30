@@ -32,126 +32,121 @@
 
 #include "../register_model.h"
 
-namespace dral::enc28j60::phy {
+namespace dral::enc28j60 {
 
-struct con1
+struct phy
 {
-  constexpr static uint8_t Address = 0x00;
-  constexpr static uint8_t RegBank = 0x00;
-  union
+  struct con1
   {
-    uint16_t value;
-    BitFieldModel<uint16_t, 15, 1> prst;
-    BitFieldModel<uint16_t, 14, 1> ploopbk;
-    BitFieldModel<uint16_t, 11, 1> ppwrsv;
-    BitFieldModel<uint16_t, 8, 1> pdpxmd;
+    constexpr static uint8_t Address = 0x00;
+    union
+    {
+      uint16_t value;
+      BitFieldModel<uint16_t, 15, 1> prst;
+      BitFieldModel<uint16_t, 14, 1> ploopbk;
+      BitFieldModel<uint16_t, 11, 1> ppwrsv;
+      BitFieldModel<uint16_t, 8, 1> pdpxmd;
+    };
   };
-};
 
-struct stat1
-{
-  constexpr static uint8_t Address = 0x01;
-  constexpr static uint8_t RegBank = 0x00;
-  union
+  struct stat1
   {
-    uint16_t value;
-    BitFieldModel<uint16_t, 12, 1> pfdpx;
-    BitFieldModel<uint16_t, 11, 1> phdpx;
-    BitFieldModel<uint16_t, 2, 1> llstat;
-    BitFieldModel<uint16_t, 1, 1> jbstat;
+    constexpr static uint8_t Address = 0x01;
+    union
+    {
+      uint16_t value;
+      BitFieldModel<uint16_t, 12, 1> pfdpx;
+      BitFieldModel<uint16_t, 11, 1> phdpx;
+      BitFieldModel<uint16_t, 2, 1> llstat;
+      BitFieldModel<uint16_t, 1, 1> jbstat;
+    };
   };
-};
 
-struct id1
-{
-  constexpr static uint8_t Address = 0x02;
-  constexpr static uint8_t RegBank = 0x00;
-  union
+  struct id1
   {
-    uint16_t value;
-    BitFieldModel<uint16_t, 0, 16> oui;
+    constexpr static uint8_t Address = 0x02;
+    union
+    {
+      uint16_t value;
+      BitFieldModel<uint16_t, 0, 16> oui;
+    };
   };
-};
 
-struct id2
-{
-  constexpr static uint8_t Address = 0x03;
-  constexpr static uint8_t RegBank = 0x00;
-  union
+  struct id2
   {
-    uint16_t value;
-    BitFieldModel<uint16_t, 10, 6> oui;
-    BitFieldModel<uint16_t, 4, 6> ppn;
-    BitFieldModel<uint16_t, 0, 4> prev;
+    constexpr static uint8_t Address = 0x03;
+    union
+    {
+      uint16_t value;
+      BitFieldModel<uint16_t, 10, 6> oui;
+      BitFieldModel<uint16_t, 4, 6> ppn;
+      BitFieldModel<uint16_t, 0, 4> prev;
+    };
   };
-};
 
-struct con2
-{
-  constexpr static uint8_t Address = 0x10;
-  constexpr static uint8_t RegBank = 0x00;
-  union
+  struct con2
   {
-    uint16_t value;
-    BitFieldModel<uint16_t, 14, 1> frclnk;
-    BitFieldModel<uint16_t, 13, 1> txdis;
-    BitFieldModel<uint16_t, 10, 1> jabber;
-    BitFieldModel<uint16_t, 8, 1> hdldis;
+    constexpr static uint8_t Address = 0x10;
+    union
+    {
+      uint16_t value;
+      BitFieldModel<uint16_t, 14, 1> frclnk;
+      BitFieldModel<uint16_t, 13, 1> txdis;
+      BitFieldModel<uint16_t, 10, 1> jabber;
+      BitFieldModel<uint16_t, 8, 1> hdldis;
+    };
   };
-};
 
-struct stat2
-{
-  constexpr static uint8_t Address = 0x11;
-  constexpr static uint8_t RegBank = 0x00;
-  union
+  struct stat2
   {
-    uint16_t value;
-    BitFieldModel<uint16_t, 13, 1> txstat;
-    BitFieldModel<uint16_t, 12, 1> rxstat;
-    BitFieldModel<uint16_t, 11, 1> colstat;
-    BitFieldModel<uint16_t, 10, 1> lstat;
-    BitFieldModel<uint16_t, 9, 1> dpxstat;
-    BitFieldModel<uint16_t, 5, 1> plrity;
+    constexpr static uint8_t Address = 0x11;
+    union
+    {
+      uint16_t value;
+      BitFieldModel<uint16_t, 13, 1> txstat;
+      BitFieldModel<uint16_t, 12, 1> rxstat;
+      BitFieldModel<uint16_t, 11, 1> colstat;
+      BitFieldModel<uint16_t, 10, 1> lstat;
+      BitFieldModel<uint16_t, 9, 1> dpxstat;
+      BitFieldModel<uint16_t, 5, 1> plrity;
+    };
   };
-};
 
-struct ie
-{
-  constexpr static uint8_t Address = 0x12;
-  constexpr static uint8_t RegBank = 0x00;
-  union
+  struct ie
   {
-    uint16_t value;
-    BitFieldModel<uint16_t, 4, 1> plnkie;
-    BitFieldModel<uint16_t, 1, 1> pgeie;
+    constexpr static uint8_t Address = 0x12;
+    union
+    {
+      uint16_t value;
+      BitFieldModel<uint16_t, 4, 1> plnkie;
+      BitFieldModel<uint16_t, 1, 1> pgeie;
+    };
   };
-};
 
-struct ir
-{
-  constexpr static uint8_t Address = 0x13;
-  constexpr static uint8_t RegBank = 0x00;
-  union
+  struct ir
   {
-    uint16_t value;
-    BitFieldModel<uint16_t, 4, 1> plnkif;
-    BitFieldModel<uint16_t, 2, 1> pgif;
+    constexpr static uint8_t Address = 0x13;
+    union
+    {
+      uint16_t value;
+      BitFieldModel<uint16_t, 4, 1> plnkif;
+      BitFieldModel<uint16_t, 2, 1> pgif;
+    };
   };
-};
 
-struct lcon
-{
-  constexpr static uint8_t Address = 0x14;
-  constexpr static uint8_t RegBank = 0x00;
-  union
+  struct lcon
   {
-    uint16_t value;
-    BitFieldModel<uint16_t, 8, 4> lacfg;
-    BitFieldModel<uint16_t, 4, 4> lbcfg;
-    BitFieldModel<uint16_t, 2, 2> lfrq;
-    BitFieldModel<uint16_t, 1, 1> strch;
+    constexpr static uint8_t Address = 0x14;
+    union
+    {
+      uint16_t value;
+      BitFieldModel<uint16_t, 8, 4> lacfg;
+      BitFieldModel<uint16_t, 4, 4> lbcfg;
+      BitFieldModel<uint16_t, 2, 2> lfrq;
+      BitFieldModel<uint16_t, 1, 1> strch;
+    };
   };
+
 };
 
 }
