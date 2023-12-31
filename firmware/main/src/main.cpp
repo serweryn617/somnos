@@ -60,14 +60,17 @@ int main()
         uint16_t bus = ina219.bus_voltage_raw();
         uint16_t shunt = ina219.shunt_voltage_raw();
         uint16_t current = ina219.current_raw();
+        uint16_t power = ina219.power_raw();
 
-        uint8_t data[10] = {'S', 'M', 'N', 'S'};  // magic
+        uint8_t data[12] = {'S', 'M', 'N', 'S'};  // magic
         data[4] = bus & 0xff;
         data[5] = bus >> 8;
         data[6] = shunt & 0xff;
         data[7] = shunt >> 8;
         data[8] = current & 0xff;
         data[9] = current >> 8;
+        data[10] = power & 0xff;
+        data[11] = power >> 8;
 
         network_interface.send(data, sizeof(data));
 

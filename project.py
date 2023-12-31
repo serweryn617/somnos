@@ -6,6 +6,7 @@ import pathlib
 import subprocess
 import sys
 
+from scripts.ina219_calibration import calibrate
 from scripts.udp_rcv import receiver
 
 
@@ -105,6 +106,10 @@ if __name__ == '__main__':
     build_parser.add_argument('-c', '--clean', help='Perform full build from scratch', action='store_true')
     build_parser.add_argument('-s', '--skip-commands', dest='skip_commands', help='Do not update paths in compile_commands.json', action='store_true')
 
+    calibration_parser = subparsers.add_parser('calibrate', help='Calculate INA219 calibration data')
+    calibration_parser.add_argument('current_max', help='Max current in Amperes')
+    calibration_parser.add_argument('shunt_resistance', help='Shunt resistor value in Ohms')
+
     if len(sys.argv)==1:
         parser.print_help()
         sys.exit(1)
@@ -129,3 +134,7 @@ if __name__ == '__main__':
         autoformat()
     elif args.command == 'receive':
         receiver()
+    elif args.command == 'calibrate':
+        current_max = float(args.current_max)
+        shunt_resistance = float(args.shunt_resistance)
+        calibrate(current_max, shunt_resistance)
