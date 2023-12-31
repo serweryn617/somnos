@@ -61,14 +61,6 @@ def commands():
         cc.write(content)
 
 
-# def picotool():
-#     pass
-
-
-# def upload():
-#     pass
-
-
 def run():
     command = f'docker run --rm -it -u {os.getuid()}:{os.getgid()} -v {FILE_PATH}:/workspace pico_builder /bin/sh'
     subprocess.run(command, shell=True)
@@ -96,8 +88,6 @@ if __name__ == '__main__':
     subparsers.add_parser('submodules', help='Initialize git submodules')
     subparsers.add_parser('setup', help='Setup Docker image')
     subparsers.add_parser('commands', help='Update paths in compile_commands.json')
-    # subparsers.add_parser('picotool', help='Build picotool')
-    # subparsers.add_parser('upload', help='Upload built binary to device')
     subparsers.add_parser('run', help='Run build container interactively')
     subparsers.add_parser('format', help='Autoformat C++ code')
     subparsers.add_parser('receive', help='Print data received from the device')
@@ -124,10 +114,6 @@ if __name__ == '__main__':
         build(args.clean, not args.skip_commands)
     elif args.command == 'commands':
         commands()
-    # elif args.command == 'picotool':
-    #     picotool()
-    # elif args.command == 'upload':
-    #     upload()
     elif args.command == 'run':
         run()
     elif args.command == 'format':

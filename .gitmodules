@@ -1,9 +1,6 @@
 [submodule "pico-sdk"]
 	path = sdk/pico-sdk
 	url = https://github.com/raspberrypi/pico-sdk
-[submodule "picotool"]
-	path = sdk/picotool
-	url = https://github.com/raspberrypi/picotool.git
 [submodule "dral/d-ral-fx"]
 	path = dral/d-ral-fx
 	url = https://github.com/serweryn617/d-ral-fx.git

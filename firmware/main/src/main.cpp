@@ -21,9 +21,6 @@ int main()
 {
     stdio_init_all();
 
-    // Make the I2C pins available to picotool
-    // bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
-
     const uint mosfet_pin = 18;
     gpio_init(mosfet_pin);
     gpio_set_dir(mosfet_pin, GPIO_OUT);
