@@ -34,6 +34,9 @@ private:
     ip_addr_t static_ip, mask, gateway;
     ip4_addr_t dest_ip;
     uint16_t dest_port;
+    uint8_t* udp_rcv_data;
+    uint16_t udp_rcv_len = 0;
+    uint16_t udp_rcv_max_len;
 
     err_t create_udp_socket()
     {
@@ -50,19 +53,16 @@ private:
             return err;
         }
 
-        udp_recv(upcb, udp_receive_callback, NULL);
+        udp_recv(upcb, udp_receive_callback, this);
         return ERR_OK;
     }
 
     static void udp_receive_callback(void* arg, struct udp_pcb* upcb, struct pbuf* p, const ip_addr_t* address, u16_t port)
     {
-        // auto* instance = static_cast<Interface<NetworkAdapter>*>(arg);
-        printf("udp_receive_callback: p->len: %d\n", p->len);
-        printf("udp_receive_callback: p->payload: ");
-        for (size_t i = 0; i < p->len; i++) {
-            printf("%c", ((char*)p->payload)[i]);
-        }
-        printf("\n");
+        auto* instance = static_cast<Interface<NetworkAdapter>*>(arg);
+        instance->udp_rcv_len = p->len;
+
+        memcpy(instance->udp_rcv_data, p->payload, std::min(instance->udp_rcv_max_len, p->len));
 
         pbuf_free(p);
     }
@@ -169,6 +169,19 @@ public:
     }
 
     void check_timers() { sys_check_timeouts(); }
+
+    void set_udp_rcv_buffer(uint8_t* buffer, uint16_t max_len)
+    {
+        udp_rcv_data = buffer;
+        udp_rcv_max_len = max_len;
+    }
+
+    uint16_t get_udp_rcv_len()
+    {
+        auto tmp = udp_rcv_len;
+        udp_rcv_len = 0;
+        return tmp;
+    }
 };
 
 }  // namespace network

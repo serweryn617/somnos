@@ -7,7 +7,7 @@ import subprocess
 import sys
 
 from scripts.ina219_calibration import calibrate
-from scripts.udp_rcv import receiver
+from scripts.udp_communicator import receiver
 
 
 FILE_PATH = pathlib.Path(__file__).parent.resolve()

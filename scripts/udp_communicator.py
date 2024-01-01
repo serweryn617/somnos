@@ -2,19 +2,31 @@ import signal
 import socket
 import struct
 import sys
+import time
 
 
-UDP_PORT = 5001
+UDP_SEND_IP = '192.168.1.111'
+UDP_SEND_PORT = 4444
+UDP_RCV_PORT = 5001
 
 
-class UDPReceiver():
-    def __init__(self):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.bind(('', UDP_PORT))
-
+class UDPReceiver:
     def receive(self):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.bind(('', UDP_RCV_PORT))
         data, _ = self.sock.recvfrom(20)
+        self.close()
         return data
+
+    def close(self):
+        self.sock.close()
+
+
+class UDPSender:
+    def send(self, data, ip = UDP_SEND_IP, port = UDP_SEND_PORT):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock.sendto(data, (ip, port))
+        self.close()
 
     def close(self):
         self.sock.close()
@@ -22,15 +34,17 @@ class UDPReceiver():
 
 def receiver():
     rcv = UDPReceiver()
+    snd = UDPSender()
 
     def handler(sig, frame):
         rcv.close()
+        snd.close()
         sys.exit(0)
 
-    # default_handler = signal.getsignal(signal.SIGINT)
     signal.signal(signal.SIGINT, handler)
 
     while True:
+        snd.send(b'SMNSR')
         data = rcv.receive()
         magic = data[0:4]
 
@@ -42,6 +56,8 @@ def receiver():
             print(f'Shunt: {shunt:.3f} mV')
             print(f'Current: {current:.3f} mA')
             print(f'Power: {power:.3f} mW')
+
+        time.sleep(1)
 
 
 if __name__ == '__main__':
