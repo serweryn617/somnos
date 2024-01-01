@@ -1,0 +1,24 @@
+{% include 'header.dral' %}
+
+#ifndef DRAL_{{ device.name | upper }}_{{ peripheral.name | upper }}_H
+#define DRAL_{{ device.name | upper }}_{{ peripheral.name | upper }}_H
+
+{% include 'model.import.dral' %}
+
+namespace dral::{{ device.name | lower }} {
+{% for register in peripheral.registers %}
+struct {{ register.name | lower | isforbidden }}
+{
+  constexpr static uint8_t Address = {{ "0x{:02X}".format(register.offset) }};
+  union
+  {
+    uint{{ register.size }}_t value;
+    {%- for field in register.fields %}
+    BitFieldModel<uint{{ register.size }}_t, {{ field.position }}, {{ field.width }}> {{ field.name | lower | isforbidden }};
+    {%- endfor %}
+  };
+};
+{% endfor %}
+}
+
+#endif /* DRAL_{{ device.name | upper }}_{{ peripheral.name | upper }}_H */

@@ -41,7 +41,7 @@ public:
     void calibrate()
     {
         dral::ina219::cal ina_calibration;
-        ina_calibration.value = 13422;
+        ina_calibration.value = 4194;  // I_max = 3.2 A
         write_register(ina_calibration.Address, ina_calibration.value);
     }
 
@@ -50,7 +50,7 @@ public:
     float shunt_voltage()
     {
         uint16_t shunt_voltage = shunt_voltage_raw();
-        return static_cast<float>(shunt_voltage) / 100;
+        return static_cast<float>(shunt_voltage) / 100;  // 1 LSB = 10 uV
     }
 
     uint16_t bus_voltage_raw()
@@ -62,27 +62,27 @@ public:
 
     float bus_voltage()
     {
-        uint16_t shunt_voltage = shunt_voltage_raw();
-        return static_cast<float>(shunt_voltage) / 250;
+        uint16_t bus_voltage = bus_voltage_raw();
+        return static_cast<float>(bus_voltage) / 250;  // 1 LSB = 4 mV
     }
 
-    // uint16_t power_raw()
-    // {
-    //     return read_register(dral::ina219::pwr::Address);
-    // }
+    uint16_t power_raw()
+    {
+        return read_register(dral::ina219::pwr::Address);
+    }
 
-    // float power()
-    // {
-    //     uint16_t shunt_voltage = shunt_voltage_raw();
-    //     return static_cast<float>(shunt_voltage) / 100;
-    // }
+    float power()
+    {
+        uint16_t power = power_raw();
+        return static_cast<float>(power) * 1.95;  // I_max = 3.2 A
+    }
 
     uint16_t current_raw() { return read_register(dral::ina219::curr::Address); }
 
     float current()
     {
-        uint16_t shunt_voltage = shunt_voltage_raw();
-        return static_cast<float>(shunt_voltage) * 0.0305;
+        uint16_t current = current_raw();
+        return static_cast<float>(current) * 0.0977;  // I_max = 3.2 A
     }
 
     // TODO: check cnvr and ovf flags when reading values

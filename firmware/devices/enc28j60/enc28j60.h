@@ -113,7 +113,7 @@ private:
         write_reg(dral::enc28j60::mii::regadr::Address, dral::enc28j60::mii::regadr::RegBank, address);
 
         dral::enc28j60::mii::cmd cmd;
-        cmd.miird = 1;
+        cmd.rd = 1;
         write_reg(dral::enc28j60::mii::cmd::Address, dral::enc28j60::mii::cmd::RegBank, cmd.value);
 
         dral::enc28j60::mii::stat stat;

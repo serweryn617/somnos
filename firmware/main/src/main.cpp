@@ -17,17 +17,23 @@ using namespace devices::ina219;
 using namespace drivers::pico;
 using namespace network;
 
+
+struct payload {
+    char magic[4] = {'S', 'M', 'N', 'S'};
+    float bus;
+    float shunt;
+    float current;
+    float power;
+};
+
+
 int main()
 {
     stdio_init_all();
 
-    // Make the I2C pins available to picotool
-    // bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
-
     const uint mosfet_pin = 18;
     gpio_init(mosfet_pin);
     gpio_set_dir(mosfet_pin, GPIO_OUT);
-    // bool sw = false;
     gpio_put(mosfet_pin, true);
 
     PicoI2CDriver i2c_driver(i2c0, hw::ina219::i2c::sda, hw::ina219::i2c::scl, hw::ina219::i2c::address);
@@ -58,19 +64,13 @@ int main()
                     gpio_put(mosfet_pin, true);
                 }
                 if (udp_rcv_data[4] == 'R') {
-                    uint16_t bus = ina219.bus_voltage_raw();
-                    uint16_t shunt = ina219.shunt_voltage_raw();
-                    uint16_t current = ina219.current_raw();
+                    payload payload;
+                    payload.bus = ina219.bus_voltage();
+                    payload.shunt = ina219.shunt_voltage();
+                    payload.current = ina219.current();
+                    payload.power = ina219.power();
 
-                    uint8_t data[10] = {'S', 'M', 'N', 'S'};  // magic
-                    data[4] = bus & 0xff;
-                    data[5] = bus >> 8;
-                    data[6] = shunt & 0xff;
-                    data[7] = shunt >> 8;
-                    data[8] = current & 0xff;
-                    data[9] = current >> 8;
-
-                    network_interface.send(data, sizeof(data));
+                    network_interface.send(reinterpret_cast<uint8_t*>(&payload), sizeof(payload));
                 }
             }
         }

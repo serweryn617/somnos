@@ -77,7 +77,6 @@ struct pwr
   union
   {
     uint16_t value;
-    
   };
 };
 
@@ -87,7 +86,6 @@ struct curr
   union
   {
     uint16_t value;
-    
   };
 };
 
@@ -97,7 +95,6 @@ struct cal
   union
   {
     uint16_t value;
-    
   };
 };
 

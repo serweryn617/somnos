@@ -4,10 +4,10 @@ Setup:
 
 ```bash
 cd dral
-git submodule update --init --depth 1 d-ral-serial
+git submodule update --init --depth 1 d-ral-fx
 python3 -m venv venv
 source venv/bin/activate
-pip install -e d-ral-serial
+pip install -e d-ral-fx
 ```
 
 Generate:
@@ -20,6 +20,6 @@ python3 serial_adapter.py ina219/ina219.yaml ina219_out -t serial -T ina219/temp
 Copy output to repository:
 
 ```bash
-cp -r enc28j60_out/dralOutput/cpp/* ../regs/
-cp -r ina219_out/dralOutput/cpp/* ../regs/
+cp -r enc28j60_out/dralOutput/cpp/* ../firmware/regs/
+cp -r ina219_out/dralOutput/cpp/* ../firmware/regs/
 ```
