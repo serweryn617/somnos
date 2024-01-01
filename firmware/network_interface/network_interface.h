@@ -26,7 +26,7 @@ namespace network {
 template<concepts::network::network_adapter_concept NetworkAdapter>
 class Interface {
 private:
-    NetworkAdapter& adapetr_;
+    NetworkAdapter& adapter_;
     struct udp_pcb* upcb;  // protocol control block
     struct netif netif;
     uint8_t* eth_pkt;
@@ -60,11 +60,14 @@ private:
     static void udp_receive_callback(void* arg, struct udp_pcb* upcb, struct pbuf* p, const ip_addr_t* address, u16_t port)
     {
         auto* instance = static_cast<Interface<NetworkAdapter>*>(arg);
-        instance->udp_rcv_len = p->len;
 
         memcpy(instance->udp_rcv_data, p->payload, std::min(instance->udp_rcv_max_len, p->len));
+        instance->udp_rcv_len = p->len;  // TODO: use min
 
         pbuf_free(p);
+
+        instance->dest_ip = *address;
+        // instance->dest_port = port;
     }
 
     static err_t netif_output(struct netif* netif, struct pbuf* p)
@@ -72,7 +75,7 @@ private:
         LINK_STATS_INC(link.xmit);
 
         auto* instance = static_cast<Interface<NetworkAdapter>*>(netif->state);
-        instance->adapetr_.packet_send(p->len, (uint8_t*)p->payload);  // TODO: Use tot_len?
+        instance->adapter_.packet_send(p->len, (uint8_t*)p->payload);  // TODO: Use tot_len?
 
         return ERR_OK;
     }
@@ -93,8 +96,8 @@ private:
     }
 
 public:
-    Interface(NetworkAdapter& adapetr)
-        : adapetr_(adapetr)
+    Interface(NetworkAdapter& adapter)
+        : adapter_(adapter)
     {
     }
 
@@ -103,7 +106,6 @@ public:
         IP4_ADDR(&static_ip, 192, 168, 1, 111);
         IP4_ADDR(&mask, 255, 255, 255, 0);
         IP4_ADDR(&gateway, 192, 168, 1, 1);
-        IP4_ADDR(&dest_ip, 192, 168, 1, 26);
         dest_port = 5001;
 
         lwip_init();
@@ -133,7 +135,7 @@ public:
 
     void receive()
     {
-        uint16_t packet_len = adapetr_.packet_receive(hw::netif::ethernet_mtu, (uint8_t*)eth_pkt);
+        uint16_t packet_len = adapter_.packet_receive(hw::netif::ethernet_mtu, (uint8_t*)eth_pkt);
 
         if (!packet_len) {
             return;

@@ -5,15 +5,14 @@ import sys
 import time
 
 
-UDP_SEND_IP = '192.168.1.111'
-UDP_SEND_PORT = 4444
-UDP_RCV_PORT = 5001
+UDP_IP = '192.168.1.111'
+UDP_PORT = 5001
 
 
 class UDPReceiver:
-    def receive(self):
+    def receive(self, ip = '', port = UDP_PORT):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.bind(('', UDP_RCV_PORT))
+        self.sock.bind((ip, port))
         data, _ = self.sock.recvfrom(20)
         self.close()
         return data
@@ -23,7 +22,7 @@ class UDPReceiver:
 
 
 class UDPSender:
-    def send(self, data, ip = UDP_SEND_IP, port = UDP_SEND_PORT):
+    def send(self, data, ip = UDP_IP, port = UDP_PORT):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.sendto(data, (ip, port))
         self.close()
@@ -44,7 +43,7 @@ def receiver():
     signal.signal(signal.SIGINT, handler)
 
     while True:
-        snd.send(b'SMNSR')
+        snd.send(b'SMNSR', port = 4444)
         data = rcv.receive()
         magic = data[0:4]
 
