@@ -1,5 +1,6 @@
 import signal
 import socket
+import struct
 import sys
 
 
@@ -12,7 +13,7 @@ class UDPReceiver():
         self.sock.bind(('', UDP_PORT))
 
     def receive(self):
-        data, _ = self.sock.recvfrom(1024)
+        data, _ = self.sock.recvfrom(20)
         return data
 
     def close(self):
@@ -34,10 +35,7 @@ def receiver():
         magic = data[0:4]
 
         if magic == b'SMNS':
-            bus = int.from_bytes(data[4:6], byteorder='little', signed=True) / 250
-            shunt = int.from_bytes(data[6:8], byteorder='little', signed=True) / 100
-            current = int.from_bytes(data[8:10], byteorder='little', signed=True) * 0.0977
-            power = int.from_bytes(data[10:12], byteorder='little', signed=True) * 1.953
+            bus, shunt, current, power = struct.unpack('ffff', data[4:])
 
             print()
             print(f'Bus: {bus:.3f} V')

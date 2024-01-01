@@ -17,6 +17,16 @@ using namespace devices::ina219;
 using namespace drivers::pico;
 using namespace network;
 
+
+struct payload {
+    char magic[4] = {'S', 'M', 'N', 'S'};
+    float bus;
+    float shunt;
+    float current;
+    float power;
+};
+
+
 int main()
 {
     stdio_init_all();
@@ -24,7 +34,6 @@ int main()
     const uint mosfet_pin = 18;
     gpio_init(mosfet_pin);
     gpio_set_dir(mosfet_pin, GPIO_OUT);
-    // bool sw = false;
     gpio_put(mosfet_pin, true);
 
     PicoI2CDriver i2c_driver(i2c0, hw::ina219::i2c::sda, hw::ina219::i2c::scl, hw::ina219::i2c::address);
@@ -41,35 +50,15 @@ int main()
     network_interface.init();
 
     while (true) {
-        // sw = !sw;
-        // sleep_ms(100);
-        // gpio_put(mosfet_pin, sw);
-        // sleep_ms(100);
-
-        // float sh = ina219.shunt_voltage();
-        // printf("Shunt voltage: %.2f mV\n", sh);
-
-        // float bus = ina219.bus_voltage();
-        // printf("Bus voltage: %.2f V\n", bus);
-
         network_interface.receive();
 
-        uint16_t bus = ina219.bus_voltage_raw();
-        uint16_t shunt = ina219.shunt_voltage_raw();
-        uint16_t current = ina219.current_raw();
-        uint16_t power = ina219.power_raw();
+        payload payload;
+        payload.bus = ina219.bus_voltage();
+        payload.shunt = ina219.shunt_voltage();
+        payload.current = ina219.current();
+        payload.power = ina219.power();
 
-        uint8_t data[12] = {'S', 'M', 'N', 'S'};  // magic
-        data[4] = bus & 0xff;
-        data[5] = bus >> 8;
-        data[6] = shunt & 0xff;
-        data[7] = shunt >> 8;
-        data[8] = current & 0xff;
-        data[9] = current >> 8;
-        data[10] = power & 0xff;
-        data[11] = power >> 8;
-
-        network_interface.send(data, sizeof(data));
+        network_interface.send(reinterpret_cast<uint8_t*>(&payload), sizeof(payload));
 
         network_interface.check_timers();
 
