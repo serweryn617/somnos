@@ -31,6 +31,10 @@ struct netif {
     static constexpr uint32_t ethernet_mtu = 1500;
 };
 
+struct mosfet {
+    static constexpr uint8_t pin = 18;
+};
+
 }  // namespace hw
 
 #endif  // HW_H

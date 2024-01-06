@@ -31,10 +31,9 @@ int main()
 {
     stdio_init_all();
 
-    const uint mosfet_pin = 18;
-    gpio_init(mosfet_pin);
-    gpio_set_dir(mosfet_pin, GPIO_OUT);
-    gpio_put(mosfet_pin, true);
+    gpio_init(hw::mosfet::pin);
+    gpio_set_dir(hw::mosfet::pin, GPIO_OUT);
+    gpio_put(hw::mosfet::pin, true);
 
     PicoI2CDriver i2c_driver(i2c0, hw::ina219::i2c::sda, hw::ina219::i2c::scl, hw::ina219::i2c::address);
     i2c_driver.init();
@@ -58,10 +57,10 @@ int main()
         if (uint16_t len = network_interface.get_udp_rcv_len(); len >= 5) {
             if (udp_rcv_data[0] == 'S' && udp_rcv_data[1] == 'M' && udp_rcv_data[2] == 'N' && udp_rcv_data[3] == 'S') {
                 if (udp_rcv_data[4] == '0') {
-                    gpio_put(mosfet_pin, false);
+                    gpio_put(hw::mosfet::pin, false);
                 }
                 if (udp_rcv_data[4] == '1') {
-                    gpio_put(mosfet_pin, true);
+                    gpio_put(hw::mosfet::pin, true);
                 }
                 if (udp_rcv_data[4] == 'R') {
                     payload payload;
