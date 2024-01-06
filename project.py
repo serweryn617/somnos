@@ -15,7 +15,7 @@ COMPILE_COMMANDS_PATH = FILE_PATH/'build'/'compile_commands.json'
 
 
 def submodules():
-    command = f'''
+    command = '''
         git submodule update --init --depth 1 sdk/pico-sdk;
         git submodule status;
         cd sdk/pico-sdk;
