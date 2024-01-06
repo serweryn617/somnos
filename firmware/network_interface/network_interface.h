@@ -49,7 +49,6 @@ private:
 
         err = udp_bind(upcb, IP4_ADDR_ANY, 4444);
         if (err != ERR_OK) {
-            printf("udp_bind %i\n", err);
             return err;
         }
 
@@ -67,7 +66,7 @@ private:
         pbuf_free(p);
 
         instance->dest_ip = *address;
-        // instance->dest_port = port;
+        instance->dest_port = port;
     }
 
     static err_t netif_output(struct netif* netif, struct pbuf* p)
@@ -106,7 +105,6 @@ public:
         IP4_ADDR(&static_ip, 192, 168, 1, 111);
         IP4_ADDR(&mask, 255, 255, 255, 0);
         IP4_ADDR(&gateway, 192, 168, 1, 1);
-        dest_port = 5001;
 
         lwip_init();
 
