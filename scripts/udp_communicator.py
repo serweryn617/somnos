@@ -5,50 +5,44 @@ import sys
 import time
 
 
-UDP_IP = '192.168.1.111'
-UDP_PORT = 5001
+UDP_DEVICE_IP = '192.168.1.111'
+UDP_DEVICE_PORT = 4444
+UDP_HOST_PORT = 32000  # Any free port on the host
+COMM_MAGIC = b'SMNS'
 
 
-class UDPReceiver:
-    def receive(self, ip = '', port = UDP_PORT):
+class UDPCommunicator:
+    def __init__(self, ip = '', port = UDP_HOST_PORT):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind((ip, port))
-        data, _ = self.sock.recvfrom(20)
-        self.close()
-        return data
 
     def close(self):
         self.sock.close()
 
+    def receive(self, size = 20):
+        return self.sock.recv(size)
 
-class UDPSender:
-    def send(self, data, ip = UDP_IP, port = UDP_PORT):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    def send(self, data, ip = UDP_DEVICE_IP, port = UDP_HOST_PORT):
         self.sock.sendto(data, (ip, port))
-        self.close()
-
-    def close(self):
-        self.sock.close()
 
 
 def receiver():
-    rcv = UDPReceiver()
-    snd = UDPSender()
+    comm = UDPCommunicator()
 
     def handler(sig, frame):
-        rcv.close()
-        snd.close()
+        comm.close()
         sys.exit(0)
 
     signal.signal(signal.SIGINT, handler)
 
     while True:
-        snd.send(b'SMNSR', port = 4444)
-        data = rcv.receive()
-        magic = data[0:4]
+        comm.send(COMM_MAGIC + b'R', port = UDP_DEVICE_PORT)
+        data = comm.receive()
+
+        magic, payload = data[0:4], data[4:]
 
         if magic == b'SMNS':
-            bus, shunt, current, power = struct.unpack('ffff', data[4:])
+            bus, shunt, current, power = struct.unpack('ffff', payload)
 
             print()
             print(f'Bus: {bus:.3f} V')
