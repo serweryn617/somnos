@@ -1,6 +1,6 @@
 # Somnos
 
-IoT power measurement and on/off switch for USB devices.
+IoT USB power measurement and on/off switch.
 
 ---
 
