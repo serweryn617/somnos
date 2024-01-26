@@ -1,12 +1,10 @@
 FreeCAD to do:
- - create ina219 model
- - create usbc model
  - fix top housing
  - merge top modifier to top housing
  - create assembly
 
 Mechanical parts v1.1:
- - thicen bottom housing base
+ - widen pcb space
  - enlarge screw holes to ~2.8mm
  - shorten pico pushbutton pusher
 
