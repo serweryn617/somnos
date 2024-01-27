@@ -1,7 +1,6 @@
 .vscode
 build
 venv
-cad
 dralOutput
 ina219_out
 enc28j60_out

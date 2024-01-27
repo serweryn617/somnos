@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Somnos Lib")(type "KiCad")(uri "/home/seweryn/Pulpit/pico/somnos/cad/kicad/library/somnos_lib.kicad_sym")(options "")(descr ""))
+)
