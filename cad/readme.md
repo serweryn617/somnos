@@ -1,22 +1,11 @@
-FreeCAD to do:
- - fix top housing
- - merge top modifier to top housing
- - create assembly
+# Somnos CAD Files
 
-Mechanical parts v1.1:
- - widen pcb space
- - enlarge screw holes to ~2.8mm
- - shorten pico pushbutton pusher
+![explode](explode.png)
 
-Mechanical parts nice to have:
- - update pico model
+![pcb](pcb.png)
 
 ---
 
-KiCAD todo:
- - update schematic
- - change lib name and validate symbols and footprints
- - remove gateron and soic4
-
-Eletronics v1.1:
- - disconnect clkout
+Initial PCB prototype notes:
+ - update INA219 footprint so it better matches the module,
+ - disconnect clkout pin - unused ethernet module output pin.

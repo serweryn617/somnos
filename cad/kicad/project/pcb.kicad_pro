@@ -402,12 +402,14 @@
   },
   "libraries": {
     "pinned_footprint_libs": [
-      "custom_lib"
+      "custom_lib",
+      "Somnos Lib"
     ],
     "pinned_symbol_libs": [
       "eng_lib",
       "components",
-      "custom_lib"
+      "custom_lib",
+      "Somnos Lib"
     ]
   },
   "meta": {

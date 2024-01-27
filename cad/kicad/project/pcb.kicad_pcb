@@ -121,7 +121,7 @@
   (net 42 "/USB_D-")
   (net 43 "/USB_D+")
 
-  (footprint "custom_lib:N-MOS_1" (layer "F.Cu")
+  (footprint "somnos_lib:N-MOS_1" (layer "F.Cu")
     (tstamp 0d54dd3a-0ef9-4d22-a2a1-a163fc069dab)
     (at 138.5 80.5 90)
     (property "Sheetfile" "pcb.kicad_sch")
@@ -158,7 +158,7 @@
       (net 16 "Net-(U3-TRIG)") (pinfunction "TRIG") (pintype "input") (tstamp aea9b47b-714a-47b0-a9c7-2f19ec1901ae))
   )
 
-  (footprint "custom_lib:PiPico" (layer "F.Cu")
+  (footprint "somnos_lib:PiPico" (layer "F.Cu")
     (tstamp 4e36480b-4029-4afb-ac33-82a9454a7f75)
     (at 123 103.5 90)
     (property "Sheetfile" "pcb.kicad_sch")
@@ -267,7 +267,7 @@
       (net 23 "unconnected-(U4-VBUS-Pad40)") (pinfunction "VBUS") (pintype "bidirectional") (tstamp b0e098fa-2394-455d-b3ab-6cc3a75d0daa))
   )
 
-  (footprint "custom_lib:USB A Port" (layer "F.Cu")
+  (footprint "somnos_lib:USB A Port" (layer "F.Cu")
     (tstamp 51c4e6c5-f037-4785-8479-5e53fc6f4eff)
     (at 110.5 80.5 90)
     (property "Sheetfile" "pcb.kicad_sch")
@@ -304,7 +304,7 @@
       (net 2 "Net-(J1-GND)") (pinfunction "GND") (pintype "power_in") (tstamp ee9b69aa-89e4-4a81-bb0b-1c6bbf86dc62))
   )
 
-  (footprint "custom_lib:END28J60" (layer "F.Cu")
+  (footprint "somnos_lib:END28J60" (layer "F.Cu")
     (tstamp 67d25042-c3d6-4348-8ce3-4f7226173d9c)
     (at 152.65 104.5 180)
     (property "Sheetfile" "pcb.kicad_sch")
@@ -349,7 +349,7 @@
       (net 33 "Net-(U1-CLK)") (pinfunction "CLK") (pintype "bidirectional") (tstamp 780fd820-8ae3-4d0d-8c85-de26d55e6625))
   )
 
-  (footprint "custom_lib:INA219" (layer "F.Cu")
+  (footprint "somnos_lib:INA219" (layer "F.Cu")
     (tstamp 71105eeb-0b27-4109-a956-690ede59d2c6)
     (at 167 83)
     (property "Sheetfile" "pcb.kicad_sch")
@@ -392,7 +392,7 @@
       (net 7 "Net-(U2-SDA)") (pinfunction "SDA") (pintype "bidirectional") (tstamp e016ccfd-0e91-448d-8ea8-8ea255e8cc00))
   )
 
-  (footprint "custom_lib:USB C Port" (layer "F.Cu")
+  (footprint "somnos_lib:USB C Port" (layer "F.Cu")
     (tstamp c150400d-652e-4759-a435-5ffebd18fe0e)
     (at 191 80.5 -90)
     (property "Sheetfile" "pcb.kicad_sch")
@@ -596,9 +596,9 @@
     (polygon
       (pts
         (xy 92 68.75)
-        (xy 207.75 68.75)
-        (xy 207.75 123)
-        (xy 92 123)
+        (xy 205.5 68.75)
+        (xy 205.5 119.25)
+        (xy 92 119.25)
       )
     )
     (filled_polygon
