@@ -22,6 +22,9 @@ class SerialDeviceAdapter(dral.adapter.BaseAdapter):
 
         peripherals = []
         for p in device["peripherals"]:
+            if "address" not in p:
+                p["address"] = 0
+
             registers = []
             for r in p["registers"]:
                 fields = []
