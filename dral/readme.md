@@ -4,10 +4,10 @@ Setup:
 
 ```bash
 cd dral
-git submodule update --init --depth 1 d-ral-fx
+git submodule update --init --depth 1 d-ral
 python3 -m venv venv
 source venv/bin/activate
-pip install -e d-ral-fx
+pip install -e d-ral
 ```
 
 Generate:
